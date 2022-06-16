@@ -1,12 +1,13 @@
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
-const WebpackShellPlugin = require('webpack-shell-plugin');
+const WebpackShellPlugin = require('webpack-shell-plugin-next');
 // used to do the typechecking in a seperate process so the transpiling will be handled only by tsloader.
 // speed up compilation of code
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 const {
   NODE_ENV = 'production',
+  NODE_PUBLISH = 'false',
 } = process.env;
 
 module.exports = {
@@ -25,7 +26,9 @@ module.exports = {
   plugins: [
     new ForkTsCheckerWebpackPlugin(),
     new WebpackShellPlugin({
-      onBuildEnd: (NODE_ENV === 'development') ? ['yarn run:dev'] : ['yarn run:prod']
+      onBuildEnd: {
+        scripts: (NODE_ENV === 'development') ? ['yarn run:dev'] : (NODE_PUBLISH === 'true') ?  ['yarn run:publish'] : ['yarn run:prod']
+      }
     })
   ],
   module: {

@@ -1,16 +1,17 @@
-import * as bodyParser from 'body-parser';
-import * as express from 'express';
+import * as bodyParser from "body-parser";
+import * as express from "express";
 
 // Creates and configures an ExpressJS web server.
 class App {
   // ref to Express instance
-  express: express.Application;
+  public express: express.Application;
 
   // Run configuration methods on the Express instance.
   constructor() {
-      // test
+    // test
     this.express = express();
     this.middleware();
+    // this.controller();
     this.routes();
   }
 
@@ -20,6 +21,12 @@ class App {
     this.express.use(bodyParser.urlencoded({ extended: false }));
   }
 
+  // private controller() {
+  //   controllers.forEach((controller: any) => {
+  //     this.express.use("/", controller.router);
+  //   });
+  // }
+
   // Configure API endpoints.
   private routes(): void {
     /* This is just to get up and running, and to make sure what we've got is
@@ -27,14 +34,13 @@ class App {
      * API endpoints */
     const router = express.Router();
     // placeholder route handler
-    router.get('/', (req: express.Request, res: express.Response, next: {}) => {
+    router.get("/", (req: express.Request, res: express.Response, next: {}) => {
       res.json({
-        message: 'Hello World!'
+        message: "Hello World!",
       });
     });
-    this.express.use('/', router);
+    this.express.use("/", router);
   }
-
 }
 
 export default new App().express;

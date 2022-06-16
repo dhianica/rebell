@@ -1,5 +1,5 @@
 module.exports = {
-    name: "api-rest",
+    name: "typescript-first-app",
     script: 'build/main.bundle.js',
     watch: true,
     ignore_watch: ["node_modules"],

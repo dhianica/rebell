@@ -1,17 +1,19 @@
 {
-  "name": "node-typescript-webpack-boilerplate",
+  "name": "typescript-first-app",
   "version": "1.0.0",
   "description": "a boilerplate using node with typescript and webpack",
   "main": "./src/bin/www.ts",
   "scripts": {
     "test": "cross-env TS_NODE_PROJECT=config/test/tsconfig.test.json mocha -r ts-node/register test/**/*.test.ts",
-    "clean": "rimraf ./build/* && rimraf ./logs/*",
+    "clean": "rimraf -G ./build/* && rimraf -G ./logs/*",
     "lint": "tslint -c tslint.json 'src/**/*.ts'",
-    "build": "yarn clean && yarn lint && yarn test && webpack --watch",
+    "build": "yarn clean && yarn lint && yarn test && webpack",
     "start:dev": "NODE_ENV=development yarn build",
     "run:dev": "pm2 start ./config/pm2/pm2-dev-process.config.js",
     "start:prod": "NODE_ENV=production yarn build",
     "run:prod": "pm2 start ./config/pm2/pm2-prod-process.config.js",
+    "start:publish": "NODE_ENV=production NODE_PUBLISH=true yarn build",
+    "run:publish": "pkg -t node14-win build/main.bundle.js -o bin/typescript-first-app.exe",
     "monitor": "pm2 monit",
     "logs": "pm2 logs api-rest --lines 2000",
     "stop": "pm2 delete api-rest && yarn clean"
@@ -25,45 +27,51 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/AhmedCommando/node-typescript-webpack"
+    "url": "https://github.com/dhianica/typescript-first-app.git"
   },
-  "author": "Ahmed Khalil Bejaoui",
+  "author": "Muchamamd Ilham",
+  "contributors": [
+    {
+      "name": "Ahmed Khalil Bejaoui",
+      "url": "https://github.com/AhmedCommando/node-typescript-webpack"
+    }
+  ],
   "license": "MIT",
   "devDependencies": {
     "@types/chai": "^4.3.1",
     "@types/mocha": "^9.1.1",
-    "@types/node": "^14.18.10",
+    "@types/node": "^17.0.43",
     "@types/source-map": "0.5.2",
     "@types/supertest": "^2.0.12",
-    "@types/webpack": "^4.4.34",
+    "@types/webpack": "^5.28.0",
     "@types/webpack-sources": "^3.2.0",
     "chai": "^4.3.6",
-    "codelyzer": "^5.1.0",
+    "codelyzer": "^6.0.2",
     "cross-env": "^7.0.3",
-    "fork-ts-checker-webpack-plugin": "^1.3.7",
+    "fork-ts-checker-webpack-plugin": "^7.2.11",
     "mocha": "^10.0.0",
-    "source-map": "^0.7.3",
+    "source-map": "^0.7.4",
     "supertest": "^6.2.3",
-    "ts-loader": "^6.0.4",
+    "ts-loader": "^9.3.0",
     "ts-node": "^10.8.1",
-    "tslint": "^5.18.0",
-    "tslint-consistent-codestyle": "^1.15.1",
+    "tslint": "^5.20.1",
+    "tslint-consistent-codestyle": "^1.16.0",
     "tslint-defocus": "^2.0.6",
     "tslint-eslint-rules": "^5.4.0",
-    "tslint-origin-ordered-imports-rule": "^1.2.2",
+    "tslint-origin-ordered-imports-rule": "^2.0.0",
     "tslint-rxjs-subject-restrictions-rule": "^1.0.4",
-    "typescript": "^3.5.2",
-    "webpack": "^4.35.2",
-    "webpack-cli": "^3.3.5",
-    "webpack-node-externals": "^1.7.2",
-    "webpack-shell-plugin": "^0.5.0"
+    "typescript": "^4.7.3",
+    "webpack": "^5.73.0",
+    "webpack-cli": "^4.10.0",
+    "webpack-node-externals": "^3.0.0",
+    "webpack-shell-plugin-next": "^2.2.2"
   },
   "dependencies": {
-    "@types/body-parser": "^1.17.0",
-    "@types/express": "^4.17.0",
-    "body-parser": "^1.19.0",
-    "debug": "^4.1.1",
-    "express": "^4.17.1",
-    "winston": "^3.2.1"
+    "@types/body-parser": "^1.19.2",
+    "@types/express": "^4.17.13",
+    "body-parser": "^1.20.0",
+    "debug": "^4.3.4",
+    "express": "^4.18.1",
+    "winston": "^3.7.2"
   }
 }
