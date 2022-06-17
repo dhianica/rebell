@@ -4,7 +4,7 @@
   "description": "a boilerplate using node with typescript and webpack",
   "main": "./src/bin/www.ts",
   "scripts": {
-    "test": "cross-env TS_NODE_PROJECT=config/test/tsconfig.test.json mocha -r ts-node/register test/**/*.test.ts",
+    "test": "cross-env TS_NODE_PROJECT=config/test/tsconfig.test.json mocha -r ts-node/register src/app/**/*.spec.ts",
     "clean": "rimraf -G ./build/* && rimraf -G ./logs/*",
     "lint": "tslint -c tslint.json 'src/**/*.ts'",
     "build": "yarn clean && yarn lint && yarn test && webpack",
@@ -40,7 +40,7 @@
   "devDependencies": {
     "@types/chai": "^4.3.1",
     "@types/mocha": "^9.1.1",
-    "@types/node": "^17.0.43",
+    "@types/node": "^18.0.0",
     "@types/source-map": "0.5.2",
     "@types/supertest": "^2.0.12",
     "@types/webpack": "^5.28.0",
@@ -50,6 +50,7 @@
     "cross-env": "^7.0.3",
     "fork-ts-checker-webpack-plugin": "^7.2.11",
     "mocha": "^10.0.0",
+    "npm-check-updates": "^14.0.1",
     "source-map": "^0.7.4",
     "supertest": "^6.2.3",
     "ts-loader": "^9.3.0",

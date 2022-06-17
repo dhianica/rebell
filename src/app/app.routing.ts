@@ -1,18 +1,17 @@
-import logger from "../utils/winston-logger";
 import * as express from "express";
-import * as ProductRouter from "./product/product.routing";
+import ProductRouter from "./product/product.routing";
 
 class Router {
   public path = "/api";
-  public router = express.Router();
-  private product = ProductRouter;
+  public router: express.Router;
   constructor() {
+    this.router = express.Router();
     this.intializeRoutes();
   }
 
-  public intializeRoutes() {
-    this.router.use(this.path, this.product);
+  private intializeRoutes() {
+    this.router.use(this.path, ProductRouter);
   }
 }
 
-export default Router;
+export default new Router().router;

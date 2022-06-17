@@ -9,14 +9,20 @@ class ProductController {
       title: "Lorem Ipsum",
     },
   ];
-  public getAllProducts = (request: express.Request, response: express.Response) => {
-    response.send(this.posts);
+  public getAllProducts = (
+    req: express.Request,
+    res: express.Response
+  ) => {
+    res.send(this.posts);
   };
 
-  public createAProduct = (request: express.Request, response: express.Response) => {
-    const post: any = request.body;
+  public createAProduct = (
+    req: express.Request,
+    res: express.Response
+  ) => {
+    const post: any = req.body;
     this.posts.push(post);
-    response.send(post);
+    res.send(post);
   };
 }
 

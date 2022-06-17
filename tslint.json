@@ -5,6 +5,7 @@
       "tslint-eslint-rules"
     ],
     "rulesDirectory": [
+      "codelyzer",
       "node_modules/tslint-origin-ordered-imports-rule/dist",
       "node_modules/tslint-consistent-codestyle/rules",
       "node_modules/tslint-defocus/dist"
@@ -120,8 +121,6 @@
       "no-trailing-whitespace": false,
       "no-unnecessary-initializer": true,
       "no-unused-expression": true,
-      "no-unused-variable": true,
-      "no-use-before-declare": true,
       "no-var-keyword": true,
       "object-literal-sort-keys": false,
       "one-line": [

@@ -10,6 +10,56 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./src/app/app.routing.ts":
+/*!********************************!*\
+  !*** ./src/app/app.routing.ts ***!
+  \********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var express__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! express */ \"express\");\n/* harmony import */ var express__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(express__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _product_product_routing__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./product/product.routing */ \"./src/app/product/product.routing.ts\");\n/* harmony import */ var _user_user_routing__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./user/user.routing */ \"./src/app/user/user.routing.ts\");\n\r\n\r\n\r\nvar Router = /** @class */ (function () {\r\n    function Router() {\r\n        this.path = \"/api\";\r\n        this.router = express__WEBPACK_IMPORTED_MODULE_0__.Router();\r\n        this.intializeRoutes();\r\n    }\r\n    Router.prototype.intializeRoutes = function () {\r\n        this.router.use(this.path, _product_product_routing__WEBPACK_IMPORTED_MODULE_1__[\"default\"]);\r\n        this.router.use(this.path, _user_user_routing__WEBPACK_IMPORTED_MODULE_2__[\"default\"]);\r\n    };\r\n    return Router;\r\n}());\r\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new Router().router);\r\n\n\n//# sourceURL=webpack://typescript-first-app/./src/app/app.routing.ts?");
+
+/***/ }),
+
+/***/ "./src/app/product/product.controller.ts":
+/*!***********************************************!*\
+  !*** ./src/app/product/product.controller.ts ***!
+  \***********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n// import ProductService from \"./product.service\";\r\n[A];\r\nvar ProductController = /** @class */ (function () {\r\n    function ProductController() {\r\n        var _this = this;\r\n        this.posts = [\r\n            {\r\n                name: \"Marcin\",\r\n                author: \"Dolor sit amet\",\r\n                title: \"Lorem Ipsum\",\r\n            },\r\n        ];\r\n        this.getAllProducts = function (req, res) {\r\n            res.send(_this.posts);\r\n        };\r\n        this.createAProduct = function (req, res) {\r\n            var post = req.body;\r\n            _this.posts.push(post);\r\n            res.send(post);\r\n        };\r\n    }\r\n    return ProductController;\r\n}());\r\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new ProductController());\r\n\n\n//# sourceURL=webpack://typescript-first-app/./src/app/product/product.controller.ts?");
+
+/***/ }),
+
+/***/ "./src/app/product/product.routing.ts":
+/*!********************************************!*\
+  !*** ./src/app/product/product.routing.ts ***!
+  \********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var express__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! express */ \"express\");\n/* harmony import */ var express__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(express__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _product_controller__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./product.controller */ \"./src/app/product/product.controller.ts\");\n\r\n\r\nvar ProductRouter = /** @class */ (function () {\r\n    function ProductRouter() {\r\n        this.path = \"/products\";\r\n        this.controller = _product_controller__WEBPACK_IMPORTED_MODULE_1__[\"default\"];\r\n        this.router = express__WEBPACK_IMPORTED_MODULE_0__.Router();\r\n        this.router.get(this.path, this.controller.getAllProducts);\r\n        this.router.post(this.path, this.controller.createAProduct);\r\n        this.router.delete(this.path, this.controller.getAllProducts);\r\n        this.router.put(this.path, this.controller.getAllProducts);\r\n        // this.intializeRoutes();\r\n    }\r\n    return ProductRouter;\r\n}());\r\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new ProductRouter().router);\r\n\n\n//# sourceURL=webpack://typescript-first-app/./src/app/product/product.routing.ts?");
+
+/***/ }),
+
+/***/ "./src/app/user/user.controller.ts":
+/*!*****************************************!*\
+  !*** ./src/app/user/user.controller.ts ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n// import ProductService from \"./product.service\";\r\nvar UserController = /** @class */ (function () {\r\n    function UserController() {\r\n        var _this = this;\r\n        this.posts = [\r\n            {\r\n                name: \"Marcin\",\r\n                author: \"Dolor sit amet\",\r\n                title: \"Lorem Ipsum\",\r\n            },\r\n        ];\r\n        this.getAllUser = function (req, res) {\r\n            res.send(_this.posts);\r\n        };\r\n        this.createAUser = function (req, res) {\r\n            var post = req.body;\r\n            _this.posts.push(post);\r\n            res.send(post);\r\n        };\r\n    }\r\n    return UserController;\r\n}());\r\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new UserController());\r\n\n\n//# sourceURL=webpack://typescript-first-app/./src/app/user/user.controller.ts?");
+
+/***/ }),
+
+/***/ "./src/app/user/user.routing.ts":
+/*!**************************************!*\
+  !*** ./src/app/user/user.routing.ts ***!
+  \**************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var express__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! express */ \"express\");\n/* harmony import */ var express__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(express__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _user_controller__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./user.controller */ \"./src/app/user/user.controller.ts\");\n\r\n\r\nvar UserRouter = /** @class */ (function () {\r\n    function UserRouter() {\r\n        this.path = \"/users\";\r\n        this.controller = _user_controller__WEBPACK_IMPORTED_MODULE_1__[\"default\"];\r\n        this.router = express__WEBPACK_IMPORTED_MODULE_0__.Router();\r\n        this.router.get(this.path, this.controller.getAllUser);\r\n        this.router.post(this.path, this.controller.createAUser);\r\n        // this.intializeRoutes();\r\n    }\r\n    return UserRouter;\r\n}());\r\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new UserRouter().router);\r\n\n\n//# sourceURL=webpack://typescript-first-app/./src/app/user/user.routing.ts?");
+
+/***/ }),
+
 /***/ "./src/bin/www.ts":
 /*!************************!*\
   !*** ./src/bin/www.ts ***!
@@ -26,7 +76,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var http
   \**********************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var body_parser__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! body-parser */ \"body-parser\");\n/* harmony import */ var body_parser__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(body_parser__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var express__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! express */ \"express\");\n/* harmony import */ var express__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(express__WEBPACK_IMPORTED_MODULE_1__);\n\r\n\r\n// Creates and configures an ExpressJS web server.\r\nvar App = /** @class */ (function () {\r\n    // Run configuration methods on the Express instance.\r\n    function App() {\r\n        // test\r\n        this.express = express__WEBPACK_IMPORTED_MODULE_1__();\r\n        this.middleware();\r\n        this.routes();\r\n    }\r\n    // Configure Express middleware.\r\n    App.prototype.middleware = function () {\r\n        this.express.use(body_parser__WEBPACK_IMPORTED_MODULE_0__.json());\r\n        this.express.use(body_parser__WEBPACK_IMPORTED_MODULE_0__.urlencoded({ extended: false }));\r\n    };\r\n    // Configure API endpoints.\r\n    App.prototype.routes = function () {\r\n        /* This is just to get up and running, and to make sure what we've got is\r\n         * working so far. This function will change when we start to add more\r\n         * API endpoints */\r\n        // const router = express.Router();\r\n        // import { router } from './app.routing';\r\n        // placeholder route handler\r\n        // this.express.use('/', router);\r\n        this.express.get('/', function (req, res, next) {\r\n            res.json({\r\n                message: 'Hello World!'\r\n            });\r\n        });\r\n    };\r\n    return App;\r\n}());\r\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new App().express);\r\n\n\n//# sourceURL=webpack://typescript-first-app/./src/index.ts?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var body_parser__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! body-parser */ \"body-parser\");\n/* harmony import */ var body_parser__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(body_parser__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var express__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! express */ \"express\");\n/* harmony import */ var express__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(express__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony import */ var _app_app_routing__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./app/app.routing */ \"./src/app/app.routing.ts\");\n\r\n\r\n\r\n// Creates and configures an ExpressJS web server.\r\nvar App = /** @class */ (function () {\r\n    // Run configuration methods on the Express instance.\r\n    function App() {\r\n        this.express = express__WEBPACK_IMPORTED_MODULE_1__();\r\n        this.middleware();\r\n        this.routes();\r\n    }\r\n    // Configure Express middleware.\r\n    App.prototype.middleware = function () {\r\n        this.express.use(body_parser__WEBPACK_IMPORTED_MODULE_0__.json());\r\n        this.express.use(body_parser__WEBPACK_IMPORTED_MODULE_0__.urlencoded({ extended: false }));\r\n    };\r\n    // Configure API endpoints.\r\n    App.prototype.routes = function () {\r\n        /* This is just to get up and running, and to make sure what we've got is\r\n         * working so far. This function will change when we start to add more\r\n         * API endpoints */\r\n        // sample route in App\r\n        this.express.get(\"/\", function (req, res, next) {\r\n            res.json({\r\n                message: \"Hello World!\",\r\n            });\r\n        });\r\n        this.express.use(_app_app_routing__WEBPACK_IMPORTED_MODULE_2__[\"default\"]);\r\n    };\r\n    return App;\r\n}());\r\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new App().express);\r\n\n\n//# sourceURL=webpack://typescript-first-app/./src/index.ts?");
 
 /***/ }),
 
