@@ -1,0 +1,1 @@
+"use strict";exports.id=888,exports.ids=[888],exports.modules={888:(t,s,o)=>{o.r(s),o.d(s,{default:()=>e});const e=new function(){var t=this;this.posts=[{name:"Marcin",author:"Dolor sit amet",title:"Lorem Ipsum"}],this.getAllProducts=function(s,o){o.send(t.posts)},this.createAProduct=function(s,o){var e=s.body;t.posts.push(e),o.send(e)}}}};

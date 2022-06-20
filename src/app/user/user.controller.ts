@@ -1,6 +1,7 @@
 import * as express from 'express';
+// import ProductService from './product.service';
 
-class ProductController {
+class UserController {
   private posts: any[] = [
     {
       name: 'Marcin',
@@ -8,14 +9,14 @@ class ProductController {
       title: 'Lorem Ipsum'
     }
   ];
-  getAllProducts = (
+  getAllUsers = (
     req: express.Request,
     res: express.Response
   ) => {
     res.send(this.posts);
   }
 
-  createAProduct = (
+  createAUser = (
     req: express.Request,
     res: express.Response
   ) => {
@@ -25,4 +26,4 @@ class ProductController {
   }
 }
 
-export default new ProductController();
+export default new UserController();

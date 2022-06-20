@@ -1,12 +1,12 @@
-import * as bodyParser from "body-parser";
-import * as express from "express";
-import router from './app/app.routing'
+import * as bodyParser from 'body-parser';
+import * as express from 'express';
+
+import router from './app/app.routing';
 
 // Creates and configures an ExpressJS web server.
 class App {
   // ref to Express instance
-  public express: express.Application;
-
+  express: express.Application;
   // Run configuration methods on the Express instance.
   constructor() {
     this.express = express();
@@ -27,9 +27,9 @@ class App {
   
     // sample route in App
     
-    this.express.get("/", (req: express.Request, res: express.Response, next: {}) => {
+    this.express.get('/', (req: express.Request, res: express.Response, next: {}) => {
       res.json({
-        message: "Hello World!",
+        message: 'Hello World!'
       });
     });
     this.express.use(router);
