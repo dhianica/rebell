@@ -27,7 +27,7 @@ class App {
   
     // sample route in App
     
-    this.express.get('/', (req: express.Request, res: express.Response, next: {}) => {
+    this.express.get('/', (req: express.Request, res: express.Response, next: {}): void => {
       res.json({
         message: 'Hello World!'
       });

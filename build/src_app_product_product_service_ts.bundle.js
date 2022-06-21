@@ -1,3 +1,4 @@
+"use strict";
 /*
  * ATTENTION: The "eval" devtool has been used (maybe by default in mode: "development").
  * This devtool is neither made for production nor for readable output files.
@@ -16,7 +17,7 @@ exports.modules = {
   \********************************************/
 /***/ (() => {
 
-eval("\n\n//# sourceURL=webpack://typescript-first-app/./src/app/product/product.service.ts?");
+eval("\r\n\n\n//# sourceURL=webpack://typescript-first-app/./src/app/product/product.service.ts?");
 
 /***/ })
 

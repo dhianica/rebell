@@ -12,18 +12,18 @@ class UserController {
   getAllUsers = (
     req: express.Request,
     res: express.Response
-  ) => {
+  ): void => {
     res.send(this.posts);
-  }
+  };
 
   createAUser = (
     req: express.Request,
     res: express.Response
-  ) => {
+  ): void => {
     const post: any = req.body;
     this.posts.push(post);
     res.send(post);
-  }
+  };
 }
 
 export default new UserController();

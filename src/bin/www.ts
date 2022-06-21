@@ -5,12 +5,12 @@ import App from '../index';
 
 const server = http.createServer(App);
 
-const normalizePort = (val: number|string): number|string|boolean => {
+const normalizePort = (val: number | string): number | string | boolean => {
   const normolizedPort = (typeof val === 'string') ? parseInt(val, 10) : val;
   if (isNaN(normolizedPort)) {
     return val;
   }
-  
+
   if (normolizedPort >= 0) {
     return normolizedPort;
   }
@@ -21,7 +21,7 @@ const normalizePort = (val: number|string): number|string|boolean => {
 const port = normalizePort(process.env.PORT || 3000);
 App.set('port', port);
 
-const onError = (error: NodeJS.ErrnoException) => {
+const onError = (error: NodeJS.ErrnoException): void => {
   if (error.syscall !== 'listen') { throw error; }
   const bind = (typeof port === 'string') ? 'Pipe ' + port : 'Port ' + port;
   switch (error.code) {
@@ -38,9 +38,9 @@ const onError = (error: NodeJS.ErrnoException) => {
   }
 };
 
-const onListening = () => {
+const onListening = (): void => {
   const addr = server.address();
-  const bind = (typeof addr === 'string') ? `pipe ${addr}` : `port ${addr.port}`;
+  const bind = (typeof addr === 'string') ? `pipe ${addr}` : `port ${addr?.port}`;
   logger.info(`Listening on ${bind}`);
 };
 
