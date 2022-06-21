@@ -4,6 +4,7 @@ const WebpackShellPlugin = require('webpack-shell-plugin-next');
 // used to do the typechecking in a seperate process so the transpiling will be handled only by tsloader.
 // speed up compilation of code
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const TerserPlugin = require("terser-webpack-plugin");
 
 const {
   NODE_ENV = 'production',
@@ -23,11 +24,22 @@ module.exports = {
   resolve: {
     extensions: ['.ts', '.js'],
   },
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new TerserPlugin({
+        minify: TerserPlugin.swcMinify,
+        // `terserOptions` options will be passed to `swc` (`@swc/core`)
+        // Link to options - https://swc.rs/docs/config-js-minify
+        terserOptions: {},
+      }),
+    ],
+  },
   plugins: [
     new ForkTsCheckerWebpackPlugin(),
     new WebpackShellPlugin({
       onBuildEnd: {
-        scripts: (NODE_ENV === 'development') ? ['yarn run:dev'] : (NODE_PUBLISH === 'true') ?  ['yarn run:publish'] : ['yarn run:prod']
+        scripts: (NODE_ENV === 'development') ? ['yarn run:dev'] : (NODE_PUBLISH === 'true') ? ['yarn run:publish'] : ['yarn run:prod']
       }
     })
   ],
@@ -39,8 +51,7 @@ module.exports = {
           {
             loader: 'ts-loader',
             options: {
-              configFile: NODE_ENV === 'development' ? 'tsconfig.json' : 'tsconfig.prod.json',
-              transpileOnly: true // and we use ForkTsCheckerWebpackPlugin for type checking
+              configFile: NODE_ENV === 'development' ? 'tsconfig.json' : 'tsconfig.prod.json'
             }
           }
         ],

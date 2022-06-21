@@ -2,19 +2,16 @@
     "compilerOptions": {
         "module": "esnext",
         "strict": true,
-        "target": "es2022",
-        "lib": [
-            "es2022"
-        ],
+        "target": "es2020",
         "outDir": "./build/",
         "sourceMap": true,
         "allowJs": true,
     },
     "include": [
-        "src/**/*"
+        "./src/**/*"
     ],
     "exclude": [
-        "node_modules",
-        "**/*.spec.ts"
+        "./node_modules",
+        "./**/*.spec.ts"
     ]
 }
