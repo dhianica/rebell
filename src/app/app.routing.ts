@@ -1,5 +1,7 @@
 import * as express from 'express';
 import * as glob from 'glob';
+import Utils from '../utils/utils';
+
 
 class Router {
   router: express.Router;
@@ -17,7 +19,8 @@ class Router {
       })
       .forEach(async (file: any): Promise<void> => {
         const route = (await import(`${file}`)).default;
-        this.router.use(this.path, route);
+        const path = Utils.setUrlRoute(this.path, file);
+        this.router.use(path, route);
       });
   }
 }
