@@ -1,12 +1,16 @@
 {
   "todo-tree.tree.scanMode": "workspace",
   "eslint.format.enable": true,
+  "[javascript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[typescript]": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll": true
+    },
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
-  },
-  "workbench.colorCustomizations": {
-    "activityBar.background": "#3F2631",
-    "titleBar.activeBackground": "#583545",
-    "titleBar.activeForeground": "#FCFAFA"
   }
 }

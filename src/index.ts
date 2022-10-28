@@ -34,10 +34,6 @@ class App {
     });
     this.express.use(router);
   }
-
-  private response(): void {
-    this.express.use(Middleware.errorResponder)
-  }
 }
 
 export default new App().express;
