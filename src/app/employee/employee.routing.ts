@@ -5,9 +5,9 @@ class EmployeeRouter extends Route {
 
   public constructor(schemaName: string) {
     super(schemaName, false);
+    this.post('/', this.controller.createAEmployee);
     this.get('/getAllEmployees', this.controller.getAllEmployees);
     this.get('/getAllEmployees1', this.controller.getAllEmployees1);
-    this.post('/', this.controller.createAEmployee);
   }
 }
 

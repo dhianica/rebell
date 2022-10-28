@@ -1,4 +1,4 @@
-interface RouteDefinition {
+interface RouterTypes {
   // Path to our route
   path: string;
   // HTTP Request method (get, post, ...)

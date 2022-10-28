@@ -18,7 +18,7 @@ class Router extends Configuration {
   private initializeRoutes(): void {
     glob
       .sync('./**/*(*.routing.ts|*.schema.ts)', {
-        ignore: ['./app.routing.ts', './core/**', './**/#worker/**'],
+        ignore: ['./app.routing.ts', './core/**', './**/#worker/**', './**/#schema/**'],
         cwd: './src/app'
       }).map(v => {
         if (/[^.]*\//.test(v)) {
@@ -34,12 +34,7 @@ class Router extends Configuration {
           const fileRoute = (await import(`${value}`)).default;
           const route = new fileRoute(setSchemaName(name));
           this.router.use(path, route.router);
-        } else if (value.indexOf('schema') > 0) {
-          const schemaName = setSchemaName(name);
-          const typeSchema = (await import(`${value}`));
-          new Schema().setSchema(schemaName, typeSchema.schema)
-        }
-      })
+        })
     })
   }
 }

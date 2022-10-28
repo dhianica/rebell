@@ -440,18 +440,18 @@ export enum ErrorMessage {
   NOT_HANDLED = 'Error Not Handled'
 }
 
-enum Type {
+export enum Type {
   Api = 'Api',
   Database = 'Database'
 }
  
 
-enum Message {
+export enum Status {
   Success = 'Success',
   Failed = 'Failed'
 }
 
-enum MessageDetail {
+export enum Message {
   /**
        * Is messaging success when data found
        */

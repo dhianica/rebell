@@ -4,6 +4,7 @@ const WebpackShellPlugin = require('webpack-shell-plugin-next');
 // used to do the typechecking in a seperate process so the transpiling will be handled only by tsloader.
 // speed up compilation of code
 const TerserPlugin = require('terser-webpack-plugin');
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
 
 const {
   NODE_ENV = 'production',
@@ -48,7 +49,8 @@ module.exports = {
                     (NODE_ENV === 'development' && NODE_DOCKER === 'true') ? ['yarn run:docker-dev'] :
                       (NODE_ENV === 'production' && NODE_DOCKER === 'true') ? ['yarn run:docker-prod'] : ['yarn run:dev']
       }
-    })
+    }),
+    new FaviconsWebpackPlugin('./favicon.ico')
   ],
   module: {
     rules: [

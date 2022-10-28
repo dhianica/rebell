@@ -7,8 +7,6 @@ class MessageController {
     res: express.Response, 
     next: express.NextFunction
   ): Promise<void> => {
-    console.log('===================================================')
-    console.log(`Run Send Message to Client ${JSON.stringify(req.query)}`)
     try {
       const amqp = new IAMQPInstance()
       await amqp.send('logs', `${req.query.message}`, { durable: false, autoDelete: true })

@@ -1,5 +1,6 @@
 import * as bodyParser from 'body-parser';
 import express from 'express';
+import favicon from 'serve-favicon'
 import Middleware from './core/middleware'
 
 import router from './app/app.routing';
@@ -13,12 +14,12 @@ class App {
     this.express = express();
     this.middleware();
     this.routes();
-    // this.response();
   }
   // Configure Express middleware.
   private middleware(): void {
     this.express.use(bodyParser.json());
     this.express.use(bodyParser.urlencoded({ extended: false }));
+    this.express.use(favicon(__dirname + '/assets/favicon.ico'));
     this.express.use(Middleware.loggerMiddleware)
   }
   // Configure API endpoints.

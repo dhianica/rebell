@@ -1,7 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import Logger from './logs';
 import Ajv from 'ajv'
-import { isEmpty, HttpStatusCode, ErrorMessage } from '../utils/index.util'
+import { isEmpty } from '../utils/index.util'
+import { HttpStatusCode, Status, Message } from '../core/enum'
 
 const ajv = new Ajv()
 class Schema {
@@ -24,7 +25,7 @@ class Schema {
             next();
           }
         } else {
-          const message = `Body ${ErrorMessage.REQUIRED}!`
+          const message = `Body ${Message.REQUIRED}!`
           Logger.info(`Validation Request Failed \t-> ${message}`);
           Logger.error(`Validation Request Failed \t-> ${message}`);
           res.status(HttpStatusCode.BAD_REQUEST).json({
@@ -32,7 +33,7 @@ class Schema {
           });
         }
       } catch (error) {
-        const message = `${ErrorMessage.NOT_HANDLED}!`
+        const message = `${Message.NOT_HANDLED}!`
         Logger.info(`Validation Request Failed \t-> ${message}`);
         Logger.error(`Validation Request Failed \t-> ${message}`);
         res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({
