@@ -1,6 +1,6 @@
 import * as http from 'http';
 
-import logger from '../utils/winston-logger';
+import logger from '../core/logs';
 import App from '../index';
 
 const server = http.createServer(App);
@@ -27,12 +27,10 @@ const onError = (error: NodeJS.ErrnoException): void => {
   switch (error.code) {
     case 'EACCES':
       logger.error(`${bind} requires elevated privileges`);
-      process.exit(1);
-      break;
+      throw error;
     case 'EADDRINUSE':
       logger.error(`${bind} is already in use`);
-      process.exit(1);
-      break;
+      throw error;
     default:
       throw error;
   }

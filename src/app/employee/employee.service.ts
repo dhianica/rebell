@@ -7,7 +7,7 @@ class EmployeeService {
     }
   ];
 
-  getAllEmployees = (req: express.Request, res: express.Response): void => {
+  public getAllEmployees = (req: express.Request, res: express.Response): void => {
     res.send(this.posts);
   };
 }

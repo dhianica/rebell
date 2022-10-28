@@ -1,19 +1,14 @@
-import * as express from 'express';
-
+import Route from '../../core/route';
 import EmployeeController from './employee.controller';
-
-class EmployeeRouter {
-  path = '/employee';
-  router: express.Router;
+class EmployeeRouter extends Route {
   private controller = EmployeeController;
 
-  constructor() {
-    this.router = express.Router();
-    this.router.get(this.path, this.controller.getAllEmployees);
-    this.router.post(this.path, this.controller.createAEmployee);
-    this.router.delete(this.path, this.controller.getAllEmployees);
-    this.router.put(this.path, this.controller.getAllEmployees);
+  public constructor(schemaName: string) {
+    super(schemaName, false);
+    this.get('/getAllEmployees', this.controller.getAllEmployees);
+    this.get('/getAllEmployees1', this.controller.getAllEmployees1);
+    this.post('/', this.controller.createAEmployee);
   }
 }
 
-export default new EmployeeRouter().router;
+export default EmployeeRouter;
