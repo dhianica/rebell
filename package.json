@@ -48,6 +48,16 @@
     "url": "https://github.com/dhianica/worker-threads-typescript.git"
   },
   "author": "Muchamamd Ilham",
+  "contributors": [
+    {
+      "name": "Ahmed Khalil Bejaoui",
+      "url": "https://github.com/AhmedCommando/node-typescript-webpack"
+    },
+    {
+      "name": "Lord Ottoyd XIV",
+      "url": "https://github.com/ottoyd"
+    }
+  ],
   "license": "MIT",
   "devDependencies": {
     "@swc/core": "^1.3.9",

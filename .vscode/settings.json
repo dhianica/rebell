@@ -1,3 +1,12 @@
 {
-    "todo-tree.tree.scanMode": "workspace"
+  "todo-tree.tree.scanMode": "workspace",
+  "eslint.format.enable": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "workbench.colorCustomizations": {
+    "activityBar.background": "#3F2631",
+    "titleBar.activeBackground": "#583545",
+    "titleBar.activeForeground": "#FCFAFA"
+  }
 }
