@@ -402,24 +402,6 @@ export enum HttpStatusCode {
   NETWORK_AUTHENTICATION_REQUIRED = 511
 }
 /**
-    * Is variable constant for messaging an success message 
-    */
-export enum SuccessMessage {
-  SUCCESS = 'Success',
-  /**
-       * Is messaging success when data found
-       */
-  FOUND = 'Found',
-  
-  /**
-     * Is messaging succes when data fetch is successful
-     */ 
-  
-  FETCH = 'Fetch',
-}
- 
-
-/**
     * Is variable constant for messaging an error 
     */
 export enum ErrorMessage {
@@ -441,14 +423,14 @@ export enum ErrorMessage {
 }
 
 export enum Type {
-  Api = 'Api',
-  Database = 'Database'
+  API = 'Api',
+  DATABASE = 'Database'
 }
  
 
 export enum Status {
-  Success = 'Success',
-  Failed = 'Failed'
+  SUCCESS = 'Success',
+  FAILED = 'Failed'
 }
 
 export enum Message {
@@ -481,9 +463,9 @@ export enum Message {
 }
 
 enum ActionType {
-  Find = 'Find',
-  Update = 'Update',
-  Create = 'Create',
-  Delete = 'Delete',
-  Get = 'Get'
+  FIND = 'Find',
+  UPDATE = 'Update',
+  CREATE = 'Create',
+  DELETE = 'Delete',
+  GET = 'Get'
 }

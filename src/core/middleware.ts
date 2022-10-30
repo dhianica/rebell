@@ -18,8 +18,6 @@ class Middleware {
       body: Object.keys(request.body).length !== 0 ? request.body : ''
     });
     next()
-    console.log(request.Message, 'try')
-    response.status(200).json({message:'OK'})
   }
 }
 

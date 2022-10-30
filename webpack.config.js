@@ -72,7 +72,7 @@ module.exports = {
                   exportDefaultFrom: false,
                   exportNamespaceFrom: false,
                   decorators: true,
-                  decoratorsBeforeExport: false,
+                  decoratorsBeforeExport: true,
                   topLevelAwait: true,
                   importMeta: false,
                   useDefineForClassFields: false
