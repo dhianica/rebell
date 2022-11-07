@@ -2,6 +2,7 @@ import type { Request, Response, NextFunction }  from 'express';
 import { getEnumKeyByEnumValue } from '../../utils/index.util'
 import { HttpStatusCode, Status, Message } from '../../core/enum'
 import { Get, Post } from '../../core/decorator/handler.decorator'
+import type { IResponseTypes } from '../../core/types/response.type'
 
 class EmployeeController {
   private posts: any[] = [
@@ -20,13 +21,20 @@ class EmployeeController {
   ): Promise<void>  {
     return new Promise<void>(() => {
       try {
-        throw new Error('Error getting all employees')
+        const result: IResponseTypes = {
+          statusCode: HttpStatusCode.OK,
+          status: Status.SUCCESS,
+          message: Message.FETCH 
+        }
+        res.json(result)
       } catch (error) {
-        console.log( typeof error === 'string' ? error : error.message )
-        res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).send({
+        const result: IResponseTypes = {
+          statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
+          status: Status.FAILED,
           message: Message.NOT_HANDLED,
-          detail: error
-        })
+          detail: error.message
+        }
+        res.json(result)
       }
     })
   }
@@ -38,17 +46,12 @@ class EmployeeController {
     next: NextFunction
   ): Promise<void> {
     return new Promise<void>(() => {
-      try {
-        res.status(HttpStatusCode.OK).send({
-          message: Status.SUCCESS
-        })
-      } catch (error) {
-        console.log( typeof error === 'string' ? error : error.message )
-        res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).send({
-          message: getEnumKeyByEnumValue(HttpStatusCode, 'INTERNAL_SERVER_ERROR'),
-          detail: error
-        })
+      const result: IResponseTypes = {
+        statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
+        status: Status.FAILED,
+        message: Message.NOT_HANDLED
       }
+      next(result)
     }) 
   }
 

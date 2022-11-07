@@ -4,6 +4,6 @@ export interface IResponseTypes {
   statusCode: HttpStatusCode;
   status: Status;
   message: Message;
-  detail: any;
+  detail?: any;
 }
   
