@@ -14,9 +14,9 @@ class EmployeeController {
   ];
 
   @Get()
-  public getAllEmployees(
-    req: Request,
-    res: Response,
+  public async getAllEmployees(
+    request: Request,
+    response: Response,
     next: NextFunction
   ): Promise<void>  {
     return new Promise<void>(() => {
@@ -26,7 +26,7 @@ class EmployeeController {
           status: Status.SUCCESS,
           message: Message.FETCH 
         }
-        res.json(result)
+        response.json(result)
       } catch (error) {
         const result: IResponseTypes = {
           statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
@@ -34,15 +34,15 @@ class EmployeeController {
           message: Message.NOT_HANDLED,
           detail: error.message
         }
-        res.json(result)
+        next(result)
       }
     })
   }
 
   @Get()
-  public getAllEmployees1 (
-    req: Request,
-    res: Response,
+  public async getAllEmployees1 (
+    request: Request,
+    response: Response,
     next: NextFunction
   ): Promise<void> {
     return new Promise<void>(() => {
@@ -57,13 +57,13 @@ class EmployeeController {
 
   @Post('')
   public createAEmployee(
-    req: Request,
-    res: Response
+    request: Request,
+    response: Response
   ): Promise<void> {
     return new Promise<void>(() => {
-      const post: any = req.body;
+      const post: any = request.body;
       this.posts.push(post);
-      res.send(post);
+      response.send(post);
     })
   };
 }
