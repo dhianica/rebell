@@ -33,7 +33,9 @@ class App {
         message: 'Hello World!'
       });
     });
+    this.express.use(Middleware.responseMiddleware)
     this.express.use(router);
+    this.express.use(Middleware.errorMiddleware)
   }
 }
 
