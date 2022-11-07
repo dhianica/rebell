@@ -10,6 +10,7 @@
 
 export enum MetadataKeys {
   ROUTERS = 'routers',
+  MIDDLEWARE = 'middleware',
 }
  
 

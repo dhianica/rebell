@@ -1,8 +1,6 @@
-interface RouterTypes {
-  // Path to our route
+import type { HttpMethods } from '../enum'
+export interface IRouterTypes {
+  method: HttpMethods;
   path: string;
-  // HTTP Request method (get, post, ...)
-  requestMethod: string;
-  // Method name within our class responsible for this route
-  methodName: string;
+  handlerName: string | symbol;
 }

@@ -33,6 +33,9 @@ bower_components
 # node-waf configuration
 .lock-wscript
 
+# Build Webpack
+build/
+
 # Compiled binary addons (https://nodejs.org/api/addons.html)
 build/Release
 
@@ -101,6 +104,3 @@ dist
 
 # TernJS port file
 .tern-port
-
-# Build Webpack
-build

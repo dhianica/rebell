@@ -1,9 +1,9 @@
 import type { Request, Response, NextFunction }  from 'express';
-import { getEnumKeyByEnumValue } from '../../utils/index.util'
-import { HttpStatusCode, Status, Message } from '../../core/enum'
-import { Get, Post } from '../../core/decorator/handler.decorator'
+import { getEnumKeyByEnumValue } from '../../../utils/index.util'
+import { HttpStatusCode, Status, Message } from '../../../core/enum'
+import { Get, Post } from '../../../core/decorator/handler.decorator'
 
-class EmployeeController {
+class DetailController {
   private posts: any[] = [
     {
       name: 'Muchammad Ilham',
@@ -65,4 +65,4 @@ class EmployeeController {
   };
 }
 
-export default new EmployeeController();
+export default new DetailController();
