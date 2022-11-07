@@ -34,6 +34,8 @@ class App {
       });
     });
     this.express.use(router);
+
+    // eslint-disable-next-line no-underscore-dangle
   }
 }
 
