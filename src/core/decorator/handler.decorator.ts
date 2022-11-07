@@ -1,12 +1,12 @@
 import 'reflect-metadata';
-import  type { RouterTypes } from'../types/router.type';
+import  type { IRouterTypes } from'../types/router.type';
 import { HttpMethods, MetadataKeys } from '../enum'
 
 const DecoratorFactory = (method: HttpMethods) => {
   return (path?: string): MethodDecorator => {
     return (target, propertyKey) => {
       const controllerClass = target.constructor;
-      const routers: RouterTypes[] =   Reflect.hasMetadata(MetadataKeys.ROUTERS, controllerClass) ?
+      const routers: IRouterTypes[] =   Reflect.hasMetadata(MetadataKeys.ROUTERS, controllerClass) ?
         Reflect.getMetadata(MetadataKeys.ROUTERS, controllerClass) : [];
       routers.push({
         method,
@@ -18,7 +18,7 @@ const DecoratorFactory = (method: HttpMethods) => {
   }
 }
 export function GetDecorator (metadataKey: MetadataKeys, target: any): any {
-  return Reflect.getMetadata(metadataKey, target.constructor) as Array<RouterTypes>
+  return Reflect.getMetadata(metadataKey, target.constructor) as Array<IRouterTypes>
 }
 export const Deprecated = (deprecationReason: string) => {
   return (target: any, memberName: string, propertyDescriptor: PropertyDescriptor): any=> {
