@@ -32,7 +32,7 @@ class Router {
           this.router[method](`${basePath+path}`, controllerInstance[String(handlerName)].bind(controllerInstance))
         });
       } else if (value.indexOf('schema') > 0) {
-        const schemaName = setSchemaName(name);
+        const schemaName = setSchemaName(value);
         const typeSchema = (await import(`${value}`));
         new Schema().setSchema(schemaName, typeSchema.schema)
       }

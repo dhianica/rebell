@@ -9,6 +9,9 @@ class Schema {
   public setSchema(schemaName: string, schema: Object): void{
     ajv.addMetaSchema(schema, schemaName);
   }
+  public getSchema(schemaName: string): any {
+    return ajv.getSchema(schemaName)
+  }
   protected validate(schemaName: string) {
     return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
       try {
