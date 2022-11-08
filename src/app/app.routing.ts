@@ -2,7 +2,7 @@ import * as express from 'express';
 import glob from 'fast-glob';
 import { setSchemaName } from '../utils/index.util'
 import Schema from '../core/schema';
-import { GetDecorator } from '../core/decorator/handler.decorator'
+import { GetDecorator } from '../core/decorator/base.decorator'
 import { MetadataKeys } from '../core/enum'
 import type { IRouterTypes } from '../core/types/router.type'
 import  '../core/types/configuration.type';

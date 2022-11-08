@@ -1,5 +1,4 @@
 import type { Request, Response, NextFunction }  from 'express';
-import { getEnumKeyByEnumValue } from '../../utils/index.util'
 import { HttpStatusCode, Status, Message } from '../../core/enum'
 import { Get, Post } from '../../core/decorator/handler.decorator'
 import type { IResponseTypes } from '../../core/types/response.type'
