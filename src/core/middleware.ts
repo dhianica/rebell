@@ -13,6 +13,15 @@ import { IResponseTypes } from './types/response.type'
 */
 
 class Middleware {
+
+  /**
+   * 
+   * this is loggerMiddleware for logging request handlers
+   * 
+   * @param request : express request
+   * @param response  : express response
+   * @param next : express next function
+   */
   public async loggerMiddleware(request: Request, response: Response, next: NextFunction): Promise<void> {
     logger.debug(`Run ${request.path}\t\t${JSON.stringify({
       path: request.path,
@@ -22,6 +31,14 @@ class Middleware {
     next()
   }
 
+  /**
+   * 
+   * this is responseMiddleware for intercepting response handlers from controller
+   * 
+   * @param request : express request
+   * @param response  : express response
+   * @param next : express next function
+   */
   public async responseMiddleware(request: Request, response: Response, next: NextFunction): Promise<void>  {
     try {
       const oldJSON = response.json;
@@ -39,6 +56,16 @@ class Middleware {
     }
   }
 
+
+  /**
+   * 
+   * This is errorMiddleware for logging errors response from controller and next to responseMiddleware
+   * 
+   * @param error : any
+   * @param request : express request
+   * @param response  : express response
+   * @param next : express next function
+   */
   public async errorMiddleware(error: any, request: Request, response: Response, next: NextFunction): Promise<any>  {
     logger.error(`Response ${request.path}\t\t${JSON.stringify(error)}`)
     response.json(error)
