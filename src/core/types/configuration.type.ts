@@ -1,4 +1,4 @@
-interface IConfiguration {
+export interface IConfiguration {
   name: string;
   value: string;
 }

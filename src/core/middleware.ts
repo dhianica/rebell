@@ -1,6 +1,6 @@
 import { type Request, type Response, type NextFunction } from 'express';
 import logger from './logs';
-import { HttpStatusCode, Status, Message } from './enum'
+import { Status } from './enum'
 import { IResponseTypes } from './types/response.type'
 /**
  * This core/middelware.ts reference from Express Middleware for create response handler
@@ -50,7 +50,7 @@ class Middleware {
         return oldJSON.call(response.status(data.statusCode), {
           status: data.status,
           message: data.message,
-          detail: JSON.stringify(data.detail)
+          detail: data.detail
         });
       }
       await next()
@@ -58,7 +58,6 @@ class Middleware {
       next(error)
     }
   }
-
 
   /**
    *

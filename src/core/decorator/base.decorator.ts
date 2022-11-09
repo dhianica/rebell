@@ -1,8 +1,9 @@
 import 'reflect-metadata';
-import  type { IRouterTypes } from '../types/router.type';
+import { AnySchemaObject } from 'ajv'
+import  type { IRouterTypes, ISchemaTypes } from '../types';
 import { HttpMethods, MetadataKeys } from '../enum'
 
-export const DecoratorFactory = (method: HttpMethods) =>
+export const RouteDecoratorFactory = (method: HttpMethods) =>
   (path?: string): MethodDecorator =>
     (target, propertyKey) => {
       const controllerClass = target.constructor;
