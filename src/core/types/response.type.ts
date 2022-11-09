@@ -6,4 +6,4 @@ export interface IResponseTypes {
   message: Message;
   detail?: any;
 }
-  
+

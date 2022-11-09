@@ -7,7 +7,7 @@ class MessageController {
   @Get('')
   public async getAllMessages  (
     req: Request,
-    res: Response, 
+    res: Response,
     next: NextFunction
   ): Promise<void> {
     try {
@@ -16,10 +16,10 @@ class MessageController {
       res.status(HttpStatusCode.OK).send({
         message: Status.SUCCESS
       })
-    } catch (err) {
-      next(err)
+    } catch (error) {
+      next(error)
     }
-  };
+  }
 }
 
 export default new MessageController();

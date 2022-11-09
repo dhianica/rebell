@@ -8,7 +8,7 @@ export class Configuration {
     this._configuration.push(item);
   }
   public configuration(): Map<string, IConfiguration[]> {
-    return groupBy(this._configuration, x => {return x.name});
+    return groupBy(this._configuration, x => x.name);
   }
 }
 

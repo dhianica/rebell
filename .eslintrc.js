@@ -6,7 +6,7 @@ It represents the closest reasonable ESLint configuration to this
 project's original TSLint configuration.
 
 We recommend eventually switching this configuration to extend from
-the recommended rulesets in typescript-eslint. 
+the recommended rulesets in typescript-eslint.
 https://github.com/typescript-eslint/tslint-to-eslint-config/blob/master/docs/FAQs.md
 
 Happy linting! 💖
@@ -14,7 +14,8 @@ Happy linting! 💖
 module.exports = {
   'env': {
     'browser': true,
-    'node': true
+    'node': true,
+    'es2022': true
   },
   'parser': '@typescript-eslint/parser',
   'plugins': ['@typescript-eslint'],
@@ -82,19 +83,24 @@ module.exports = {
       }
     ],
     '@typescript-eslint/unified-signatures': 'warn',
-    'arrow-body-style': ['error', 'always'],
+    'arrow-body-style': ['error', 'as-needed'],
     'brace-style': ['error', '1tbs', { 'allowSingleLine': true }],
-    'comma-dangle': 'warn',
-    'constructor-super': 'warn',
-    'curly': 'warn',
+    'comma-dangle': ['error', { 'functions': 'never' }],
+    'comma-spacing': ['error', { 'before': false, 'after': true }],
+    'comma-style': ['error', 'last'],
+    'computed-property-spacing': ['error', 'never', { 'enforceForClassMembers': true }],
+    'constructor-super': 'error',
+    'curly': ['error', 'multi', 'consistent'],
     'default-case': 'warn',
-    'dot-notation': 'off',
-    'eol-last': 'warn',
-    'eqeqeq': ['warn', 'always'],
+    'eol-last': ['error', 'always'],
+    'eqeqeq': ['error', 'always'],
     'guard-for-in': 'warn',
     'id-denylist': [
-      'warn',
-      'any',
+      'error',
+      'err',
+      'e',
+      'cb',
+      'callback',
       'Number',
       'number',
       'String',
@@ -102,27 +108,31 @@ module.exports = {
       'Boolean',
       'boolean',
       'Undefined',
-      'undefined'
-    ],
-    'id-match': 'warn',
+      'undefined'],
+    'keyword-spacing': ['error', { 'before': true }],
     'max-len': [
-      'warn',
+      'error',
       {
-        'code': 200
+        'code': 150,
+        'ignoreComments': true,
+        'ignoreUrls': true,
+        'ignoreStrings': true,
+        'ignoreRegExpLiterals': true
       }
     ],
-    'no-bitwise': 'warn',
-    'no-caller': 'warn',
-    'no-debugger': 'warn',
-    'no-empty': 'off',
-    'no-empty-function': 'off',
-    'no-eval': 'warn',
-    'no-fallthrough': 'warn',
-    'no-multiple-empty-lines': 'warn',
-    'no-new-wrappers': 'warn',
-    'no-throw-literal': 'warn',
-    'no-trailing-spaces': 'off',
-    'no-undef-init': 'warn',
+    'object-curly-spacing': ['error', 'always', { 'arraysInObjects': false }],
+    'no-bitwise': 'error',
+    'no-caller': 'error',
+    'no-debugger': 'error',
+    'no-empty': 'error',
+    'no-empty-function': 'error',
+    'no-extra-semi': 'error',
+    'no-eval': 'error',
+    'no-fallthrough': 'error',
+    'no-multiple-empty-lines': 'error',
+    'no-throw-literal': 'error',
+    'no-trailing-spaces': 'error',
+    'no-undef-init': 'error',
     'no-underscore-dangle': [
       'error',
       {
@@ -132,14 +142,14 @@ module.exports = {
       }
     ],
     'no-unused-expressions': 'error',
-    'no-unused-labels': 'warn',
-    'no-var': 'warn',
-    'prefer-const': 'warn',
+    'no-unused-labels': 'error',
+    'no-var': 'error',
+    'prefer-const': 'error',
     'quotes': ['error', 'single', { 'allowTemplateLiterals': true }],
-    'radix': 'warn',
-    'sonarjs/no-collapsible-if': 'warn',
+    'radix': 'error',
+    'sonarjs/no-collapsible-if': 'error',
     'spaced-comment': [
-      'warn',
+      'error',
       'always',
       {
         'markers': ['/']

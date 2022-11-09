@@ -28,7 +28,7 @@ class Router {
         const basePath = `${this.path}/${name}`
         const controllerInstance = (await import(`${value}`)).default;
         const routers: IRouterTypes[] = GetDecorator(MetadataKeys.ROUTERS, controllerInstance)
-        routers.forEach(({ method, path, handlerName}) => {
+        routers.forEach(({ method, path, handlerName }) => {
           this.router[method](`${basePath+path}`, controllerInstance[String(handlerName)].bind(controllerInstance))
         });
       } else if (value.indexOf('schema') > 0) {

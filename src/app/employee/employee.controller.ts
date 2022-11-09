@@ -23,7 +23,7 @@ class EmployeeController {
         const result: IResponseTypes = {
           statusCode: HttpStatusCode.OK,
           status: Status.SUCCESS,
-          message: Message.FETCH 
+          message: Message.FETCH
         }
         response.json(result)
       } catch (error) {
@@ -51,7 +51,7 @@ class EmployeeController {
         message: Message.NOT_HANDLED
       }
       next(result)
-    }) 
+    })
   }
 
   @Post('')
@@ -64,7 +64,7 @@ class EmployeeController {
       this.posts.push(post);
       response.send(post);
     })
-  };
+  }
 }
 
 export default new EmployeeController();

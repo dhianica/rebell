@@ -49,7 +49,7 @@ class DetailController {
           detail: error
         })
       }
-    }) 
+    })
   }
 
   @Post('')
@@ -62,7 +62,7 @@ class DetailController {
       this.posts.push(post);
       res.send(post);
     })
-  };
+  }
 }
 
 export default new DetailController();

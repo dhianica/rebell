@@ -7,13 +7,11 @@ const server = http.createServer(App);
 
 const normalizePort = (val: number | string): number | string | boolean => {
   const normolizedPort = (typeof val === 'string') ? parseInt(val, 10) : val;
-  if (isNaN(normolizedPort)) {
+  if (isNaN(normolizedPort))
     return val;
-  }
 
-  if (normolizedPort >= 0) {
+  if (normolizedPort >= 0)
     return normolizedPort;
-  }
 
   return false;
 };
@@ -22,7 +20,7 @@ const port = normalizePort(process.env.PORT || 3000);
 App.set('port', port);
 
 const onError = (error: NodeJS.ErrnoException): void => {
-  if (error.syscall !== 'listen') { throw error; }
+  if (error.syscall !== 'listen')  throw error;
   const bind = (typeof port === 'string') ? 'Pipe ' + port : 'Port ' + port;
   switch (error.code) {
     case 'EACCES':

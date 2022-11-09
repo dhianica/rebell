@@ -1,9 +1,9 @@
 /**
- * FEATURES 
+ * FEATURES
  * Have enum HttpStatusCode this is an Code:Message network
  * Have enum SuccessMessage this is an Status:Message
  * Have enum ErrorMessage this is an Status:Message
- * 
+ *
  * TODO
  * Create Factory Method for dynamic Enum
  */
@@ -12,7 +12,7 @@ export enum MetadataKeys {
   ROUTERS = 'routers',
   MIDDLEWARE = 'middleware',
 }
- 
+
 
 export enum HttpMethods {
   GET = 'get',
@@ -21,8 +21,8 @@ export enum HttpMethods {
   OPTIONS = 'options',
   PUT = 'put'
 }
-  
- 
+
+
 /**
  * Hypertext Transfer Protocol (HTTP) response status codes.
  * @see {@link https://en.wikipedia.org/wiki/List_of_HTTP_status_codes}
@@ -403,23 +403,23 @@ export enum HttpStatusCode {
   NETWORK_AUTHENTICATION_REQUIRED = 511
 }
 /**
-    * Is variable constant for messaging an error 
+    * Is variable constant for messaging an error
     */
 export enum ErrorMessage {
   /**
-      * Is messaging error when the variable not declared 
+      * Is messaging error when the variable not declared
       */
   NOT_DECLARED = 'Must Declared',
- 
+
   /**
       * Is messaging error when the variable must be required
       */
   REQUIRED = 'Must Be Required',
- 
+
   /**
     * Is messaging error when system not handled
-    */ 
- 
+    */
+
   NOT_HANDLED = 'Error Not Handled'
 }
 
@@ -427,7 +427,7 @@ export enum Type {
   API = 'Api',
   DATABASE = 'Database'
 }
- 
+
 
 export enum Status {
   SUCCESS = 'Success',
@@ -439,15 +439,15 @@ export enum Message {
        * Is messaging success when data found
        */
   FOUND = 'Found',
-  
+
   /**
      * Is messaging succes when data fetch is successful
-     */ 
-  
+     */
+
   FETCH = 'Fetch',
-   
+
   /**
-     * Is messaging error when the variable not declared 
+     * Is messaging error when the variable not declared
      */
   NOT_DECLARED = 'Must Declared',
 
@@ -458,7 +458,7 @@ export enum Message {
 
   /**
    * Is messaging error when system not handled
-   */ 
+   */
 
   NOT_HANDLED = 'Error Not Handled'
 }
