@@ -11,6 +11,8 @@
 export enum MetadataKeys {
   ROUTERS = 'routers',
   MIDDLEWARE = 'middleware',
+  SCHEMA = 'schema',
+  BODY = 'body'
 }
 
 
@@ -460,7 +462,9 @@ export enum Message {
    * Is messaging error when system not handled
    */
 
-  NOT_HANDLED = 'Error Not Handled'
+  NOT_HANDLED = 'Error Not Handled',
+
+  ERROR_VALIDATE = 'Error Validate'
 }
 
 enum ActionType {

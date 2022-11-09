@@ -1,8 +1,8 @@
 import type { Request, Response, NextFunction }  from 'express';
 import { HttpStatusCode, Status, Message } from '../../core/enum'
-import { Get, Post } from '../../core/decorator/handler.decorator'
+import { Get, Post, ValidateQuery } from '../../core/decorator'
 import type { IResponseTypes } from '../../core/types/response.type'
-
+import { Schema } from './#schema/employee.schema'
 class EmployeeController {
   private posts: any[] = [
     {
@@ -13,6 +13,7 @@ class EmployeeController {
   ];
 
   @Get()
+  @ValidateQuery(Schema)
   public async getAllEmployees(
     request: Request,
     response: Response,
