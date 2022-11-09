@@ -1,18 +1,18 @@
 # Typescript First App
 this typescript for boilerplate for creating backend services
 this package using some function from another library
-#### support
-  * swc-loader
-  * express
-  * ajv
-  * mocha
-  * webpack
-  * fast-glob
-  * lodash
-  * reflect-metadata
-  * tslog
-  * eslint
-  * dayjs
+#### This boilerplate was built using
+  * [swc-loader](https://github.com/swc-project/swc-loader)
+  * [express](https://github.com/expressjs/express)
+  * [ajv](https://github.com/ajv-validator/ajv)
+  * [mocha](https://github.com/mochajs/mocha)
+  * [webpack](https://github.com/webpack/webpack)
+  * [fast-glob](https://github.com/mrmlnc/fast-glob)
+  * [lodash](https://github.com/lodash/lodash)
+  * [reflect-metadata](https://github.com/rbuckton/reflect-metadata)
+  * [tslog](https://github.com/fullstack-build/tslog)
+  * [eslint](https://github.com/eslint/eslint)
+  * [dayjs](https://github.com/iamkun/dayjs)
 
 
 # Quick Start
