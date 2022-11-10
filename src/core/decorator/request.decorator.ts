@@ -2,11 +2,18 @@ import Ajv, { SchemaObject } from 'ajv'
 // import ajvErrors from 'ajv-errors';
 import 'reflect-metadata'
 import Logger from '../logs'
-import { isEmpty } from '../../utils/index.util'
 import { HttpStatusCode, Status, Message } from '../enum'
 import type { IResponseTypes } from '../types'
 const ajv = new Ajv({ allErrors: true })
 ajv.addKeyword('errorMessage')
+
+
+/**
+ * This core/decorator/request.decorator.ts
+ *
+ * FEATURES
+ * Dynamic setting for validate schema
+*/
 
 /**
  *
@@ -15,7 +22,7 @@ ajv.addKeyword('errorMessage')
  * @param source : string -> for get data from body or query params
  * @returns next()
  */
-const Validate = (source: 'body' | 'query') =>
+const ValidateReq = (source: 'body' | 'query') =>
   (schema: SchemaObject): any =>
     (target: any, propertyName: string, descriptor: TypedPropertyDescriptor<Function>): any => {
       const method = descriptor.value;
@@ -53,5 +60,10 @@ const Validate = (source: 'body' | 'query') =>
       }
     };
 
-export const ValidateQuery = Validate('query');
-export const ValidateBody = Validate('body');
+const ValidateAuth = (): void => {
+  console.log('a')
+}
+
+export const ValidateRole = ValidateAuth
+export const ValidateQuery = ValidateReq('query');
+export const ValidateBody = ValidateReq('body');
