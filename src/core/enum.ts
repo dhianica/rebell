@@ -8,12 +8,16 @@
  * Create Factory Method for dynamic Enum
  */
 
+/**
+ * Is variable constant for named key metadata
+ */
 export enum MetadataKeys {
   ROUTERS = 'routers',
   MIDDLEWARE = 'middleware'
 }
-
-
+/**
+ * Is variable constant for method HTTP
+ */
 export enum HttpMethods {
   GET = 'get',
   POST = 'post',
@@ -21,7 +25,6 @@ export enum HttpMethods {
   OPTIONS = 'options',
   PUT = 'put'
 }
-
 /**
  * Hypertext Transfer Protocol (HTTP) response status codes.
  * @see {@link https://en.wikipedia.org/wiki/List_of_HTTP_status_codes}
@@ -402,8 +405,8 @@ export enum HttpStatusCode {
   NETWORK_AUTHENTICATION_REQUIRED = 511
 }
 /**
-    * Is variable constant for messaging an error
-    */
+ * Is variable constant for messaging an error
+ */
 export enum ErrorMessage {
   /**
       * Is messaging error when the variable not declared
@@ -421,18 +424,23 @@ export enum ErrorMessage {
 
   NOT_HANDLED = 'Error Not Handled'
 }
-
+/**
+ * Is variable constant for type message
+ */
 export enum Type {
   API = 'Api',
   DATABASE = 'Database'
 }
-
-
+/**
+ * Is variable constant for status message
+ */
 export enum Status {
   SUCCESS = 'Success',
   FAILED = 'Failed'
 }
-
+/**
+ * Is variable constant for message detail
+ */
 export enum Message {
   /**
        * Is messaging success when data found
@@ -463,18 +471,30 @@ export enum Message {
 
   ERROR_VALIDATE = 'Error Validate'
 }
-
+/**
+ * Is variable constant for roles in this application
+ */
 export enum Roles {
    SUPERADMINISTRATOR = -99,
    ADMINISTRATOR = 0,
    USER = 1,
    GUEST = 2
 }
-
+/**
+ * Is variable constant for permissions or event
+ */
 export enum Permissions {
    READ = 0,
    WRITE = 1,
    EDIT = 2,
    DELETE = 3,
    EXECUTE = 4
+}
+
+export enum Database {
+   MSSQL = 0,
+   MYSQL = 1,
+   POSTGRESQL = 2,
+   MONGODB = 3,
+   SQLITE = 4
 }
