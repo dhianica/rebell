@@ -21,7 +21,7 @@ class DetailController {
     return new Promise<void>(() => {
       try {
         throw new Error('Error getting all employees')
-      } catch (error) {
+      } catch (error: any) {
         console.log( typeof error === 'string' ? error : error.message )
         res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).send({
           message: Message.NOT_HANDLED,
@@ -42,7 +42,7 @@ class DetailController {
         res.status(HttpStatusCode.OK).send({
           message: Status.SUCCESS
         })
-      } catch (error) {
+      } catch (error: any) {
         console.log( typeof error === 'string' ? error : error.message )
         res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).send({
           message: getEnumKeyByEnumValue(HttpStatusCode, 'INTERNAL_SERVER_ERROR'),

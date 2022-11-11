@@ -76,7 +76,7 @@ module.exports = {
                   topLevelAwait: true,
                   importMeta: false,
                   useDefineForClassFields: false
-                }, 
+                },
                 transform: {
                   legacyDecorator: true,
                   decoratorMetadata: true

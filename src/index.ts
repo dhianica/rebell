@@ -4,6 +4,7 @@ import favicon from 'serve-favicon'
 import Middleware from './core/middleware'
 
 import router from './app/app.routing';
+import path from 'path';
 
 // Creates and configures an ExpressJS web server.
 class App {
@@ -19,7 +20,7 @@ class App {
   private middleware(): void {
     this.express.use(bodyParser.json());
     this.express.use(bodyParser.urlencoded({ extended: false }));
-    this.express.use(favicon(__dirname + '/assets/favicon.ico'));
+    this.express.use(favicon(path.resolve(__dirname, '../favicon.ico')));
     this.express.use(Middleware.loggerMiddleware)
   }
   // Configure API endpoints.

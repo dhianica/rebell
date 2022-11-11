@@ -27,7 +27,7 @@ class EmployeeController {
           message: Message.FETCH
         }
         response.json(result)
-      } catch (error) {
+      } catch (error: any) {
         const result: IResponseTypes = {
           statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
           status: Status.FAILED,
