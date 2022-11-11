@@ -41,7 +41,8 @@
     "pm2",
     "webpack",
     "tslog",
-    "zod"
+    "zod",
+    "crud"
   ],
   "repository": {
     "type": "git",
