@@ -10,7 +10,7 @@
 
 export enum MetadataKeys {
   ROUTERS = 'routers',
-  MIDDLEWARE = 'middleware',
+  MIDDLEWARE = 'middleware'
 }
 
 
@@ -21,7 +21,6 @@ export enum HttpMethods {
   OPTIONS = 'options',
   PUT = 'put'
 }
-
 
 /**
  * Hypertext Transfer Protocol (HTTP) response status codes.
@@ -460,13 +459,22 @@ export enum Message {
    * Is messaging error when system not handled
    */
 
-  NOT_HANDLED = 'Error Not Handled'
+  NOT_HANDLED = 'Error Not Handled',
+
+  ERROR_VALIDATE = 'Error Validate'
 }
 
-enum ActionType {
-  FIND = 'Find',
-  UPDATE = 'Update',
-  CREATE = 'Create',
-  DELETE = 'Delete',
-  GET = 'Get'
+export enum Roles {
+   SUPERADMINISTRATOR = -99,
+   ADMINISTRATOR = 0,
+   USER = 1,
+   GUEST = 2
+}
+
+export enum Permissions {
+   READ = 0,
+   WRITE = 1,
+   EDIT = 2,
+   DELETE = 3,
+   EXECUTE = 4
 }

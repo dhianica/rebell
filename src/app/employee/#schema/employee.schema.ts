@@ -9,25 +9,23 @@
  * }
  */
 
-export const schema = {
-  $async: true,
+import { SchemaObject } from 'ajv';
+
+export const Schema: SchemaObject = {
+  type: 'object',
   required: ['name', 'division'],
-  allOf: [
-    {
-      properties: {
-        name: {
-          type: 'string'
-        },
-        division: {
-          type: 'string'
-        },
-        title: {
-          type: 'string'
-        }
-      },
-      additionalProperties: false
+  properties: {
+    name: {
+      type: 'string'
+    },
+    division: {
+      type: 'string'
+    },
+    title: {
+      type: 'string'
     }
-  ],
+  },
+  additionalProperties: false,
   errorMessage: {
     type: 'data should be an object',
     properties: {

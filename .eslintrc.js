@@ -25,13 +25,6 @@ module.exports = {
     '@typescript-eslint/consistent-type-definitions': 'warn',
     '@typescript-eslint/dot-notation': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
-    '@typescript-eslint/explicit-function-return-type': [
-      'warn',
-      {
-        'allowHigherOrderFunctions': true,
-        'allowConciseArrowFunctionExpressionsStartingWithVoid': true
-      }
-    ],
     '@typescript-eslint/explicit-member-accessibility': 'off',
     '@typescript-eslint/explicit-module-boundary-types': [
       'warn',
@@ -40,7 +33,6 @@ module.exports = {
         'allowHigherOrderFunctions': true
       }
     ],
-    '@typescript-eslint/indent': ['error', 2],
     '@typescript-eslint/member-delimiter-style': [
       'warn',
       {
@@ -55,7 +47,6 @@ module.exports = {
       }
     ],
     '@typescript-eslint/member-ordering': 'warn',
-    '@typescript-eslint/no-empty-function': 'off',
     '@typescript-eslint/no-empty-interface': 'warn',
     '@typescript-eslint/no-inferrable-types': [
       'warn',
@@ -71,7 +62,6 @@ module.exports = {
         'hoist': 'all'
       }
     ],
-    '@typescript-eslint/no-unused-expressions': 'warn',
     '@typescript-eslint/prefer-for-of': 'warn',
     '@typescript-eslint/prefer-function-type': 'warn',
     '@typescript-eslint/type-annotation-spacing': 'warn',
@@ -90,6 +80,7 @@ module.exports = {
     'comma-style': ['error', 'last'],
     'computed-property-spacing': ['error', 'never', { 'enforceForClassMembers': true }],
     'constructor-super': 'error',
+    'consistent-return': ['error', { 'treatUndefinedAsUnspecified': true }],
     'curly': ['error', 'multi', 'consistent'],
     'default-case': 'warn',
     'eol-last': ['error', 'always'],
@@ -109,6 +100,16 @@ module.exports = {
       'boolean',
       'Undefined',
       'undefined'],
+    'indent': ['error',
+      2,
+      {
+        'ArrayExpression': 1,
+        'CallExpression': { 'arguments': 1 },
+        'MemberExpression': 1,
+        'ObjectExpression': 1,
+        'SwitchCase': 1,
+        'VariableDeclarator': 2
+      }],
     'keyword-spacing': ['error', { 'before': true }],
     'max-len': [
       'error',

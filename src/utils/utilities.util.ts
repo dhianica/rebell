@@ -110,3 +110,12 @@ export function mapToArray<K, V, R>(
  */
 export const range = (start: number, end: number, step: number = 1): Array<number> =>
   [...Array(Math.ceil(end / step)).keys()].map(i => i * step + start);
+
+/**
+ *
+ * This is function for convert query params from URL to Object Json
+ *
+ * @param str : string -> query params from URL
+ * @returns : object
+ */
+export const convertParamToObject = (str: string): Object => Object.fromEntries(new URLSearchParams(str))

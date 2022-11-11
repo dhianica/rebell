@@ -42,7 +42,7 @@
     "webpack",
     "tslog",
     "zod",
-    "crud"
+    "crudsss"
   ],
   "repository": {
     "type": "git",
@@ -105,6 +105,7 @@
     "debug": "^4.3.4",
     "express": "^4.18.2",
     "lodash": "^4.17.21",
+    "mssql": "^9.0.1",
     "reflect-metadata": "^0.1.13",
     "serve-favicon": "^2.5.0"
   }
