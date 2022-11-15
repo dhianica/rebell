@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction }  from 'express';
-import { IAMQPInstance } from '../../core/instance'
+import { IAMQPInstance } from '../../core/lib/instance'
 import { HttpStatusCode, Status } from '../../core/enum'
-import { Get } from '../../core/decorator/handler.decorator'
+import { Get } from '../../core/decorator'
 
 class MessageController {
   @Get('')

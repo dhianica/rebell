@@ -16,7 +16,12 @@ function debugLogToTransport(logObject: ILogObject): void {
   appendFileSync('./logs/debug.log', JSON.stringify(logObject) + '\n');
 }
 
-const logger: Logger = new Logger({ minLevel:'debug', displayLoggerName: false, displayFunctionName: false, displayFilePath: 'hidden' });
+const logger: Logger = new Logger({
+  minLevel:'debug',
+  displayLoggerName: false,
+  displayFunctionName: false,
+  displayFilePath: 'hidden'
+});
 logger.attachTransport(
   {
     silly: logToTransport,

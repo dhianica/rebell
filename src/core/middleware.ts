@@ -1,6 +1,6 @@
 import { type Request, type Response, type NextFunction } from 'express';
 import logger from './logs';
-import { Status } from './enum'
+import { HttpStatusCode, Message, Status } from './enum'
 import { IResponseTypes } from './types/response.type'
 /**
  * This core/middelware.ts reference from Express Middleware for create response handler
@@ -43,7 +43,19 @@ class Middleware {
   public async responseMiddleware(request: Request, response: Response, next: NextFunction): Promise<void>  {
     try {
       const oldJSON = response.json;
-      response.json = (data: IResponseTypes): any => {
+      response.json = (data: any = {
+        statusCode: HttpStatusCode.OK,
+        status: Status.SUCCESS,
+        message: Message.FETCH
+      }): any => {
+        data = {
+          ...{
+            statusCode: HttpStatusCode.OK,
+            status: Status.SUCCESS,
+            message: Message.FETCH
+          },
+          ...data
+        }
         if (data && data.status === Status.FAILED) response.json = oldJSON;
         else logger.info(`Response ${request.path}\t\t${JSON.stringify(data)}`)
 
@@ -68,7 +80,7 @@ class Middleware {
    * @param response  : express response
    * @param next : express next function
    */
-  public async errorMiddleware(error: any, request: Request, response: Response, next: NextFunction): Promise<any>  {
+  public async errorMiddleware(error: any | '' | null | undefined, request: Request, response: Response, next: NextFunction): Promise<any>  {
     logger.error(`Response ${request.path}\t\t${JSON.stringify(error)}`)
     response.json(error)
   }

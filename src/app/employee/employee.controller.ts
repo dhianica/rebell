@@ -1,8 +1,8 @@
 import type { Request, Response, NextFunction }  from 'express';
 import { HttpStatusCode, Status, Message } from '../../core/enum'
-import { Get, Post, ValidateQuery } from '../../core/decorator'
+import { Get, Post, ValidateBody, ValidateQuery } from '../../core/decorator'
 import type { IResponseTypes } from '../../core/types/response.type'
-import { Schema } from './#schema/employee.schema'
+import { Employee } from './#schema/employee.schema'
 class EmployeeController {
   private posts: any[] = [
     {
@@ -13,7 +13,7 @@ class EmployeeController {
   ];
 
   @Get()
-  @ValidateQuery(Schema)
+  @ValidateBody(Employee)
   public async getAllEmployees(
     request: Request,
     response: Response,
@@ -21,20 +21,14 @@ class EmployeeController {
   ): Promise<void>  {
     return new Promise<void>(() => {
       try {
-        const result: IResponseTypes = {
-          statusCode: HttpStatusCode.OK,
-          status: Status.SUCCESS,
-          message: Message.FETCH
-        }
-        response.json(result)
+        response.json()
       } catch (error: any) {
-        const result: IResponseTypes = {
+        next({
           statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
           status: Status.FAILED,
           message: Message.NOT_HANDLED,
           detail: error.message
-        }
-        next(result)
+        })
       }
     })
   }
@@ -46,12 +40,11 @@ class EmployeeController {
     next: NextFunction
   ): Promise<void> {
     return new Promise<void>(() => {
-      const result: IResponseTypes = {
+      next({
         statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
         status: Status.FAILED,
         message: Message.NOT_HANDLED
-      }
-      next(result)
+      })
     })
   }
 

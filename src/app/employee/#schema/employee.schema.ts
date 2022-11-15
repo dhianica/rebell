@@ -11,7 +11,7 @@
 
 import { SchemaObject } from 'ajv';
 
-export const Schema: SchemaObject = {
+export const Employee: SchemaObject = {
   type: 'object',
   required: ['name', 'division'],
   properties: {

@@ -1,5 +1,4 @@
 import 'reflect-metadata';
-import { AnySchemaObject } from 'ajv'
 import  type { IRouterTypes, ISchemaTypes } from '../types';
 import { HttpMethods, MetadataKeys } from '../enum'
 

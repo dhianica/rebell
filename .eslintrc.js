@@ -89,8 +89,6 @@ module.exports = {
     'id-denylist': [
       'error',
       'err',
-      'e',
-      'cb',
       'callback',
       'Number',
       'number',
