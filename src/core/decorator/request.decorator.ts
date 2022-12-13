@@ -61,7 +61,7 @@ const ValidateReq = (source: 'body' | 'query') =>
     };
 
 const ValidateAuth = (): void => {
-  console.log('a')
+  console.log('')
 }
 
 export const ValidateRole = ValidateAuth

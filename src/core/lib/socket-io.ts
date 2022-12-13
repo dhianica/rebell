@@ -2,8 +2,9 @@ import sockets from 'socket.io';
 import type { Server } from 'http'
 
 const SOCKET_CORS = {
-  origin: '*',
-  methods: ['GET', 'POST']
+  origin: true,
+  methods: ['GET', 'POST'],
+  credentials: true
 }
 
 class Socket extends sockets.Server {
@@ -12,11 +13,12 @@ class Socket extends sockets.Server {
 
   public constructor(httpServer: Server) {
     super(httpServer, {
-      cors: SOCKET_CORS
+      cors: SOCKET_CORS,
+      allowEIO3: true
     });
   }
 
-  public static getInstance(httpServer?: Server): Socket {
+  public getInstance(httpServer?: Server): Socket {
 
     if (!Socket.io)
       Socket.io = new Socket(httpServer);

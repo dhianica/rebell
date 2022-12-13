@@ -1,7 +1,17 @@
+/* eslint-disable max-len */
 import * as http from 'http';
+import dayjs from 'dayjs';
+import dotenv from 'dotenv'
 
 import logger from '../core/logs';
 import App from '../index';
+import { ISocketInstance } from '../core/lib/instance'
+import type { IConfiguration, ISocketClient } from '../core/types';
+import { Format, Database } from '../core/enum';
+import { Configuration } from '../core/configuration';
+import { getEnumKeyByEnumValue } from '../utils/index.util'
+
+dotenv.config();
 
 const server = http.createServer(App);
 
@@ -43,3 +53,46 @@ const onListening = (): void => {
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
+
+const io = new ISocketInstance(server)
+
+
+const clients = [];
+
+io.sockets.on('connection', (socket) => {
+  socket.on('storeClientInfo', (data) => {
+    const clientInfo: ISocketClient = {
+      customId:  data.customId,
+      clientId:  socket.id,
+      connectTime:  dayjs().format(Format.DateString)
+    }
+    clients.push(clientInfo)
+    App.set('socketClients', clients)
+  });
+  socket.on('connected', (data) => {
+    console.log(dayjs().format(Format.DateString), `--> Connected from ${data.customId}`)
+  })
+
+  socket.on('disconnect', (data) => {
+    const clientDisconnect = clients.find((x) => x.clientId === socket.id)
+    console.log(dayjs().format(Format.DateString), `--> Disonnected from ${clientDisconnect.customId}`)
+  })
+});
+// server
+io.sockets.on('error', () => {
+  console.log(dayjs().format(Format.DateString), `--> Error Socket Server`)
+});
+
+const connection = process.env.CONNECTION.split(',')
+for (const iterator of connection)
+  if (iterator === getEnumKeyByEnumValue(Database, 0)) {
+    let connectionString = ''
+    if (process.env.MSSQL_PORT === undefined || process.env.MSSQL_PORT === '')
+      connectionString = `Server=${process.env.MSSQL_HOST};Database=${process.env.MSSQL_DB};User Id=${process.env.MSSQL_USER};Password=${process.env.MSSQL_PASS};Encrypt=false;`
+    else
+      connectionString = `Server=${process.env.MSSQL_HOST},${process.env.MSSQL_PORT};Database=${process.env.MSSQL_DB};User Id=${process.env.MSSQL_USER};Password=${process.env.MSSQL_PASS};Encrypt=false;`
+    Configuration.add({
+      name: 'MSSQL',
+      value: connectionString
+    } as IConfiguration)
+  }

@@ -8,7 +8,7 @@ export function Controller<T extends new(...args: any[]) => {}>(Base: T): any {
       const subMethods = Base.prototype[MetadataKeys.ROUTERS];
       if (subMethods)
         subMethods.forEach((requestName: string, method: string) => {
-          console.log(requestName)
+          console.log('')
         });
     }
   };

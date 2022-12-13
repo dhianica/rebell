@@ -498,3 +498,7 @@ export enum Database {
    MONGODB = 3,
    SQLITE = 4
 }
+
+export enum Format {
+   DateString = 'YYYY-MM-DD HH:mm:ss'
+}

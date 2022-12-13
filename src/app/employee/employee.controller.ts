@@ -1,8 +1,9 @@
 import type { Request, Response, NextFunction }  from 'express';
 import { HttpStatusCode, Status, Message } from '../../core/enum'
-import { Get, Post, ValidateBody, ValidateQuery } from '../../core/decorator'
+import { Get, Post, ValidateBody } from '../../core/decorator'
 import type { IResponseTypes } from '../../core/types/response.type'
 import { Employee } from './#schema/employee.schema'
+import { IMSSQLInstance } from '../../core/lib/instance'
 class EmployeeController {
   private posts: any[] = [
     {
@@ -13,7 +14,6 @@ class EmployeeController {
   ];
 
   @Get()
-  @ValidateBody(Employee)
   public async getAllEmployees(
     request: Request,
     response: Response,
@@ -21,6 +21,7 @@ class EmployeeController {
   ): Promise<void>  {
     return new Promise<void>(() => {
       try {
+        const mssql = new IMSSQLInstance('employee')
         response.json()
       } catch (error: any) {
         next({
@@ -28,7 +29,7 @@ class EmployeeController {
           status: Status.FAILED,
           message: Message.NOT_HANDLED,
           detail: error.message
-        })
+        } as IResponseTypes)
       }
     })
   }
@@ -44,7 +45,7 @@ class EmployeeController {
         statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
         status: Status.FAILED,
         message: Message.NOT_HANDLED
-      })
+      } as IResponseTypes)
     })
   }
 

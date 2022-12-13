@@ -29,6 +29,7 @@ export const getLastDirectory = (currentDirectory: string): string =>
  */
 export function isEmpty(param: any): boolean {
   if (typeof param === 'object') return Object.keys(param).length < 1;
+  else if (typeof param === 'string') return param === '' || param.length < 1 || param === null || param === undefined
   else if (Array.isArray(param)) return param.length < 1;
   return false;
 }

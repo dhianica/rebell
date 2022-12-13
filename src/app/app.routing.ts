@@ -3,7 +3,6 @@ import glob from 'fast-glob';
 import { GetDecorator  } from '../core/decorator/base.decorator'
 import { MetadataKeys } from '../core/enum'
 import type { IRouterTypes, IConfiguration } from '../core/types'
-import  '../core/types/configuration.type';
 class Router {
 
   public router: express.Router;
