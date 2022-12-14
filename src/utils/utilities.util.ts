@@ -28,10 +28,11 @@ export const getLastDirectory = (currentDirectory: string): string =>
  * @returns boolean - true if param dont have value, default false
  */
 export function isEmpty(param: any): boolean {
-  if (typeof param === 'object') return Object.keys(param).length < 1;
-  else if (typeof param === 'string') return param === '' || param.length < 1 || param === null || param === undefined
-  else if (Array.isArray(param)) return param.length < 1;
-  return false;
+  if (param === undefined || param === null) return true
+  if (typeof param === 'object') return Object.keys(param).length < 1
+  else if (typeof param === 'string') return param === '' || param.length < 1 || param === null
+  else if (Array.isArray(param)) return param.length < 1
+  return false
 }
 
 /**
@@ -120,3 +121,26 @@ export const range = (start: number, end: number, step: number = 1): Array<numbe
  * @returns : object
  */
 export const convertParamToObject = (str: string): Object => Object.fromEntries(new URLSearchParams(str))
+
+export const objectEntries = (obj: Object): any => {
+  let index = 0;
+
+  // In ES6, you can use strings or symbols as property keys,
+  // Reflect.ownKeys() retrieves both
+  const propKeys = Reflect.ownKeys(obj);
+
+  return {
+    [Symbol.iterator]() {
+      return this;
+    },
+    next() {
+      if (index < propKeys.length) {
+        const key = propKeys[index];
+        index++;
+        return { value: [key, obj[key]]};
+      } else {
+        return { done: true };
+      }
+    }
+  };
+}

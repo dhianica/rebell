@@ -1,9 +1,11 @@
 import type { Request, Response, NextFunction }  from 'express';
 import { HttpStatusCode, Status, Message } from '../../core/enum'
-import { Get, Post, ValidateBody } from '../../core/decorator'
+import { Get, Post } from '../../core/decorator'
 import type { IResponseTypes } from '../../core/types/response.type'
-import { Employee } from './#schema/employee.schema'
-class EmployeeController {
+import { CompanyService } from './company.service'
+import { Company } from './#schema/company.schema'
+
+class CompanyController {
   private posts: any[] = [
     {
       name: 'Muchammad Ilham',
@@ -13,14 +15,17 @@ class EmployeeController {
   ];
 
   @Get()
-  public async getAllEmployees(
+  public async getAllCompanys(
     request: Request,
     response: Response,
     next: NextFunction
   ): Promise<void>  {
-    return new Promise<void>(() => {
+    return new Promise<void>(async () => {
       try {
-        response.json()
+        const result = await CompanyService.getAllCompanys()
+        response.json({
+          detail: result
+        })
       } catch (error: any) {
         next({
           statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
@@ -32,23 +37,8 @@ class EmployeeController {
     })
   }
 
-  @Get()
-  public async getAllEmployees1 (
-    request: Request,
-    response: Response,
-    next: NextFunction
-  ): Promise<void> {
-    return new Promise<void>(() => {
-      next({
-        statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
-        status: Status.FAILED,
-        message: Message.NOT_HANDLED
-      } as IResponseTypes)
-    })
-  }
-
   @Post('')
-  public createAEmployee(
+  public createACompany(
     request: Request,
     response: Response
   ): Promise<void> {
@@ -60,4 +50,4 @@ class EmployeeController {
   }
 }
 
-export default new EmployeeController();
+export default new CompanyController();

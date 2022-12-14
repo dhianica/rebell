@@ -500,5 +500,6 @@ export enum Database {
 }
 
 export enum Format {
-   DateString = 'YYYY-MM-DD HH:mm:ss'
+   DateString = 'YYYY-MM-DD HH:mm:ss',
+   DateUTC = 'YYYY-MM-DDTHH:mm:sssZ'
 }

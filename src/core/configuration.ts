@@ -30,7 +30,7 @@ export class Configuration {
    */
   public static get(filter?: string): IConfiguration | IConfiguration[] {
     if (!isEmpty(filter))
-      return Configuration.item.filter(x => x.name === filter).map((obj) => obj) as unknown as IConfiguration
+      return Configuration.item.filter(x => x.name === filter)[0] as IConfiguration
     return Configuration.item
   }
 
