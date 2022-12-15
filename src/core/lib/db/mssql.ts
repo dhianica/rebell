@@ -2,7 +2,7 @@ import dayjs from 'dayjs'
 import mssql, { type ConnectionPool, type Request } from 'mssql'
 import { Configuration } from '../../configuration'
 import { IConfiguration } from '../../types';
-import { isEmpty } from '../../../utils/index.util'
+import { isEmpty, getColoumnMSSQL, wrappingMSSQL } from '../../../utils/index.util'
 import { Format } from '../../enum'
 class MSSQL {
   private pool: any;
@@ -39,22 +39,10 @@ class MSSQL {
       try {
         if (!isEmpty(parameter))
           await this.request(req.request(), parameter)
-        const result = await req.request().execute(sp)
-        const coloumns: any = Object.values(result.recordset.columns).map(({ index, name, length, type }) => ({
-          name,
-          index,
-          type,
-          length }))
-        result.recordsets[0].forEach((x) => {
-          console.log(x)
-          coloumns.forEach((y) => {
-            const found = x.find(z => z[y.name] === Object.keys(x))
-            if (y.type === mssql.Int && found) x[y.name] = parseInt(x[y.name], 10)
-            else if (y.type === mssql.DateTime) x[y.name] = dayjs(x[y.name]).format(Format.DateString)
-            else if (y.type === mssql.Bit) x[y.name] = parseInt(x[y.name], 10) === 1 ? true: false
-          })
-        })
-        resolve(result.recordsets[0])
+        const data = await req.request().execute(sp)
+        const coloumns: any = await getColoumnMSSQL(data.recordset.columns)
+        const result = await wrappingMSSQL(data.recordsets[0], coloumns)
+        resolve(result)
       } catch (error) {
         reject(error)
       }
