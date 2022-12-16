@@ -7,7 +7,7 @@ import logger from '../core/logs';
 import App from '../index';
 import { ISocketInstance } from '../core/lib/instance'
 import type { IConfiguration, ISocketClient } from '../core/types';
-import { Format, Database } from '../core/enum';
+import { EFormat, EDatabase } from '../core/enum';
 import { Configuration } from '../core/configuration';
 import { getEnumKeyByEnumValue } from '../utils/index.util'
 
@@ -64,28 +64,28 @@ io.sockets.on('connection', (socket) => {
     const clientInfo: ISocketClient = {
       customId:  data.customId,
       clientId:  socket.id,
-      connectTime:  dayjs().format(Format.DateString)
+      connectTime:  dayjs().format(EFormat.DateString)
     }
     clients.push(clientInfo)
     App.set('socketClients', clients)
   });
   socket.on('connected', (data) => {
-    console.log(dayjs().format(Format.DateString), `--> Connected from ${data.customId}`)
+    console.log(dayjs().format(EFormat.DateString), `--> Connected from ${data.customId}`)
   })
 
   socket.on('disconnect', (data) => {
     const clientDisconnect = clients.find((x) => x.clientId === socket.id)
-    console.log(dayjs().format(Format.DateString), `--> Disonnected from ${clientDisconnect.customId}`)
+    console.log(dayjs().format(EFormat.DateString), `--> Disonnected from ${clientDisconnect.customId}`)
   })
 });
 // server
 io.sockets.on('error', () => {
-  console.log(dayjs().format(Format.DateString), `--> Error Socket Server`)
+  console.log(dayjs().format(EFormat.DateString), `--> Error Socket Server`)
 });
 
 const connection = process.env.CONNECTION.split(',')
 for (const iterator of connection)
-  if (iterator === getEnumKeyByEnumValue(Database, 0)) {
+  if (iterator === getEnumKeyByEnumValue(EDatabase, 0)) {
     let connectionString = ''
     if (process.env.MSSQL_PORT === undefined || process.env.MSSQL_PORT === '')
       connectionString = `Server=${process.env.MSSQL_HOST};Database=${process.env.MSSQL_DB};User Id=${process.env.MSSQL_USER};Password=${process.env.MSSQL_PASS};Encrypt=false;`

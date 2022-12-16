@@ -1,7 +1,7 @@
 import * as express from 'express';
 import glob from 'fast-glob';
 import { GetDecorator  } from '../core/decorator/base.decorator'
-import { MetadataKeys } from '../core/enum'
+import { EMetadataKeys } from '../core/enum'
 import type { IRouterTypes, IConfiguration } from '../core/types'
 class Router {
 
@@ -23,7 +23,7 @@ class Router {
       const  { name, value }: IConfiguration = { name: names, value: `./${x}` }
       const basePath = `${this.path}/${name}`
       const controllerInstance = (await import(`${value}`)).default;
-      const routers: IRouterTypes[] = GetDecorator(MetadataKeys.ROUTERS, controllerInstance)
+      const routers: IRouterTypes[] = GetDecorator(EMetadataKeys.ROUTERS, controllerInstance)
       routers.forEach(({ method, path, handlerName }) => {
         this.router[method](`${basePath+path}`, controllerInstance[String(handlerName)].bind(controllerInstance))
       });

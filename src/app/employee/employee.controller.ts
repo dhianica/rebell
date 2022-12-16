@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction }  from 'express';
-import { HttpStatusCode, Status, Message } from '../../core/enum'
+import { EHttpStatusCode, EStatus, EMessage } from '../../core/enum'
 import { Get, Post, ValidateBody } from '../../core/decorator'
 import type { IResponseTypes } from '../../core/types/response.type'
 import { Employee } from './#schema/employee.schema'
@@ -23,9 +23,9 @@ class EmployeeController {
         response.json()
       } catch (error: any) {
         next({
-          statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
-          status: Status.FAILED,
-          message: Message.NOT_HANDLED,
+          statusCode: EHttpStatusCode.INTERNAL_SERVER_ERROR,
+          status: EStatus.FAILED,
+          message: EMessage.NOT_HANDLED,
           detail: error.message
         } as IResponseTypes)
       }
@@ -40,9 +40,9 @@ class EmployeeController {
   ): Promise<void> {
     return new Promise<void>(() => {
       next({
-        statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
-        status: Status.FAILED,
-        message: Message.NOT_HANDLED
+        statusCode: EHttpStatusCode.INTERNAL_SERVER_ERROR,
+        status: EStatus.FAILED,
+        message: EMessage.NOT_HANDLED
       } as IResponseTypes)
     })
   }

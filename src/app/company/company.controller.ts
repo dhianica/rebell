@@ -1,9 +1,10 @@
 import type { Request, Response, NextFunction }  from 'express';
-import { HttpStatusCode, Status, Message } from '../../core/enum'
+import { EHttpStatusCode, EStatus, EMessage, EErrorCode } from '../../core/enum'
 import { Get, Post } from '../../core/decorator'
 import type { IResponseTypes } from '../../core/types/response.type'
 import { CompanyService } from './company.service'
 import { Company } from './#schema/company.schema'
+import { getEnumKeyByEnumValue } from '../../utils/index.util'
 
 class CompanyController {
   private posts: any[] = [
@@ -28,9 +29,10 @@ class CompanyController {
         })
       } catch (error: any) {
         next({
-          statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
-          status: Status.FAILED,
-          message: Message.NOT_HANDLED,
+          statusCode: EHttpStatusCode.INTERNAL_SERVER_ERROR,
+          status: EStatus.FAILED,
+          code: error.code,
+          message: EMessage.NOT_HANDLED,
           detail: error.message
         } as IResponseTypes)
       }

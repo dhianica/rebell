@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction }  from 'express';
 import { IAMQPInstance } from '../../core/lib/instance'
-import { HttpStatusCode, Status } from '../../core/enum'
+import { EHttpStatusCode, EStatus } from '../../core/enum'
 import { Get } from '../../core/decorator'
 
 class MessageController {
@@ -13,8 +13,8 @@ class MessageController {
     try {
       const amqp = new IAMQPInstance()
       await amqp.send('logs', `${req.query.message}`, { durable: false, autoDelete: true })
-      res.status(HttpStatusCode.OK).send({
-        message: Status.SUCCESS
+      res.status(EHttpStatusCode.OK).send({
+        message: EStatus.SUCCESS
       })
     } catch (error) {
       next(error)

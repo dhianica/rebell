@@ -153,7 +153,8 @@ module.exports = {
       {
         'markers': ['/']
       }
-    ]
+    ],
+    'sonarjs/cognitive-complexity': 'off'
   },
   'overrides': [
     {

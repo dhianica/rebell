@@ -1,22 +1,22 @@
 import 'reflect-metadata';
 import  type { IRouterTypes, ISchemaTypes } from '../types';
-import { HttpMethods, MetadataKeys } from '../enum'
+import { EHttpMethods, EMetadataKeys } from '../enum'
 
-export const RouteDecoratorFactory = (method: HttpMethods) =>
+export const RouteDecoratorFactory = (method: EHttpMethods) =>
   (path?: string): MethodDecorator =>
     (target, propertyKey) => {
       const controllerClass = target.constructor;
-      const routers: IRouterTypes[] =   Reflect.hasMetadata(MetadataKeys.ROUTERS, controllerClass) ?
-        Reflect.getMetadata(MetadataKeys.ROUTERS, controllerClass) : [];
+      const routers: IRouterTypes[] =   Reflect.hasMetadata(EMetadataKeys.ROUTERS, controllerClass) ?
+        Reflect.getMetadata(EMetadataKeys.ROUTERS, controllerClass) : [];
       routers.push({
         method,
         path: !path ? propertyKey.toString() : path,
         handlerName: propertyKey
       });
-      Reflect.defineMetadata(MetadataKeys.ROUTERS, routers, controllerClass);
+      Reflect.defineMetadata(EMetadataKeys.ROUTERS, routers, controllerClass);
     }
 
-export function GetDecorator (metadataKey: MetadataKeys, target: any): any {
+export function GetDecorator (metadataKey: EMetadataKeys, target: any): any {
   return Reflect.getMetadata(metadataKey, target.constructor) as Array<IRouterTypes>
 }
 

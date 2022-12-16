@@ -11,14 +11,14 @@
 /**
  * Is variable constant for named key metadata
  */
-export enum MetadataKeys {
+export enum EMetadataKeys {
   ROUTERS = 'routers',
   MIDDLEWARE = 'middleware'
 }
 /**
  * Is variable constant for method HTTP
  */
-export enum HttpMethods {
+export enum EHttpMethods {
   GET = 'get',
   POST = 'post',
   DELETE = 'delete',
@@ -29,7 +29,7 @@ export enum HttpMethods {
  * Hypertext Transfer Protocol (HTTP) response status codes.
  * @see {@link https://en.wikipedia.org/wiki/List_of_HTTP_status_codes}
  */
-export enum HttpStatusCode {
+export enum EHttpStatusCode {
 
   /**
      * The server has received the request headers and the client should proceed to send the request body
@@ -407,7 +407,7 @@ export enum HttpStatusCode {
 /**
  * Is variable constant for messaging an error
  */
-export enum ErrorMessage {
+export enum EErrorMessage {
   /**
       * Is messaging error when the variable not declared
       */
@@ -427,21 +427,21 @@ export enum ErrorMessage {
 /**
  * Is variable constant for type message
  */
-export enum Type {
+export enum EType {
   API = 'Api',
   DATABASE = 'Database'
 }
 /**
  * Is variable constant for status message
  */
-export enum Status {
+export enum EStatus {
   SUCCESS = 'Success',
   FAILED = 'Failed'
 }
 /**
  * Is variable constant for message detail
  */
-export enum Message {
+export enum EMessage {
   /**
        * Is messaging success when data found
        */
@@ -474,7 +474,7 @@ export enum Message {
 /**
  * Is variable constant for roles in this application
  */
-export enum Roles {
+export enum ERoles {
    SUPERADMINISTRATOR = -99,
    ADMINISTRATOR = 0,
    USER = 1,
@@ -483,7 +483,7 @@ export enum Roles {
 /**
  * Is variable constant for permissions or event
  */
-export enum Permissions {
+export enum EPermissions {
    READ = 0,
    WRITE = 1,
    EDIT = 2,
@@ -491,7 +491,7 @@ export enum Permissions {
    EXECUTE = 4
 }
 
-export enum Database {
+export enum EDatabase {
    MSSQL = 0,
    MYSQL = 1,
    POSTGRESQL = 2,
@@ -499,7 +499,27 @@ export enum Database {
    SQLITE = 4
 }
 
-export enum Format {
+export enum EFormat {
    DateString = 'YYYY-MM-DD HH:mm:ss',
    DateUTC = 'YYYY-MM-DDTHH:mm:sssZ'
+}
+
+export enum EErrorCode {
+   DATABASE = 'DB-000',
+   API = 'API-000',
+   OTHER = 'OTH-000',
+}
+
+export enum ECode {
+   EREQUEST = 'EREQUEST'
+}
+
+export enum ECore {
+   CORE = 0,
+   LIB = 1,
+   UTILS = 2,
+   MIDDLEWARE = 3,
+   CONTROLLER = 4,
+   ROUTE = 5,
+   SERVICE = 6
 }

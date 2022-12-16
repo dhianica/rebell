@@ -1,7 +1,7 @@
-import { Roles, Permissions } from '../enum'
+import { ERoles, EPermissions } from '../enum'
 export interface Auth {
-    [Roles.SUPERADMINISTRATOR]: Permissions.READ | Permissions.WRITE | Permissions.EDIT | Permissions.DELETE | Permissions.EXECUTE;
-    [Roles.ADMINISTRATOR]: Permissions.READ | Permissions.WRITE | Permissions.EDIT | Permissions.DELETE;
-    [Roles.USER]: Permissions.READ | Permissions.WRITE | Permissions.EDIT;
-    [Roles.GUEST]: Permissions.READ;
+    [ERoles.SUPERADMINISTRATOR]: EPermissions.READ | EPermissions.WRITE | EPermissions.EDIT | EPermissions.DELETE | EPermissions.EXECUTE;
+    [ERoles.ADMINISTRATOR]: EPermissions.READ | EPermissions.WRITE | EPermissions.EDIT | EPermissions.DELETE;
+    [ERoles.USER]: EPermissions.READ | EPermissions.WRITE | EPermissions.EDIT;
+    [ERoles.GUEST]: EPermissions.READ;
 }

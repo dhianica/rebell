@@ -1,9 +1,10 @@
-import dayjs from 'dayjs'
-import mssql, { type ConnectionPool, type Request } from 'mssql'
+
+import mssql, { type ConnectionPool } from 'mssql'
 import { Configuration } from '../../configuration'
 import { IConfiguration } from '../../types';
-import { isEmpty, getColoumnMSSQL, wrappingMSSQL } from '../../../utils/index.util'
-import { Format } from '../../enum'
+import { isEmpty, getColoumnMSSQL, wrappingDataMSSQL, mssqlHelper } from '../../../utils/index.util'
+import { EErrorCode, ECode, EDatabase } from '../../enum'
+import { encryptNotSafed } from '../../crypto/encrypt'
 class MSSQL {
   private pool: any;
   private pools = new Map();
@@ -40,10 +41,12 @@ class MSSQL {
         if (!isEmpty(parameter))
           await this.request(req.request(), parameter)
         const data = await req.request().execute(sp)
-        const coloumns: any = await getColoumnMSSQL(data.recordset.columns)
-        const result = await wrappingMSSQL(data.recordsets[0], coloumns)
+        const columns: any = await getColoumnMSSQL(data.recordset.columns)
+        const result = await wrappingDataMSSQL(data.recordset, columns)
         resolve(result)
       } catch (error) {
+        if (error.code === ECode.EREQUEST)
+          error.code = `${EErrorCode.DATABASE}-${EDatabase.MSSQL}-${encryptNotSafed(this.constructor.name)}`
         reject(error)
       }
     })
@@ -54,9 +57,58 @@ class MSSQL {
       try {
         if (!isEmpty(parameter))
           await this.request(req, parameter)
-        const result = await req.query(query)
-        resolve(result.recordset)
+        const data = await req.query(query)
+        const columns: any = await getColoumnMSSQL(data.recordset.columns)
+        const result = await wrappingDataMSSQL(data.recordset, columns)
+        resolve(result)
       } catch (error) {
+        if (error.code === ECode.EREQUEST)
+          error.code = `${EErrorCode.DATABASE}-${EDatabase.MSSQL}-${encryptNotSafed(this.constructor.name)}`
+        reject(error)
+      }
+    })
+  }
+
+  public async select(req: ConnectionPool, options: {
+    table: string;
+    column?: any;
+    where?: any;
+    orderBy?: any;
+    paginate?: any;
+  }): Promise<any> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (isEmpty(options.table)) throw new Error('table must be defined!')
+        const columns = mssqlHelper.addAttributeClauses(options)
+        const whereClauses = mssqlHelper.addWhereClausesAdvance(options)
+        const orderByClauses = mssqlHelper.addOrderByClauses(options)
+        let query = `SELECT ${columns}`
+        if (whereClauses) query += `\n    WHERE ${whereClauses}`
+
+        query += `\n    FROM ${options.table}`
+
+        if (orderByClauses) {
+          query += `\n    ORDER BY ${orderByClauses}`
+          if (options.paginate) {
+            if (!options.paginate.offset) options.paginate.offset = 0
+            query += `\n    OFFSET ${options.paginate.offset} ROWS`
+
+            if (!options.paginate.fetch) options.paginate.fetch = 10
+            query += `\n    FETCH NEXT ${options.paginate.fetch} ROWS ONLY`
+          }
+        }
+
+        if (whereClauses)
+          await this.request(req, options.where)
+
+        const data = await req.query(query)
+        const attributes: any = await getColoumnMSSQL(data.recordset.columns)
+        const result = await wrappingDataMSSQL(data.recordset, attributes)
+        resolve(result)
+      } catch (error) {
+        if (error.code === ECode.EREQUEST)
+          error.code = `${EErrorCode.DATABASE}-${EDatabase.MSSQL}-${encryptNotSafed(this.constructor.name)}`
+
         reject(error)
       }
     })

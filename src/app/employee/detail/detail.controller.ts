@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction }  from 'express';
 import { getEnumKeyByEnumValue } from '../../../utils/index.util'
-import { HttpStatusCode, Status, Message } from '../../../core/enum'
+import { EHttpStatusCode, EStatus, EMessage } from '../../../core/enum'
 import { Get, Post } from '../../../core/decorator'
 
 class DetailController {
@@ -23,8 +23,8 @@ class DetailController {
         throw new Error('Error getting all employees')
       } catch (error: any) {
         console.log( typeof error === 'string' ? error : error.message )
-        res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).send({
-          message: Message.NOT_HANDLED,
+        res.status(EHttpStatusCode.INTERNAL_SERVER_ERROR).send({
+          message: EMessage.NOT_HANDLED,
           detail: error
         })
       }
@@ -39,13 +39,13 @@ class DetailController {
   ): Promise<void> {
     return new Promise<void>(() => {
       try {
-        res.status(HttpStatusCode.OK).send({
-          message: Status.SUCCESS
+        res.status(EHttpStatusCode.OK).send({
+          message: EStatus.SUCCESS
         })
       } catch (error: any) {
         console.log( typeof error === 'string' ? error : error.message )
-        res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).send({
-          message: getEnumKeyByEnumValue(HttpStatusCode, 'INTERNAL_SERVER_ERROR'),
+        res.status(EHttpStatusCode.INTERNAL_SERVER_ERROR).send({
+          message: getEnumKeyByEnumValue(EHttpStatusCode, 'INTERNAL_SERVER_ERROR'),
           detail: error
         })
       }

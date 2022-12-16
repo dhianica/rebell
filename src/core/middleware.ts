@@ -1,6 +1,6 @@
 import { type Request, type Response, type NextFunction } from 'express';
 import logger from './logs';
-import { HttpStatusCode, Message, Status } from './enum'
+import { EHttpStatusCode, EMessage, EStatus } from './enum'
 import { IResponseTypes } from './types/response.type'
 /**
  * This core/middelware.ts reference from Express Middleware for create response handler
@@ -44,19 +44,19 @@ class Middleware {
     try {
       const oldJSON = response.json;
       response.json = (data: any = {
-        statusCode: HttpStatusCode.OK,
-        status: Status.SUCCESS,
-        message: Message.FETCH
+        statusCode: EHttpStatusCode.OK,
+        status: EStatus.SUCCESS,
+        message: EMessage.FETCH
       }): any => {
         data = {
           ...{
-            statusCode: HttpStatusCode.OK,
-            status: Status.SUCCESS,
-            message: Message.FETCH
+            statusCode: EHttpStatusCode.OK,
+            status: EStatus.SUCCESS,
+            message: EMessage.FETCH
           },
           ...data
         }
-        if (data && data.status === Status.FAILED) response.json = oldJSON;
+        if (data && data.status === EStatus.FAILED) response.json = oldJSON;
         else logger.info(`Response ${request.path}\t\t${JSON.stringify(data)}`)
 
         return oldJSON.call(response.status(data.statusCode), {

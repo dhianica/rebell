@@ -8,7 +8,12 @@ class CompanyServiceClass {
   public getAllCompanys = (): Promise<any> => new Promise<any>(async (resolve, reject) => {
     try {
       const connection = await this.instance.connect('company')
-      const result = await this.instance.execute(connection, 'sp__company_getAll')
+      const result = await this.instance.select(connection, {
+        table: 'company',
+        column: ['company_idh'],
+        where: {},
+        orderBy: { company_id: 'ASC' }
+      })
       resolve(result)
     } catch (error) {
       reject(error)

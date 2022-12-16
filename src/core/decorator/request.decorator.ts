@@ -2,7 +2,7 @@ import Ajv, { SchemaObject } from 'ajv'
 // import ajvErrors from 'ajv-errors';
 import 'reflect-metadata'
 import Logger from '../logs'
-import { HttpStatusCode, Status, Message } from '../enum'
+import { EHttpStatusCode, EStatus, EMessage } from '../enum'
 import type { IResponseTypes } from '../types'
 const ajv = new Ajv({ allErrors: true })
 ajv.addKeyword('errorMessage')
@@ -36,9 +36,9 @@ const ValidateReq = (source: 'body' | 'query') =>
             const errorMessages = ajv.errorsText()
             Logger.error(`Validation Request Failed\t\t\t${errorMessages}`);
             const result: IResponseTypes = {
-              statusCode: HttpStatusCode.BAD_REQUEST,
-              status: Status.FAILED,
-              message: Message.ERROR_VALIDATE,
+              statusCode: EHttpStatusCode.BAD_REQUEST,
+              status: EStatus.FAILED,
+              message: EMessage.ERROR_VALIDATE,
               detail: errorMessages
             }
             next(result)
@@ -47,12 +47,12 @@ const ValidateReq = (source: 'body' | 'query') =>
             method?.apply(this, arguments)
           }
         } catch (error) {
-          const errorMessages = `${Message.NOT_HANDLED}!`
+          const errorMessages = `${EMessage.NOT_HANDLED}!`
           Logger.error(`Validation Request Failed\t\t\t${errorMessages}`);
           const result: IResponseTypes = {
-            statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
-            status: Status.FAILED,
-            message: Message.NOT_HANDLED,
+            statusCode: EHttpStatusCode.INTERNAL_SERVER_ERROR,
+            status: EStatus.FAILED,
+            message: EMessage.NOT_HANDLED,
             detail: error.message
           }
           next(result)

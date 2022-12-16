@@ -1,9 +1,9 @@
-import { type HttpStatusCode, type Status, type Message } from '../enum'
+import { type EHttpStatusCode, type EStatus, type EMessage } from '../enum'
 
 export interface IResponseTypes {
-  statusCode: HttpStatusCode;
-  status: Status;
-  message: Message;
+  statusCode: EHttpStatusCode;
+  status: EStatus;
+  message: EMessage;
   detail?: any;
 }
 

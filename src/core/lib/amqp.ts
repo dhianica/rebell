@@ -1,6 +1,6 @@
 import * as amqp from 'amqplib';
 import * as _ from 'lodash';
-import { ErrorMessage } from '../../core/enum'
+import { EErrorMessage } from '../../core/enum'
 /**
  * Broker for async messaging
  */
@@ -29,7 +29,7 @@ class AMQPMessageBroker {
       await this.init();
 
 
-    if (!queue)  throw new Error(`${ErrorMessage.NOT_DECLARED} the Queue`);
+    if (!queue)  throw new Error(`${EErrorMessage.NOT_DECLARED} the Queue`);
     if (!msg) msg = '';
     if (!options) options = { durable: true }
     await this.channel?.assertQueue(queue, options);
@@ -45,7 +45,7 @@ class AMQPMessageBroker {
       await this.init();
 
 
-    if (!queue)  throw new Error(`${ErrorMessage.NOT_DECLARED} the Queue`);
+    if (!queue)  throw new Error(`${EErrorMessage.NOT_DECLARED} the Queue`);
     if (this.queues[queue]) {
       const existingHandler = _.find(this.queues[queue], (h) => h === handler);
       if (existingHandler)
@@ -68,7 +68,7 @@ class AMQPMessageBroker {
   }
 
   public async unsubscribe(queue?: string | any, handler?: any): Promise<void> {
-    if (!queue)  throw new Error(`${ErrorMessage.NOT_DECLARED} the Queue`);
+    if (!queue)  throw new Error(`${EErrorMessage.NOT_DECLARED} the Queue`);
     _.pull((this.queues[queue] as any[]), handler);
   }
 }

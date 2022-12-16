@@ -1,6 +1,6 @@
-import type { HttpMethods } from '../enum'
+import type { EHttpMethods } from '../enum'
 export interface IRouterTypes {
-  method: HttpMethods;
+  method: EHttpMethods;
   path: string;
   handlerName: string | symbol;
 }
