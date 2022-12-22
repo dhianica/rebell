@@ -28,7 +28,6 @@ export const getLastDirectory = (currentDirectory: string): string =>
  * @returns boolean - true if param dont have value, default false
  */
 export function isEmpty(param: any): boolean {
-  console.log(param)
   if (param === undefined || param === null) return true
   else if (typeof param === 'object') return Object.keys(param).length < 1
   else if (typeof param === 'string') return param === '' || param.length < 1

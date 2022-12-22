@@ -10,9 +10,21 @@ class CompanyServiceClass {
       const connection = await this.instance.connect('company')
       const result = await this.instance.select(connection, {
         table: 'company',
-        column: ['company_idh'],
-        where: {},
-        orderBy: { company_id: 'ASC' }
+        orderBy: { company_id: 'DESC' }
+      })
+      resolve(result)
+    } catch (error) {
+      reject(error)
+    }
+  });
+
+  public getCompanyByID = (id: number): Promise<any> => new Promise<any>(async (resolve, reject) => {
+    try {
+      const connection = await this.instance.connect('company')
+      const result = await this.instance.select(connection, {
+        table: 'company',
+        where: { company_id: [id, '=']},
+        orderBy: { company_id: 'DESC' }
       })
       resolve(result)
     } catch (error) {

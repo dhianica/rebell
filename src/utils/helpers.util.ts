@@ -1,8 +1,8 @@
 import { camelCase, isValidDate } from './utilities.util'
 import mssql from 'mssql'
 import dayjs from 'dayjs'
-import { EErrorCode, EFormat, ECore } from '../core/enum';
-import { encryptNotSafed } from '../core/crypto/encrypt'
+import { EErrorCode, EFormat, ECore, EACTION } from '../core/enum';
+import { shortEncrypt } from '../core/crypto/encrypt'
 import dotenv from 'dotenv'
 
 dotenv.config()
@@ -38,7 +38,6 @@ export class mssqlHelper {
         else whereClauses.push(`${column}=${value}`)
       }
 
-
     return whereClauses.join(' AND ')
   }
 
@@ -57,12 +56,9 @@ export class mssqlHelper {
         const bitwise = options.where[column][2] || 'AND';
 
         if (condition.toLowerCase() === 'like')
-          where = `${column} LIKE '%${value}%'`
-        else if (condition === '>' || condition === '<' || condition === '>=' || condition === '>=')
-          where = `${column}${condition}${value}`
+          where = `${column} LIKE '%@${column}%'`
         else
-          where = typeof value === 'string' ? `${column}='${value}'` :  `${column}=${value}`
-
+          where = `${column} ${condition} @${column}`
 
         if (totalCondition)
           where += ` ${bitwise} `
@@ -107,6 +103,86 @@ export class mssqlHelper {
 
     return { columns, values }
   }
+
+  public static queryInsert(columns: string, table: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      try {
+        let query = `INSERT INTO ${table} (${columns})`
+        const values = columns.split(',').map((x) => `@${x}`).join()
+        query += `${values}`
+        resolve(query)
+      } catch (error) {
+        reject({
+          code: `${EErrorCode.OTHER}-${ECore.UTILS}-${shortEncrypt(this.constructor.name)}`,
+          message: error.message
+        })
+      }
+    })
+  }
+  public static querySelect(columns: string, table: string, where?: string, options?: {
+    orderBy?: string;
+    paginate?: {
+      offset?: number;
+      fetch?: number;
+    };
+  }): Promise<string> {
+    return new Promise((resolve, reject) => {
+      try {
+        let query = `SELECT ${columns}`
+
+        query += `\nFROM ${table}`
+
+        if (where) query += `\nWHERE ${where}`
+
+        if (options.orderBy) {
+          query += `\nORDER BY ${options.orderBy}`
+          if (options.paginate) {
+            if (!options.paginate.offset) options.paginate.offset = 0
+            query += `\nOFFSET ${options.paginate.offset} ROWS`
+
+            if (!options.paginate.fetch) options.paginate.fetch = 10
+            query += `\nFETCH NEXT ${options.paginate.fetch} ROWS ONLY`
+          }
+        }
+        resolve(query)
+      } catch (error) {
+        reject({
+          code: `${EErrorCode.OTHER}-${ECore.UTILS}-${shortEncrypt(this.constructor.name)}`,
+          message: error.message
+        })
+      }
+    })
+  }
+  public static queryDelete(table: string, where?: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+      try {
+        let query = `DELETE FROM ${table}`
+        if (where) query += ` WHERE ${where}`
+        resolve(query)
+      } catch (error) {
+        reject({
+          code: `${EErrorCode.OTHER}-${ECore.UTILS}-${shortEncrypt(this.constructor.name)}`,
+          message: error.message
+        })
+      }
+    })
+  }
+  public static queryUpdate(columns: string, table: string, where?: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+      try {
+        let query = `UPDATE a \n`
+        query += 'SET\n'
+        query += columns.split(',').map((x) => `    ${x} = @${x}`).join(',\n')
+        if (where) query += `\nWHERE ${where}`
+        resolve(query)
+      } catch (error) {
+        reject({
+          code: `${EErrorCode.OTHER}-${ECore.UTILS}-${shortEncrypt(this.constructor.name)}`,
+          message: error.message
+        })
+      }
+    })
+  }
 }
 
 export async function getColoumnMSSQL(columns: any): Promise<any> {
@@ -120,7 +196,7 @@ export async function getColoumnMSSQL(columns: any): Promise<any> {
       resolve(result)
     } catch (error) {
       reject({
-        code: `${EErrorCode.OTHER}-${ECore.UTILS}-${encryptNotSafed(this.constructor.name)}`,
+        code: `${EErrorCode.OTHER}-${ECore.UTILS}-${shortEncrypt(this.constructor.name)}`,
         message: error.message
       })
     }
@@ -145,7 +221,7 @@ export async function wrappingDataMSSQL(recordsets: any, column: any): Promise<a
       resolve(recordsets)
     } catch (error) {
       reject({
-        code: `${EErrorCode.OTHER}-${ECore.UTILS}-${encryptNotSafed(this.constructor.name)}`,
+        code: `${EErrorCode.OTHER}-${ECore.UTILS}-${shortEncrypt(this.constructor.name)}`,
         message: error.message
       })
     }

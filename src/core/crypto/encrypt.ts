@@ -1,5 +1,10 @@
 import crypto, { BinaryToTextEncoding } from 'crypto';
+import dotenv from 'dotenv'
+import ShortCrypt from 'short-crypt';
 import { IEncryptTypes } from '../types';
+
+dotenv.config()
+
 export const getHash = (text: string,
   length: number,
   algorithm: string = 'sha256',
@@ -18,11 +23,9 @@ export const encrypt= (originalText: string, key: string): IEncryptTypes => {
   return result
 }
 
-export const encryptNotSafed = (text: string): string => {
-  const cipher = crypto.createCipher('aes-256-cbc', 'd6F3Efeq')
-  let crypted = cipher.update(text, 'utf8', 'hex')
-  crypted += cipher.final('hex');
-  return crypted;
+export const shortEncrypt = (text: string): string => {
+  const sc = new ShortCrypt(process.env.KEY);
+  return sc.encryptToURLComponent(text);
 }
 
 

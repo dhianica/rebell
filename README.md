@@ -12,7 +12,12 @@ this package using some function from another library
   * [reflect-metadata](https://github.com/rbuckton/reflect-metadata)
   * [tslog](https://github.com/fullstack-build/tslog)
   * [eslint](https://github.com/eslint/eslint)
+  * [dotenv](https://github.com/motdotla/dotenv)
   * [dayjs](https://github.com/iamkun/dayjs)
+  * [docker](https://www.docker.com/)
+  * [socket.io](https://github.com/socketio/socket.io)
+  * [rabbitmq](https://github.com/amqp-node/amqplib)
+  * [mssql](https://github.com/tediousjs/node-mssql)
 
 
 # Quick Start
@@ -119,7 +124,7 @@ endpoint will be generate using path folder name
   }
   ```
 
- * responsMiddleware 
+ * responseMiddleware 
  ```typescript
   /**
    * 

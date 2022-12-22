@@ -23,10 +23,12 @@ class Middleware {
    * @param next : express next function
    */
   public async loggerMiddleware(request: Request, response: Response, next: NextFunction): Promise<void> {
-    logger.debug(`Run ${request.path}\t\t${JSON.stringify({
+    logger.debug(`Run ${request.path}`);
+    console.log(request)
+    logger.info(`Request ${request.path}\t\t${JSON.stringify({
       path: request.path,
       method: request.method,
-      body: Object.keys(request.body).length !== 0 ? request.body : ''
+      data: { ...request.body, ...request.query, ...request.params }
     })}`);
     next()
   }
@@ -49,21 +51,26 @@ class Middleware {
         message: EMessage.FETCH
       }): any => {
         data = {
-          ...{
-            statusCode: EHttpStatusCode.OK,
-            status: EStatus.SUCCESS,
-            message: EMessage.FETCH
-          },
+          statusCode: EHttpStatusCode.OK,
+          status: EStatus.SUCCESS,
+          message: EMessage.FETCH,
           ...data
         }
-        if (data && data.status === EStatus.FAILED) response.json = oldJSON;
-        else logger.info(`Response ${request.path}\t\t${JSON.stringify(data)}`)
+        logger.info(`Response ${request.path}\t\t${JSON.stringify(data)}`)
+        if (data && data.status === EStatus.FAILED)
+          return oldJSON.call(response.status(data.statusCode), {
+            status: data.status,
+            message: data.message,
+            code: data.code,
+            detail: data.detail
+          })
+        else
+          return oldJSON.call(response.status(data.statusCode), {
+            status: data.status,
+            message: data.message,
+            detail: data.detail
+          });
 
-        return oldJSON.call(response.status(data.statusCode), {
-          status: data.status,
-          message: data.message,
-          detail: data.detail
-        });
       }
       await next()
     } catch (error) {
@@ -81,7 +88,6 @@ class Middleware {
    * @param next : express next function
    */
   public async errorMiddleware(error: any | '' | null | undefined, request: Request, response: Response, next: NextFunction): Promise<any>  {
-    logger.error(`Response ${request.path}\t\t${JSON.stringify(error)}`)
     response.json(error)
   }
 }

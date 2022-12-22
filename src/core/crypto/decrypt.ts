@@ -1,4 +1,8 @@
 import crypto from 'crypto';
+import dotenv from 'dotenv'
+import ShortCrypt from 'short-crypt';
+
+dotenv.config()
 
 export const decrypt = (decryptText: string, key: string, iv: string): string => {
   const decipher = crypto.createDecipheriv('aes256', key, Buffer.from(iv, 'hex'));
@@ -6,10 +10,9 @@ export const decrypt = (decryptText: string, key: string, iv: string): string =>
   return decryptedMessage.toString()
 }
 
-export const decryptNotSafed = (text: string): string => {
-  const decipher = crypto.createDecipher('aes-256-cbc', 'd6F3Efeq')
-  let dec = decipher.update(text, 'hex', 'utf8')
-  dec += decipher.final('utf8');
-  return dec;
+export const shortDecrypt = (decryptText: string): string => {
+  const sc = new ShortCrypt(process.env.KEY);
+  const result1: Uint8Array = sc.decryptURLComponent(decryptText) as Uint8Array;
+  return Buffer.from(result1).toString('utf8')
 }
 

@@ -15,7 +15,7 @@ class CompanyController {
     }
   ];
 
-  @Get()
+  @Get('/')
   public async getAllCompanys(
     request: Request,
     response: Response,
@@ -32,22 +32,35 @@ class CompanyController {
           statusCode: EHttpStatusCode.INTERNAL_SERVER_ERROR,
           status: EStatus.FAILED,
           code: error.code,
-          message: EMessage.NOT_HANDLED,
-          detail: error.message
+          message: error.message,
+          detail: error.detail
         } as IResponseTypes)
       }
     })
   }
 
-  @Post('')
-  public createACompany(
+  @Get('id/:id')
+  public async getCompanyByID(
     request: Request,
-    response: Response
-  ): Promise<void> {
-    return new Promise<void>(() => {
-      const post: any = request.body;
-      this.posts.push(post);
-      response.send(post);
+    response: Response,
+    next: NextFunction
+  ): Promise<void>  {
+    return new Promise<void>(async () => {
+      try {
+        const { id } = request.params
+        const result = await CompanyService.getCompanyByID(parseInt(id, 10))
+        response.json({
+          detail: result
+        })
+      } catch (error: any) {
+        next({
+          statusCode: EHttpStatusCode.INTERNAL_SERVER_ERROR,
+          status: EStatus.FAILED,
+          code: error.code,
+          message: error.message,
+          detail: error.detail
+        } as IResponseTypes)
+      }
     })
   }
 }

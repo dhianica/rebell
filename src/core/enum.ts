@@ -523,3 +523,19 @@ export enum ECore {
    ROUTE = 5,
    SERVICE = 6
 }
+
+export enum EACTION {
+   SELECT = 0,
+   INSERT = 1,
+   DELETE = 2,
+   UPDATE = 3
+}
+
+export enum EErrorMessageMSSQL {
+   MUST_DECLARE = 'Must declare the scalar variable',
+   INCORRECT_SYNTAX = 'INCORRECT_SYNTAX'
+}
+export enum EErrorMessageDescriptionMSSQL {
+   MUST_DECLARE = 'Failed Declare Variable',
+   INCORRECT_SYNTAX = 'Incorrect Syntax'
+}

@@ -1,10 +1,10 @@
-
-import mssql, { type ConnectionPool } from 'mssql'
+import mssql, { type ConnectionPool, type Request } from 'mssql'
 import { Configuration } from '../../configuration'
 import { IConfiguration } from '../../types';
 import { isEmpty, getColoumnMSSQL, wrappingDataMSSQL, mssqlHelper } from '../../../utils/index.util'
 import { EErrorCode, ECode, EDatabase } from '../../enum'
-import { encryptNotSafed } from '../../crypto/encrypt'
+import { shortEncrypt } from '../../crypto/encrypt'
+import { setErrorDatabase } from '../../error'
 class MSSQL {
   private pool: any;
   private pools = new Map();
@@ -27,11 +27,21 @@ class MSSQL {
     return this.pools.get(name)
   }
 
-  public async request(req: any, parameter: any): Promise<void> {
-    parameter.forEach(params => {
-      const keys = Object.keys(params)[0]
-      const values = Object.values(params)[0]
-      req.input(keys, values)
+  public async request(req: any, parameter: any): Promise<ConnectionPool> {
+    return new Promise((resolve, reject) => {
+      try {
+        if (Object.keys(parameter).length === 0) throw new Error('Parameter failed to assigned')
+        for (const column in parameter)
+          if (Object.hasOwnProperty.call(parameter, column)) {
+            const value = parameter[column][0];
+            req.input(column, value)
+          }
+        resolve(req)
+      } catch (error) {
+        if (error.code === ECode.EREQUEST)
+          error.code = `${EErrorCode.DATABASE}-${EDatabase.MSSQL}-${shortEncrypt(this.constructor.name)}`
+        reject(error)
+      }
     })
   }
 
@@ -39,14 +49,15 @@ class MSSQL {
     return new Promise(async (resolve, reject) => {
       try {
         if (!isEmpty(parameter))
-          await this.request(req.request(), parameter)
+          await this.request(req, parameter)
         const data = await req.request().execute(sp)
         const columns: any = await getColoumnMSSQL(data.recordset.columns)
         const result = await wrappingDataMSSQL(data.recordset, columns)
         resolve(result)
       } catch (error) {
         if (error.code === ECode.EREQUEST)
-          error.code = `${EErrorCode.DATABASE}-${EDatabase.MSSQL}-${encryptNotSafed(this.constructor.name)}`
+          error.code = `${EErrorCode.DATABASE}-${EDatabase.MSSQL}-${shortEncrypt(this.constructor.name)}`
+        setErrorDatabase(error)
         reject(error)
       }
     })
@@ -63,7 +74,9 @@ class MSSQL {
         resolve(result)
       } catch (error) {
         if (error.code === ECode.EREQUEST)
-          error.code = `${EErrorCode.DATABASE}-${EDatabase.MSSQL}-${encryptNotSafed(this.constructor.name)}`
+          error.code = `${EErrorCode.DATABASE}-${EDatabase.MSSQL}-${shortEncrypt(this.constructor.name)}`
+
+        setErrorDatabase(error)
         reject(error)
       }
     })
@@ -74,32 +87,20 @@ class MSSQL {
     column?: any;
     where?: any;
     orderBy?: any;
-    paginate?: any;
+    paginate?: {
+      offset?: number;
+      fetch?: number;
+    };
   }): Promise<any> {
     return new Promise(async (resolve, reject) => {
       try {
         if (isEmpty(options.table)) throw new Error('table must be defined!')
         const columns = mssqlHelper.addAttributeClauses(options)
         const whereClauses = mssqlHelper.addWhereClausesAdvance(options)
-        const orderByClauses = mssqlHelper.addOrderByClauses(options)
-        let query = `SELECT ${columns}`
-        if (whereClauses) query += `\n    WHERE ${whereClauses}`
-
-        query += `\n    FROM ${options.table}`
-
-        if (orderByClauses) {
-          query += `\n    ORDER BY ${orderByClauses}`
-          if (options.paginate) {
-            if (!options.paginate.offset) options.paginate.offset = 0
-            query += `\n    OFFSET ${options.paginate.offset} ROWS`
-
-            if (!options.paginate.fetch) options.paginate.fetch = 10
-            query += `\n    FETCH NEXT ${options.paginate.fetch} ROWS ONLY`
-          }
-        }
-
-        if (whereClauses)
-          await this.request(req, options.where)
+        options.orderBy = mssqlHelper.addOrderByClauses(options)
+        const query = await mssqlHelper.querySelect(columns, options.table, whereClauses, options)
+        if (!isEmpty(whereClauses))
+          req = await this.request(req.request(), options.where)
 
         const data = await req.query(query)
         const attributes: any = await getColoumnMSSQL(data.recordset.columns)
@@ -107,8 +108,9 @@ class MSSQL {
         resolve(result)
       } catch (error) {
         if (error.code === ECode.EREQUEST)
-          error.code = `${EErrorCode.DATABASE}-${EDatabase.MSSQL}-${encryptNotSafed(this.constructor.name)}`
+          error.code = `${EErrorCode.DATABASE}-${EDatabase.MSSQL}-${shortEncrypt(this.constructor.name)}`
 
+        setErrorDatabase(error)
         reject(error)
       }
     })
