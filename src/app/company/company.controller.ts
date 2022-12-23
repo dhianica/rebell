@@ -1,10 +1,10 @@
 import type { Request, Response, NextFunction }  from 'express';
-import { EHttpStatusCode, EStatus, EMessage, EErrorCode } from '../../core/enum'
-import { Get, Post } from '../../core/decorator'
+import { EHttpStatusCode, EStatus, EErrorMessage, ECore, EErrorCode, EApp } from '../../core/enum'
+import { Get } from '../../core/decorator'
 import type { IResponseTypes } from '../../core/types/response.type'
 import { CompanyService } from './company.service'
-import { Company } from './#schema/company.schema'
-import { getEnumKeyByEnumValue } from '../../utils/index.util'
+import { generateCode, getMethodName, isNumber } from '../../utils/index.util'
+import { customError } from '../../core/error';
 
 class CompanyController {
   private posts: any[] = [
@@ -31,7 +31,7 @@ class CompanyController {
         next({
           statusCode: EHttpStatusCode.INTERNAL_SERVER_ERROR,
           status: EStatus.FAILED,
-          code: error.code,
+          errorCode: error.errorCode,
           message: error.message,
           detail: error.detail
         } as IResponseTypes)
@@ -48,6 +48,14 @@ class CompanyController {
     return new Promise<void>(async () => {
       try {
         const { id } = request.params
+        if (!isNumber(id))
+          throw customError({
+            message: EErrorMessage.INVALID_DATA,
+            errorPath:`${EErrorCode.APP}-${EApp.APP_CONTROLLER}-${getMethodName(new Error())}`,
+            errorCode:`${EErrorCode.APP}-${EApp.APP_CONTROLLER}-${generateCode(4)}`
+          })
+
+
         const result = await CompanyService.getCompanyByID(parseInt(id, 10))
         response.json({
           detail: result
@@ -56,7 +64,7 @@ class CompanyController {
         next({
           statusCode: EHttpStatusCode.INTERNAL_SERVER_ERROR,
           status: EStatus.FAILED,
-          code: error.code,
+          errorCode: error.errorCode,
           message: error.message,
           detail: error.detail
         } as IResponseTypes)

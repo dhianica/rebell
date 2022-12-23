@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction }  from 'express';
 import { getEnumKeyByEnumValue } from '../../../utils/index.util'
-import { EHttpStatusCode, EStatus, EMessage } from '../../../core/enum'
+import { EHttpStatusCode, EStatus, EErrorMessage } from '../../../core/enum'
 import { Get, Post } from '../../../core/decorator'
 
 class DetailController {
@@ -22,9 +22,8 @@ class DetailController {
       try {
         throw new Error('Error getting all employees')
       } catch (error: any) {
-        console.log( typeof error === 'string' ? error : error.message )
         res.status(EHttpStatusCode.INTERNAL_SERVER_ERROR).send({
-          message: EMessage.NOT_HANDLED,
+          message: EErrorMessage.NOT_HANDLED,
           detail: error
         })
       }
@@ -43,7 +42,6 @@ class DetailController {
           message: EStatus.SUCCESS
         })
       } catch (error: any) {
-        console.log( typeof error === 'string' ? error : error.message )
         res.status(EHttpStatusCode.INTERNAL_SERVER_ERROR).send({
           message: getEnumKeyByEnumValue(EHttpStatusCode, 'INTERNAL_SERVER_ERROR'),
           detail: error

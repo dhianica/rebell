@@ -1,9 +1,8 @@
 import mssql, { type ConnectionPool, type Request } from 'mssql'
 import { Configuration } from '../../configuration'
 import { IConfiguration } from '../../types';
-import { isEmpty, getColoumnMSSQL, wrappingDataMSSQL, mssqlHelper } from '../../../utils/index.util'
-import { EErrorCode, ECode, EDatabase } from '../../enum'
-import { shortEncrypt } from '../../crypto/encrypt'
+import { isEmpty, getColoumnMSSQL, wrappingDataMSSQL, mssqlHelper, generateCode, getMethodName } from '../../../utils/index.util'
+import { EErrorCode, ECode, EDatabase, ECore, EErrorMessage } from '../../enum'
 import { setErrorDatabase } from '../../error'
 class MSSQL {
   private pool: any;
@@ -12,7 +11,7 @@ class MSSQL {
   public async connect(name: string): Promise<ConnectionPool>{
     const configuration = Configuration.get('MSSQL') as IConfiguration
     if (!this.pools.has(name)) {
-      if (!configuration.value)
+      if (!configuration?.value)
         throw new Error('Pool does not exist')
 
       const pool = new mssql.ConnectionPool(configuration.value)
@@ -38,8 +37,11 @@ class MSSQL {
           }
         resolve(req)
       } catch (error) {
-        if (error.code === ECode.EREQUEST)
-          error.code = `${EErrorCode.DATABASE}-${EDatabase.MSSQL}-${shortEncrypt(this.constructor.name)}`
+        error.errorPath = `${EErrorCode.DATABASE}-${ECore.LIB_DB_MSSQL}-${getMethodName(new Error())}`
+        if (error.code === ECode.EREQUEST) {
+          error.errorCode = `${EErrorCode.DATABASE}-${EDatabase.MSSQL}-${generateCode(4)}`
+          setErrorDatabase(error)
+        }
         reject(error)
       }
     })
@@ -55,9 +57,11 @@ class MSSQL {
         const result = await wrappingDataMSSQL(data.recordset, columns)
         resolve(result)
       } catch (error) {
-        if (error.code === ECode.EREQUEST)
-          error.code = `${EErrorCode.DATABASE}-${EDatabase.MSSQL}-${shortEncrypt(this.constructor.name)}`
-        setErrorDatabase(error)
+        error.errorPath = `${EErrorCode.DATABASE}-${ECore.LIB_DB_MSSQL}-${getMethodName(new Error())}`
+        if (error.code === ECode.EREQUEST) {
+          error.errorCode = `${EErrorCode.DATABASE}-${EDatabase.MSSQL}-${generateCode(4)}`
+          setErrorDatabase(error)
+        }
         reject(error)
       }
     })
@@ -73,10 +77,11 @@ class MSSQL {
         const result = await wrappingDataMSSQL(data.recordset, columns)
         resolve(result)
       } catch (error) {
-        if (error.code === ECode.EREQUEST)
-          error.code = `${EErrorCode.DATABASE}-${EDatabase.MSSQL}-${shortEncrypt(this.constructor.name)}`
-
-        setErrorDatabase(error)
+        error.errorPath = `${EErrorCode.DATABASE}-${ECore.LIB_DB_MSSQL}-${getMethodName(new Error())}`
+        if (error.code === ECode.EREQUEST) {
+          error.errorCode = `${EErrorCode.DATABASE}-${EDatabase.MSSQL}-${generateCode(4)}`
+          setErrorDatabase(error)
+        }
         reject(error)
       }
     })
@@ -94,23 +99,33 @@ class MSSQL {
   }): Promise<any> {
     return new Promise(async (resolve, reject) => {
       try {
-        if (isEmpty(options.table)) throw new Error('table must be defined!')
+        let whereClauses = ''
+        if (!options) throw new Error(EErrorMessage.NOT_DECLARED)
+        if (isEmpty(options.table)) throw new Error(`${EErrorMessage.NOT_DEFINED}`)
+
         const columns = mssqlHelper.addAttributeClauses(options)
-        const whereClauses = mssqlHelper.addWhereClausesAdvance(options)
+
+        if (!isEmpty(options.where))
+          whereClauses = mssqlHelper.addWhereClausesAdvance(options)
+
         options.orderBy = mssqlHelper.addOrderByClauses(options)
+
         const query = await mssqlHelper.querySelect(columns, options.table, whereClauses, options)
-        if (!isEmpty(whereClauses))
+
+        if (!isEmpty(options.where))
           req = await this.request(req.request(), options.where)
 
         const data = await req.query(query)
-        const attributes: any = await getColoumnMSSQL(data.recordset.columns)
-        const result = await wrappingDataMSSQL(data.recordset, attributes)
+        const attributes = getColoumnMSSQL(data.recordset.columns)
+        const result = wrappingDataMSSQL(data.recordset, attributes)
         resolve(result)
       } catch (error) {
-        if (error.code === ECode.EREQUEST)
-          error.code = `${EErrorCode.DATABASE}-${EDatabase.MSSQL}-${shortEncrypt(this.constructor.name)}`
-
-        setErrorDatabase(error)
+        console.log(this)
+        error.errorPath = `${EErrorCode.DATABASE}-${ECore.LIB_DB_MSSQL}-${getMethodName(new Error())}`
+        if (error.code === ECode.EREQUEST) {
+          error.errorCode = `${EErrorCode.DATABASE}-${EDatabase.MSSQL}-${generateCode(4)}`
+          setErrorDatabase(error)
+        }
         reject(error)
       }
     })

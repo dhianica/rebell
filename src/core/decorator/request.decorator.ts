@@ -2,8 +2,9 @@ import Ajv, { SchemaObject } from 'ajv'
 // import ajvErrors from 'ajv-errors';
 import 'reflect-metadata'
 import Logger from '../logs'
-import { EHttpStatusCode, EStatus, EMessage } from '../enum'
+import { EHttpStatusCode, EStatus, ESuccessMessage, EErrorMessage, EErrorCode, EDatabase  } from '../enum'
 import type { IResponseTypes } from '../types'
+import { generateCode } from '../../utils/index.util'
 const ajv = new Ajv({ allErrors: true })
 ajv.addKeyword('errorMessage')
 
@@ -22,7 +23,7 @@ ajv.addKeyword('errorMessage')
  * @param source : string -> for get data from body or query params
  * @returns next()
  */
-const ValidateReq = (source: 'body' | 'query') =>
+const ValidateReq = (source: 'body' | 'query' | 'params') =>
   (schema: SchemaObject): any =>
     (target: any, propertyName: string, descriptor: TypedPropertyDescriptor<Function>): any => {
       const method = descriptor.value;
@@ -38,8 +39,9 @@ const ValidateReq = (source: 'body' | 'query') =>
             const result: IResponseTypes = {
               statusCode: EHttpStatusCode.BAD_REQUEST,
               status: EStatus.FAILED,
-              message: EMessage.ERROR_VALIDATE,
-              detail: errorMessages
+              message: EErrorMessage.ERROR_VALIDATE,
+              errorCode: `${EErrorCode.CORE}-${EDatabase.MSSQL}-${generateCode(4)}`,
+              errorMessage: errorMessages
             }
             next(result)
           } else {
@@ -47,13 +49,14 @@ const ValidateReq = (source: 'body' | 'query') =>
             method?.apply(this, arguments)
           }
         } catch (error) {
-          const errorMessages = `${EMessage.NOT_HANDLED}!`
+          const errorMessages = `${EErrorMessage.NOT_HANDLED}!`
           Logger.error(`Validation Request Failed\t\t\t${errorMessages}`);
           const result: IResponseTypes = {
             statusCode: EHttpStatusCode.INTERNAL_SERVER_ERROR,
             status: EStatus.FAILED,
-            message: EMessage.NOT_HANDLED,
-            detail: error.message
+            message: EErrorMessage.NOT_HANDLED,
+            errorCode: `${EErrorCode.CORE}-${EDatabase.MSSQL}-${generateCode(4)}`,
+            errorMessage: error.message
           }
           next(result)
         }

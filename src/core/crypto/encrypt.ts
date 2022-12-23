@@ -2,7 +2,6 @@ import crypto, { BinaryToTextEncoding } from 'crypto';
 import dotenv from 'dotenv'
 import ShortCrypt from 'short-crypt';
 import { IEncryptTypes } from '../types';
-
 dotenv.config()
 
 export const getHash = (text: string,

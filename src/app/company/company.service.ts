@@ -1,5 +1,6 @@
 import * as express from 'express';
 import { IMSSQLInstance } from '../../core/lib/instance'
+import { ECore, EErrorMessage } from '../../core/enum';
 class CompanyServiceClass {
   private instance: IMSSQLInstance;
   public constructor() {
@@ -23,7 +24,7 @@ class CompanyServiceClass {
       const connection = await this.instance.connect('company')
       const result = await this.instance.select(connection, {
         table: 'company',
-        where: { company_id: [id, '=']},
+        where: { company_ida: [id, '=']},
         orderBy: { company_id: 'DESC' }
       })
       resolve(result)

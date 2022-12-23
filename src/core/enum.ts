@@ -404,73 +404,12 @@ export enum EHttpStatusCode {
      */
   NETWORK_AUTHENTICATION_REQUIRED = 511
 }
-/**
- * Is variable constant for messaging an error
- */
-export enum EErrorMessage {
-  /**
-      * Is messaging error when the variable not declared
-      */
-  NOT_DECLARED = 'Must Declared',
 
-  /**
-      * Is messaging error when the variable must be required
-      */
-  REQUIRED = 'Must Be Required',
-
-  /**
-    * Is messaging error when system not handled
-    */
-
-  NOT_HANDLED = 'Error Not Handled'
+export enum EFormat {
+   DateString = 'YYYY-MM-DD HH:mm:ss',
+   DateUTC = 'YYYY-MM-DDTHH:mm:sssZ'
 }
-/**
- * Is variable constant for type message
- */
-export enum EType {
-  API = 'Api',
-  DATABASE = 'Database'
-}
-/**
- * Is variable constant for status message
- */
-export enum EStatus {
-  SUCCESS = 'Success',
-  FAILED = 'Failed'
-}
-/**
- * Is variable constant for message detail
- */
-export enum EMessage {
-  /**
-       * Is messaging success when data found
-       */
-  FOUND = 'Found',
 
-  /**
-     * Is messaging succes when data fetch is successful
-     */
-
-  FETCH = 'Fetch',
-
-  /**
-     * Is messaging error when the variable not declared
-     */
-  NOT_DECLARED = 'Must Declared',
-
-  /**
-     * Is messaging error when the variable must be required
-     */
-  REQUIRED = 'Must Be Required',
-
-  /**
-   * Is messaging error when system not handled
-   */
-
-  NOT_HANDLED = 'Error Not Handled',
-
-  ERROR_VALIDATE = 'Error Validate'
-}
 /**
  * Is variable constant for roles in this application
  */
@@ -490,40 +429,6 @@ export enum EPermissions {
    DELETE = 3,
    EXECUTE = 4
 }
-
-export enum EDatabase {
-   MSSQL = 0,
-   MYSQL = 1,
-   POSTGRESQL = 2,
-   MONGODB = 3,
-   SQLITE = 4
-}
-
-export enum EFormat {
-   DateString = 'YYYY-MM-DD HH:mm:ss',
-   DateUTC = 'YYYY-MM-DDTHH:mm:sssZ'
-}
-
-export enum EErrorCode {
-   DATABASE = 'DB-000',
-   API = 'API-000',
-   OTHER = 'OTH-000',
-}
-
-export enum ECode {
-   EREQUEST = 'EREQUEST'
-}
-
-export enum ECore {
-   CORE = 0,
-   LIB = 1,
-   UTILS = 2,
-   MIDDLEWARE = 3,
-   CONTROLLER = 4,
-   ROUTE = 5,
-   SERVICE = 6
-}
-
 export enum EACTION {
    SELECT = 0,
    INSERT = 1,
@@ -531,11 +436,100 @@ export enum EACTION {
    UPDATE = 3
 }
 
+export enum EErrorCode {
+   CORE = 'APP00',
+   APP = 'APP01',
+   API = 'APP02',
+   DATABASE = 'APP03',
+   OTHER = 'APP04',
+   UTILS = 'APP05',
+}
+
+export enum ECode {
+   EREQUEST = 'EREQUEST'
+}
+
+export enum EDatabase {
+   MSSQL = '00',
+   MYSQL = '01',
+   POSTGRESQL = '02',
+   MONGODB = '03',
+   SQLITE = '04'
+}
+
+export enum ECore {
+   CORE_CONFIGURATION = '00',
+   CORE_CONTROLLER = '01',
+   CORE_ENUM = '02',
+   CORE_ERROR = '03',
+   CORE_LOGS = '04',
+   CORE_MIDDLEWARE = '05',
+   CRYPTO_ENCRYPT = '10',
+   CRYPTO_DECRYPT = '11',
+   DECORATOR_BASE = '20',
+   DECORATOR_CONTROLLER = '21',
+   DECORATOR_LIB = '22',
+   DECORATOR_REQUEST = '23',
+   DECORATOR_ROUTE = '24',
+   LIB_DB_MSSQL = '30',
+   LIB_DB_MYSQL = '31',
+   LIB_DB_POSTGRE = '32',
+   LIB_DB_SQLITE = '33',
+   UTILS_HELPERS = '40',
+   UTILS_UTILITIES = '41'
+}
+
+export enum EApp {
+   APP_CONTROLLER = '00',
+   APP_SERVICE = '01',
+   APP_SCHEMA = '02',
+   APP_WORKER = '03',
+   APP_SPEC = '04',
+}
+
+
+/**
+ * Is variable constant for status message
+ */
+export enum EStatus {
+   SUCCESS = 'Success',
+   FAILED = 'Failed'
+ }
+/**
+ * Is variable constant for message detail
+ */
+export enum ESuccessMessage {
+   FOUND = 'Found',
+   FETCH = 'Fetch',
+   VALID = 'Valid'
+ }
+/**
+ * Is variable constant for messaging an error
+ */
+export enum EErrorMessage {
+   NOT_DECLARED = 'Must declared',
+   NOT_DEFINED = 'Must defined',
+   REQUIRED = 'Must be required',
+   NOT_HANDLED = 'Error not handled',
+   INVALID_DATA = 'Data must be valid',
+   INVALID_SYNTAX = 'Syntax must be valid',
+   INCORRECT_DATA = 'Data must be correct',
+   INCORRECT_SYNTAX = 'Syntax must be correct',
+   ERROR_VALIDATE = 'Error Validate',
+
+
+   INVALID_COLUMN_NAME = 'Column must be valid',
+   INVALID_OBJECT_NAME = 'Object must be valid'
+ }
 export enum EErrorMessageMSSQL {
    MUST_DECLARE = 'Must declare the scalar variable',
-   INCORRECT_SYNTAX = 'INCORRECT_SYNTAX'
+   INCORRECT_SYNTAX = 'Incorect syntax',
+   INVALID_OBJECT_NAME = 'Invalid object name',
+   INVALID_COLUMN_NAME = 'Invalid column name',
 }
 export enum EErrorMessageDescriptionMSSQL {
-   MUST_DECLARE = 'Failed Declare Variable',
-   INCORRECT_SYNTAX = 'Incorrect Syntax'
+   MUST_DECLARE = 'Failed declare variable',
+   INCORRECT_SYNTAX = 'Failed syntax',
+   INVALID_OBJECT_NAME = 'Failed declare object',
+   INVALID_COLUMN_NAME = 'Failed declare column',
 }

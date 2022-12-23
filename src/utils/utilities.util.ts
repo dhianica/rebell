@@ -1,4 +1,5 @@
 import * as path from 'path';
+import crypto from 'crypto';
 
 /**
  *
@@ -21,30 +22,6 @@ export const getLastDirectory = (currentDirectory: string): string =>
   path.basename(path.resolve(currentDirectory));
 
 /**
- *
- * This is function for check params is empty or not
- *
- * @param param any - params want to be check
- * @returns boolean - true if param dont have value, default false
- */
-export function isEmpty(param: any): boolean {
-  if (param === undefined || param === null) return true
-  else if (typeof param === 'object') return Object.keys(param).length < 1
-  else if (typeof param === 'string') return param === '' || param.length < 1
-  else if (Array.isArray(param)) return param.length < 1
-  return false
-}
-
-/**
- * This is function for check validate date
- * @param param any - value want to check validate
- * @returns boolean - valid date
- */
-export function isValidDate(param: any): boolean {
-  return Object.prototype.toString.call(param) === '[object Date]';
-}
-
-/**
  * This is function for get the key from value enum
  *
  * @param myEnum any - data enum want to be check
@@ -56,14 +33,6 @@ export function getEnumKeyByEnumValue(myEnum: any, enumValue: number | string): 
   return keys.length > 0 ? keys[0] : '';
 }
 
-/**
- *
- * This is function for convert array to be flatten
- *
- * @param arrs Array - data want to be convert to flatten
- * @returns Array - array with format flatten
- */
-export const flatten = <T>(arrs: Array<Array<T>>): Array<T> => ([] as Array<T>).concat(...arrs);
 
 // /**
 //  *
@@ -152,3 +121,9 @@ export const objectEntries = (obj: Object): any => {
     }
   };
 }
+
+export const generateCode = (len: number = 3): string => crypto.randomBytes(len).toString('hex').toUpperCase()
+
+
+export const getMethodName = (error: Error): string => /at \w+\.(\w+)/.exec(error.stack)[0].replace(/at /, '') // we want the 2nd method in the call stack
+

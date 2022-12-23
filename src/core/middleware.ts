@@ -1,7 +1,6 @@
 import { type Request, type Response, type NextFunction } from 'express';
 import logger from './logs';
-import { EHttpStatusCode, EMessage, EStatus } from './enum'
-import { IResponseTypes } from './types/response.type'
+import { EHttpStatusCode, ESuccessMessage, EStatus } from './enum'
 /**
  * This core/middelware.ts reference from Express Middleware for create response handler
  *
@@ -24,7 +23,6 @@ class Middleware {
    */
   public async loggerMiddleware(request: Request, response: Response, next: NextFunction): Promise<void> {
     logger.debug(`Run ${request.path}`);
-    console.log(request)
     logger.info(`Request ${request.path}\t\t${JSON.stringify({
       path: request.path,
       method: request.method,
@@ -48,12 +46,12 @@ class Middleware {
       response.json = (data: any = {
         statusCode: EHttpStatusCode.OK,
         status: EStatus.SUCCESS,
-        message: EMessage.FETCH
+        message: ESuccessMessage.FETCH
       }): any => {
         data = {
           statusCode: EHttpStatusCode.OK,
           status: EStatus.SUCCESS,
-          message: EMessage.FETCH,
+          message: ESuccessMessage.FETCH,
           ...data
         }
         logger.info(`Response ${request.path}\t\t${JSON.stringify(data)}`)
@@ -61,7 +59,7 @@ class Middleware {
           return oldJSON.call(response.status(data.statusCode), {
             status: data.status,
             message: data.message,
-            code: data.code,
+            errorCode: data.errorCode,
             detail: data.detail
           })
         else

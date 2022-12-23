@@ -1,9 +1,9 @@
-import { camelCase, isValidDate } from './utilities.util'
+import { camelCase, generateCode, isValidDate } from './index.util'
 import mssql from 'mssql'
 import dayjs from 'dayjs'
-import { EErrorCode, EFormat, ECore, EACTION } from '../core/enum';
-import { shortEncrypt } from '../core/crypto/encrypt'
+import { EErrorCode, EFormat, ECore, EACTION, EErrorMessage } from '../core/enum';
 import dotenv from 'dotenv'
+import { setError } from '../core/error';
 
 dotenv.config()
 
@@ -24,84 +24,104 @@ export class mssqlHelper {
   }
 
   public static addWhereClauses(options: any): string {
-    if (!options) return null
-    if (!options.where) return null
-    if (Object.keys(options.where).length === 0) return null
+    try {
+      const whereClauses = []
+      for (const column in options.where)
+        if (Object.hasOwnProperty.call(options.where, column)) {
+          const value = options.where[column];
 
-    const whereClauses = []
-    for (const column in options.where)
-      if (Object.hasOwnProperty.call(options.where, column)) {
-        const value = options.where[column];
+          if (typeof value === 'string')
+            whereClauses.push(`${column}='${value}'`)
+          else whereClauses.push(`${column}=${value}`)
+        }
 
-        if (typeof value === 'string')
-          whereClauses.push(`${column}='${value}'`)
-        else whereClauses.push(`${column}=${value}`)
-      }
-
-    return whereClauses.join(' AND ')
+      return whereClauses.join(' AND ')
+    } catch (error) {
+      error.errorCode= `${EErrorCode.OTHER}-${ECore.UTILS_HELPERS}-${generateCode(4)}`
+      error.errorMessage = error.message
+      error.message= EErrorMessage.INVALID_SYNTAX
+      setError(error)
+      throw error
+    }
   }
 
   public static addWhereClausesAdvance(options: any): string {
-    if (!options) return null
-    if (!options.where) return null
-    if (Object.keys(options.where).length === 0) return null
-    let totalCondition = false
-    if ((Object.keys(options.where).length > 1)) totalCondition = true
-    const whereClauses = []
-    for (const column in options.where)
-      if (Object.hasOwnProperty.call(options.where, column)) {
-        let where = ''
-        const value = options.where[column][0];
-        const condition = options.where[column][1];
-        const bitwise = options.where[column][2] || 'AND';
+    try {
+      let totalCondition = false
+      if ((Object.keys(options.where).length > 1)) totalCondition = true
+      const whereClauses = []
+      for (const column in options.where)
+        if (Object.hasOwnProperty.call(options.where, column)) {
+          let where = ''
+          const value = options.where[column][0];
+          const condition = options.where[column][1];
+          const bitwise = options.where[column][2] || 'AND';
+          if (condition.toLowerCase() === 'like')
+            where = `${column} LIKE '%@${column}%'`
+          else
+            where = `${column} ${condition} @${column}`
 
-        if (condition.toLowerCase() === 'like')
-          where = `${column} LIKE '%@${column}%'`
-        else
-          where = `${column} ${condition} @${column}`
+          if (totalCondition)
+            where += ` ${bitwise} `
 
-        if (totalCondition)
-          where += ` ${bitwise} `
+          whereClauses.push(where)
+        }
 
-        whereClauses.push(where)
-      }
-
-    return whereClauses.join(' ').replace(/AND $|OR $/, '')
+      return whereClauses.join(' ').replace(/AND $|OR $/, '')
+    } catch (error) {
+      error.errorCode= `${EErrorCode.OTHER}-${ECore.UTILS_HELPERS}-${generateCode(4)}`
+      error.errorMessage = error.message
+      error.message= EErrorMessage.INVALID_SYNTAX
+      setError(error)
+      throw error
+    }
   }
 
   public static addOrderByClauses(options: any): string{
-    if (!options) return null
-    if (!options.orderBy) return null
+    try {
+      const orderByClauses = []
+      for (const column in options.orderBy)
+        if (Object.hasOwnProperty.call(options.orderBy, column)) {
+          const value = options.orderBy[column];
 
-    const orderByClauses = []
-    for (const column in options.orderBy)
-      if (Object.hasOwnProperty.call(options.orderBy, column)) {
-        const value = options.orderBy[column];
-
-        if (value === 'ASC') orderByClauses.push(`${column} ASC`)
-        if (value === 'DESC') orderByClauses.push(`${column} DESC`)
-      }
+          if (value === 'ASC') orderByClauses.push(`${column} ASC`)
+          if (value === 'DESC') orderByClauses.push(`${column} DESC`)
+        }
 
 
-    return orderByClauses.join(', ')
+      return orderByClauses.join(', ')
+    } catch (error) {
+      error.errorCode= `${EErrorCode.OTHER}-${ECore.UTILS_HELPERS}-${generateCode(4)}`
+      error.errorMessage = error.message
+      error.message= EErrorMessage.INVALID_SYNTAX
+      setError(error)
+      throw error
+    }
   }
 
   public static addInsertSQL(payload: any): any{
     const columns = []
     const values = []
+    try {
+      for (const column in payload)
+        if (Object.hasOwnProperty.call(payload, column)) {
+          const value = payload[column];
 
-    for (const column in payload)
-      if (Object.hasOwnProperty.call(payload, column)) {
-        const value = payload[column];
-
-        columns.push(column)
-        if (typeof value === 'string')
-          values.push(`'${value}'`)
-        else values.push(`${value}`)
-      }
+          columns.push(column)
+          if (typeof value === 'string')
+            values.push(`'${value}'`)
+          else values.push(`${value}`)
+        }
 
 
-    return { columns, values }
+      return { columns, values }
+    } catch (error) {
+      error.errorCode= `${EErrorCode.OTHER}-${ECore.UTILS_HELPERS}-${generateCode(4)}`
+      error.errorMessage = error.message
+      error.message= EErrorMessage.INVALID_SYNTAX
+      setError(error)
+      throw error
+    }
   }
 
   public static queryInsert(columns: string, table: string): Promise<any> {
@@ -113,7 +133,7 @@ export class mssqlHelper {
         resolve(query)
       } catch (error) {
         reject({
-          code: `${EErrorCode.OTHER}-${ECore.UTILS}-${shortEncrypt(this.constructor.name)}`,
+          errorCode: `${EErrorCode.OTHER}-${ECore.UTILS_HELPERS}-${generateCode(4)}`,
           message: error.message
         })
       }
@@ -147,7 +167,7 @@ export class mssqlHelper {
         resolve(query)
       } catch (error) {
         reject({
-          code: `${EErrorCode.OTHER}-${ECore.UTILS}-${shortEncrypt(this.constructor.name)}`,
+          errorCode: `${EErrorCode.OTHER}-${ECore.UTILS_HELPERS}-${generateCode(4)}`,
           message: error.message
         })
       }
@@ -161,7 +181,7 @@ export class mssqlHelper {
         resolve(query)
       } catch (error) {
         reject({
-          code: `${EErrorCode.OTHER}-${ECore.UTILS}-${shortEncrypt(this.constructor.name)}`,
+          errorCode: `${EErrorCode.OTHER}-${ECore.UTILS_HELPERS}-${generateCode(4)}`,
           message: error.message
         })
       }
@@ -177,7 +197,7 @@ export class mssqlHelper {
         resolve(query)
       } catch (error) {
         reject({
-          code: `${EErrorCode.OTHER}-${ECore.UTILS}-${shortEncrypt(this.constructor.name)}`,
+          errorCode: `${EErrorCode.OTHER}-${ECore.UTILS_HELPERS}-${generateCode(4)}`,
           message: error.message
         })
       }
@@ -185,45 +205,42 @@ export class mssqlHelper {
   }
 }
 
-export async function getColoumnMSSQL(columns: any): Promise<any> {
-  return new Promise((resolve, reject) => {
-    try {
-      const result = Object.values(columns).map(({ index, name, length, type }) => ({
-        name,
-        index,
-        type,
-        length }))
-      resolve(result)
-    } catch (error) {
-      reject({
-        code: `${EErrorCode.OTHER}-${ECore.UTILS}-${shortEncrypt(this.constructor.name)}`,
-        message: error.message
-      })
-    }
-  })
+export function getColoumnMSSQL(columns: any): any {
+  try {
+    return Object.values(columns).map(({ index, name, length, type }) => ({
+      name,
+      index,
+      type,
+      length }))
+  } catch (error) {
+    error.errorCode= `${EErrorCode.OTHER}-${ECore.UTILS_HELPERS}-${generateCode(4)}`
+    error.errorMessage = error.message
+    error.message = EErrorMessage.INVALID_SYNTAX
+    setError(error)
+    throw error
+  }
 }
 
 
-export async function wrappingDataMSSQL(recordsets: any, column: any): Promise<any> {
-  return new Promise((resolve, reject) => {
-    try {
-      recordsets.forEach(x => {
-        column.forEach((y) => {
-          const found = Object.keys(x).find(z => z === y.name)
-          if (y.type === mssql.Int && found)
-            x[y.name] = parseInt(x[y.name], 10)
-          else if (y.type === mssql.DateTime && found && isValidDate(x[y.name]))
-            x[y.name] = dayjs(x[y.name], EFormat.DateUTC).format(EFormat.DateString)
-          else if (y.type === mssql.Bit && found)
-            x[y.name] = parseInt(x[y.name], 10) === 1 ? true: false
-        })
+export function wrappingDataMSSQL(recordsets: any, column: any): any {
+  try {
+    recordsets.forEach(x => {
+      column.forEach((y) => {
+        const found = Object.keys(x).find(z => z === y.name)
+        if (y.type === mssql.Int && found)
+          x[y.name] = parseInt(x[y.name], 10)
+        else if (y.type === mssql.DateTime && found && isValidDate(x[y.name]))
+          x[y.name] = dayjs(x[y.name], EFormat.DateUTC).format(EFormat.DateString)
+        else if (y.type === mssql.Bit && found)
+          x[y.name] = parseInt(x[y.name], 10) === 1 ? true: false
       })
-      resolve(recordsets)
-    } catch (error) {
-      reject({
-        code: `${EErrorCode.OTHER}-${ECore.UTILS}-${shortEncrypt(this.constructor.name)}`,
-        message: error.message
-      })
-    }
-  })
+    })
+    return recordsets
+  } catch (error) {
+    error.errorCode= `${EErrorCode.OTHER}-${ECore.UTILS_HELPERS}-${generateCode(4)}`
+    error.errorMessage = error.message
+    error.message= EErrorMessage.INVALID_SYNTAX
+    setError(error)
+    throw error
+  }
 }

@@ -85,7 +85,7 @@ io.sockets.on('error', () => {
 
 const connection = process.env.CONNECTION.split(',')
 for (const iterator of connection)
-  if (iterator === getEnumKeyByEnumValue(EDatabase, 0)) {
+  if (iterator === getEnumKeyByEnumValue(EDatabase, '00')) {
     let connectionString = ''
     if (process.env.MSSQL_PORT === undefined || process.env.MSSQL_PORT === '')
       connectionString = `Server=${process.env.MSSQL_HOST};Database=${process.env.MSSQL_DB};User Id=${process.env.MSSQL_USER};Password=${process.env.MSSQL_PASS};Encrypt=false;`
