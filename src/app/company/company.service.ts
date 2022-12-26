@@ -19,12 +19,12 @@ class CompanyServiceClass {
     }
   });
 
-  public getCompanyByID = (id: number): Promise<any> => new Promise<any>(async (resolve, reject) => {
+  public getCompanyByID = async (id: number): Promise<any> => new Promise<any>(async (resolve, reject) => {
     try {
       const connection = await this.instance.connect('company')
-      const result = await this.instance.select(connection, {
+      const result = await this.instance.selectSingle(connection, {
         table: 'company',
-        where: { company_ida: [id, '=']},
+        where: { company_id: [id, '=']},
         orderBy: { company_id: 'DESC' }
       })
       resolve(result)

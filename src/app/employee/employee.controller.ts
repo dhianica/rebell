@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction }  from 'express';
 import { EHttpStatusCode, EStatus, EErrorMessage } from '../../core/enum'
 import { Get, Post, ValidateBody } from '../../core/decorator'
-import type { IResponseTypes } from '../../core/types/response.type'
+import type { IResponseTypes } from '../../core/type'
 import { Employee } from './#schema/employee.schema'
 class EmployeeController {
   private posts: any[] = [
@@ -22,12 +22,7 @@ class EmployeeController {
       try {
         response.json()
       } catch (error: any) {
-        next({
-          statusCode: EHttpStatusCode.INTERNAL_SERVER_ERROR,
-          status: EStatus.FAILED,
-          message: EErrorMessage.NOT_HANDLED,
-          detail: error.message
-        } as IResponseTypes)
+        next(error)
       }
     })
   }

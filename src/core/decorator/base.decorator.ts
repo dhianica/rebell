@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import  type { IRouterTypes, ISchemaTypes } from '../types';
+import  type { IRouterTypes, ISchemaTypes } from '../type';
 import { EHttpMethods, EMetadataKeys } from '../enum'
 
 export const RouteDecoratorFactory = (method: EHttpMethods) =>

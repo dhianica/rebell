@@ -1,19 +1,11 @@
 import type { Request, Response, NextFunction }  from 'express';
-import { EHttpStatusCode, EStatus, EErrorMessage, ECore, EErrorCode, EApp } from '../../core/enum'
+import { EErrorMessage, EErrorCode, EApp } from '../../core/enum'
 import { Get } from '../../core/decorator'
-import type { IResponseTypes } from '../../core/types/response.type'
 import { CompanyService } from './company.service'
 import { generateCode, getMethodName, isNumber } from '../../utils/index.util'
 import { customError } from '../../core/error';
 
 class CompanyController {
-  private posts: any[] = [
-    {
-      name: 'Muchammad Ilham',
-      division: 'System Development',
-      title: 'Senior'
-    }
-  ];
 
   @Get('/')
   public async getAllCompanys(
@@ -28,13 +20,7 @@ class CompanyController {
           detail: result
         })
       } catch (error: any) {
-        next({
-          statusCode: EHttpStatusCode.INTERNAL_SERVER_ERROR,
-          status: EStatus.FAILED,
-          errorCode: error.errorCode,
-          message: error.message,
-          detail: error.detail
-        } as IResponseTypes)
+        next(error)
       }
     })
   }
@@ -55,19 +41,12 @@ class CompanyController {
             errorCode:`${EErrorCode.APP}-${EApp.APP_CONTROLLER}-${generateCode(4)}`
           })
 
-
         const result = await CompanyService.getCompanyByID(parseInt(id, 10))
         response.json({
           detail: result
         })
       } catch (error: any) {
-        next({
-          statusCode: EHttpStatusCode.INTERNAL_SERVER_ERROR,
-          status: EStatus.FAILED,
-          errorCode: error.errorCode,
-          message: error.message,
-          detail: error.detail
-        } as IResponseTypes)
+        next(error)
       }
     })
   }
