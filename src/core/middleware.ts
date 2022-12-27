@@ -24,11 +24,11 @@ class Middleware {
    */
   public async loggerMiddleware(request: Request, response: Response, next: NextFunction): Promise<void> {
     logger.debug(`Run ${request.path}`);
-    logger.info(`Request ${request.path}\t\t${JSON.stringify({
+    logger.info(`Request ${request.path}`, JSON.stringify({
       path: request.path,
       method: request.method,
       data: { ...request.body, ...request.query, ...request.params }
-    })}`);
+    }));
     next()
   }
 
@@ -54,7 +54,7 @@ class Middleware {
         message: ESuccessMessage.FETCH,
         ...data
       }
-      logger.info(`Response ${request.path}\t\t${JSON.stringify(data)}`)
+      logger.info(`Response ${request.path}`, JSON.stringify(data))
       if (data && data.status === EStatus.FAILED)
         return oldJSON.call(response.status(data.statusCode), {
           status: data.status,

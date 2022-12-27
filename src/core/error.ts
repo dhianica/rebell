@@ -4,7 +4,7 @@ import logger from './logs';
 import { IError } from './type';
 
 export function setErrorDatabase(error: any): void {
-  logger.error(`Error ${error.errorCode}\t\t\t${JSON.stringify({ path: error.errorPath, message: error.message })}`)
+  logger.error(`Error ${error.errorCode}`, JSON.stringify({ path: error.errorPath, message: error.message }))
   if (error.message.indexOf(EErrorMessageMSSQL.MUST_DECLARE) !== -1) {
     error.detail = EErrorMessageDescriptionMSSQL.MUST_DECLARE
     error.errorMessage = error.message
@@ -28,11 +28,11 @@ export function setErrorDatabase(error: any): void {
 }
 
 export function setError(error: any): void {
-  logger.error(`Error ${error.errorCode}\t\t\t${JSON.stringify({ path: error.errorPath, message: error.message })}`)
+  logger.error(`Error ${error.errorCode}`, JSON.stringify({ path: error.errorPath, message: error.message }))
 }
 
 export const customError = (_error: IError): any => {
-  logger.error(`Error ${_error.errorCode}\t\t\t${JSON.stringify({ path: _error.errorPath, message: _error.message })}`)
+  logger.error(`Error ${_error.errorCode}`, JSON.stringify({ path: _error.errorPath, message: _error.message }))
   const error = new Error(_error.message) as any
   error.errorPath = _error.errorPath
   error.errorCode = _error.errorCode

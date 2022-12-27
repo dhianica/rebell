@@ -501,7 +501,8 @@ export enum EStatus {
 export enum ESuccessMessage {
    FOUND = 'Found',
    FETCH = 'Fetch',
-   VALID = 'Valid'
+   VALID = 'Valid',
+   INSERTED = 'Inserted'
  }
 /**
  * Is variable constant for messaging an error
@@ -523,13 +524,13 @@ export enum EErrorMessage {
  }
 export enum EErrorMessageMSSQL {
    MUST_DECLARE = 'Must declare the scalar variable',
-   INCORRECT_SYNTAX = 'Incorect syntax',
+   INCORRECT_SYNTAX = 'Incorrect syntax near',
    INVALID_OBJECT_NAME = 'Invalid object name',
    INVALID_COLUMN_NAME = 'Invalid column name',
 }
 export enum EErrorMessageDescriptionMSSQL {
    MUST_DECLARE = 'Failed declare variable',
-   INCORRECT_SYNTAX = 'Failed syntax',
+   INCORRECT_SYNTAX = 'Failed query not valid',
    INVALID_OBJECT_NAME = 'Failed declare object',
    INVALID_COLUMN_NAME = 'Failed declare column',
 }

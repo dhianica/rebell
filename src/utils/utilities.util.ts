@@ -122,8 +122,35 @@ export const objectEntries = (obj: Object): any => {
   };
 }
 
+/**
+ * This is function for generate unique code
+ *
+ * @param len number - params for generate total length string
+ * @returns  string - unique string
+ */
 export const generateCode = (len: number = 3): string => crypto.randomBytes(len).toString('hex').toUpperCase()
 
-
+/**
+ * This is function for get method name using new Error
+ *
+ * @param len number - params new Error
+ * @returns  string - method name
+ */
 export const getMethodName = (error: Error): string => /at \w+\.(\w+)/.exec(error.stack)[0].replace(/at /, '') // we want the 2nd method in the call stack
+
+export function getSafe(fn: Function, defaultVal: any): void  {
+  try {
+    return fn();
+  } catch (e) {
+    return defaultVal;
+  }
+}
+
+/**
+ * This is function for convert string of array to array
+ *
+ * @param n string - params string of array
+ * @returns array - array data from string with commas separated
+ */
+export const stringToArray = (n: string): any => n.replace(/\[|\]/g, '').split(',')
 

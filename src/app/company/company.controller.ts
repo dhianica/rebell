@@ -1,9 +1,10 @@
 import type { Request, Response, NextFunction }  from 'express';
-import { EErrorMessage, EErrorCode, EApp } from '../../core/enum'
-import { Get } from '../../core/decorator'
+import { EErrorMessage, EErrorCode, EApp, ESuccessMessage } from '../../core/enum'
+import { Get, Post, ValidateBody } from '../../core/decorator'
 import { CompanyService } from './company.service'
 import { generateCode, getMethodName, isNumber } from '../../utils/index.util'
 import { customError } from '../../core/error';
+import { Company as CompanySchema } from './#schema/company.schema'
 
 class CompanyController {
 
@@ -15,7 +16,7 @@ class CompanyController {
   ): Promise<void>  {
     return new Promise<void>(async () => {
       try {
-        const result = await CompanyService.getAllCompanys()
+        const result = await CompanyService.get(request)
         response.json({
           detail: result
         })
@@ -41,10 +42,26 @@ class CompanyController {
             errorCode:`${EErrorCode.APP}-${EApp.APP_CONTROLLER}-${generateCode(4)}`
           })
 
-        const result = await CompanyService.getCompanyByID(parseInt(id, 10))
+        const result = await CompanyService.getByID(request, parseInt(id, 10))
         response.json({
           detail: result
         })
+      } catch (error: any) {
+        next(error)
+      }
+    })
+  }
+
+  @Post('/')
+  public async insertCompany(
+    request: Request,
+    response: Response,
+    next: NextFunction
+  ): Promise<void>  {
+    return new Promise<void>(async () => {
+      try {
+        const result = await CompanyService.insertWithDefault(request.body)
+        response.json({ message: ESuccessMessage.INSERTED, detail: result })
       } catch (error: any) {
         next(error)
       }

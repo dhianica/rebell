@@ -60,7 +60,8 @@ export interface IDB {
   select<T>(connection: any, options: IDBOptions): Promise<T[]>;
   selectSingle<T>(connection: any, options: IDBOptions): Promise<T>;
   selectSingleOrDefault<T>(connection: any, options: IDBOptions): Promise<T> | Promise<any>;
-  insert<T>(connection: any, options: IDBOptions): Promise<T>;
+  insert<T>(connection: any, options: IDBOptions): Promise<boolean>;
+  insertWithDefault<T>(connection: any, options: IDBOptions): Promise<T>;
   update<T>(connection: any, options: IDBOptions): Promise<T>;
   delete<T>(connection: any, options: IDBOptions): Promise<T>;
   execute<T>(connection: any, sp: string, paramaters?: any): Promise<T>;

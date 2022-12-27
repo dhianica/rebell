@@ -1,4 +1,3 @@
-
 /**
  *
  * This is function for check params is empty or not
@@ -23,6 +22,29 @@ export function isValidDate(param: any): boolean {
   return Object.prototype.toString.call(param) === '[object Date]';
 }
 
+/**
+ * This is function for check validate number
+ * @param param any - value want to check validate
+ * @returns boolean - valid date
+ */
 export function isNumber(n: any): boolean {
   return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
+/**
+ * This is function for check validate string
+ * @param param any - value want to check validate
+ * @returns boolean - valid date
+ */
+export function isString(n: any): boolean {
+  return typeof n === 'string';
+}
+
+/**
+ * This is function for check validate object
+ * @param param any - value want to check validate
+ * @returns boolean - valid date
+ */
+export function isObject(n: any): boolean {
+  return typeof n === 'object';
 }

@@ -3,12 +3,12 @@ import { appendFileSync } from 'fs';
 import dayjs from 'dayjs';
 
 function logToTransport(logObject: ILogObject): void {
-  const logs = `[${dayjs(logObject.date).format('YYYY-MM-DD HH:mm:ss')}] -> ${logObject.logLevel} : ${logObject.argumentsArray.toString()}`;
+  const logs = `[${dayjs(logObject.date).format('YYYY-MM-DD HH:mm:ss')}] -> ${logObject.logLevel} : ${logObject.argumentsArray.join('\t')}`;
   appendFileSync('./logs/info.log', logs + '\n');
 }
 
 function errorLogToTransport(logObject: ILogObject): void {
-  const logs = `[${dayjs(logObject.date).format('YYYY-MM-DD HH:mm:ss')}] -> ${logObject.logLevel} : ${logObject.argumentsArray.toString()}`;
+  const logs = `[${dayjs(logObject.date).format('YYYY-MM-DD HH:mm:ss')}] -> ${logObject.logLevel} : ${logObject.argumentsArray.join('\t')}`;
   appendFileSync('./logs/error.log', logs + '\n');
 }
 
@@ -17,7 +17,7 @@ function debugLogToTransport(logObject: ILogObject): void {
 }
 
 const logger: Logger = new Logger({
-  minLevel:'debug',
+  type: 'pretty',
   displayLoggerName: false,
   displayFunctionName: false,
   displayFilePath: 'hidden'

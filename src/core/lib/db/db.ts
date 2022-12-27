@@ -1,4 +1,4 @@
-import { generateCode } from '../../../utils/index.util'
+import { generateCode, isString, stringToArray } from '../../../utils/index.util'
 import { EErrorCode, EErrorMessage } from '../../enum';
 import { setError } from '../../error';
 import { IDBOptions } from '../../type'
@@ -9,6 +9,9 @@ export abstract class DBHelper {
       if (!options) return '*'
       if (!options.columns) return '*'
       if (options.columns.length < 1) return '*'
+
+      if (isString(options.columns))
+        options.columns = stringToArray(options.columns.toString())
 
       return options.columns.join(',\n')
     }
@@ -112,9 +115,15 @@ export abstract class DBHelper {
     public queryInsert<T>(options: IDBOptions): Promise<T> {
       return new Promise((resolve, reject) => {
         try {
-          let query = `INSERT INTO ${options.table} (${options.columns})`
-          const values = options.columns.map((x) => `@${x}`).join()
-          query += `${values}`
+          let query = `INSERT INTO ${options.table} `
+          const setColumn = []
+          const setVarColumn = []
+          for (const column in options.columns)
+            if (Object.hasOwnProperty.call(options.columns, column)) {
+              setColumn.push(column)
+              setVarColumn.push(`@${column}`)
+            }
+          query += `(${setColumn.join(', ')}) VALUES (${setVarColumn.join(', ')})`
           resolve(query as T)
         } catch (error) {
           reject({

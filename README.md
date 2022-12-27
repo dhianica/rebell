@@ -32,11 +32,17 @@ npm install
 
 # Running Application
 ```
+/// run this command if want to build
 npm run start:dev
 ```
 
+```
+/// run this command if wont to build
+npm start
+```
+
 # Route
-**core/decorator/handler.decorator.ts** is decorator for set route handler express
+**core/decorator/route.decorator.ts** is decorator for set route handler express
 if route decorator is empty the route will be using function name 
 endpoint will be generate using path folder name
 
@@ -101,6 +107,29 @@ endpoint will be generate using path folder name
       }
     }
     ```
+**core/decorator/request.decorator.ts** is decorator for validate data for valid request data, in this function run check validate Body, Query and validating using schema AJV
+  * ### ValidateBody
+    #### example:
+    ```typescript
+    class TestController {
+    
+      @ValidateBody(Schema) //Default parameter when not declare create endpoint using method Name
+      public async postTest(req: Request, res: Response, next: NextFunction) {
+        res.json({ message: 'OK'})
+      }
+    }
+    ```
+  * ### ValidateQuery
+    #### example:
+    ```typescript
+    class TestController {
+    
+      @ValidateQuery(Schema) //Default parameter when not declare create endpoint using method Name
+      public async postTest(req: Request, res: Response, next: NextFunction) {
+        res.json({ message: 'OK'})
+      }
+    }
+    ```
 
 # Middleware
  **core/middleware.ts** reference from Express Middleware for create response handler
@@ -115,11 +144,12 @@ endpoint will be generate using path folder name
    * @param next : express next function
    */
   public async loggerMiddleware(request: Request, response: Response, next: NextFunction): Promise<void> {
-    logger.debug(`Run ${request.path}\t\t${JSON.stringify({
+    logger.debug(`Run ${request.path}`);
+    logger.info(`Request ${request.path}`, JSON.stringify({
       path: request.path,
       method: request.method,
-      body: Object.keys(request.body).length !== 0 ? request.body : ''
-    })}`);
+      data: { ...request.body, ...request.query, ...request.params }
+    }));
     next()
   }
   ```
@@ -128,27 +158,43 @@ endpoint will be generate using path folder name
  ```typescript
   /**
    * 
-   * this is responseMiddleware for intercepting response handlers from controller
+   * This is responseMiddleware for intercepting response handlers from controller
+   * This value is dynamic, you can modify in result if not throw to exception
    * 
    * @param request : express request
    * @param response  : express response
    * @param next : express next function
    */
   public async responseMiddleware(request: Request, response: Response, next: NextFunction): Promise<void>  {
-    try {
-      const oldJSON = response.json;
-      response.json = (data: IResponseTypes): any => {
-        if(data && data.status === Status.FAILED) { response.json = oldJSON; } else { logger.info(`Response ${request.path}\t\t${JSON.stringify(data)}`) }
+    const oldJSON = response.json;
+    response.json = (data: any = {
+      statusCode: EHttpStatusCode.OK,
+      status: EStatus.SUCCESS,
+      message: ESuccessMessage.FETCH
+    }): any => {
+      data = {
+        statusCode: EHttpStatusCode.OK,
+        status: EStatus.SUCCESS,
+        message: ESuccessMessage.FETCH,
+        ...data
+      }
+      logger.info(`Response ${request.path}`, JSON.stringify(data))
+      if (data && data.status === EStatus.FAILED)
         return oldJSON.call(response.status(data.statusCode), {
           status: data.status,
           message: data.message,
-          detail: JSON.stringify(data.detail)
-        });
-      } 
-      await next()
-    } catch(error) {
-      next(error)
+          errorCode: data.errorCode,
+          detail: data.detail
+        } as IResponseTypes)
+      else
+        return oldJSON.call(response.status(data.statusCode), {
+          status: data.status,
+          message: data.message,
+          detail: data.detail
+        } as IResponseTypes);
+
     }
+    next()
   }
  ```
 
@@ -157,17 +203,24 @@ endpoint will be generate using path folder name
   /**
    * 
    * This is errorMiddleware for logging errors response from controller and next to responseMiddleware
+   * This value is dynamic, you can modify in exception Error
    * 
    * @param error : any
    * @param request : express request
    * @param response  : express response
    * @param next : express next function
    */
-  public async errorMiddleware(error: any, request: Request, response: Response, next: NextFunction): Promise<any>  {
-    logger.error(`Response ${request.path}\t\t${JSON.stringify(error)}`)
-    response.json(error)
+  public async errorMiddleware(error: any | '' | null | undefined, request: Request, response: Response, next: NextFunction): Promise<any>  {
+    response.json({
+      statusCode: EHttpStatusCode.INTERNAL_SERVER_ERROR,
+      status: EStatus.FAILED,
+      message: error.message,
+      errorCode: error.errorCode,
+      detail: error.detail
+    } as IResponseTypes)
   }
  ```
+
 # Schema
 for using Ajv Schema, can declare the schema in folder **src/app/*/#schema** with file name ***.schema.ts**
 this schema will be set in function ajv.addMetaSchema(schema, schemaName), schemaName automatically set with folder name file path
@@ -178,7 +231,6 @@ this schema will be set in function ajv.addMetaSchema(schema, schemaName), schem
         - test.schema.ts
 
   schemaName will be Generate with name **TestSchema**
-  
 # Worker Threads
 for using Worker Threads, can declare the worker function in folder **src/app/*/#worker** with file name ***.[functionName].worker.ts**
 #### example:
@@ -194,16 +246,18 @@ for using Worker Threads, can declare the worker function in folder **src/app/*/
   }
   parentPort?.postMessage(getAllEmployees1());
   ```
+
 # Response
 
-**core/types/response.type.ts** is interface for declare response controller
-this response will be send to middleware responseMiddleware
+**core/type.ts** is interface for declare all type used in this app
 
 ```typescript
 export interface IResponseTypes {
-  statusCode: HttpStatusCode;
-  status: Status;
-  message: Message;
+  statusCode: EHttpStatusCode;
+  status: EStatus;
+  message: ESuccessMessage | EErrorMessage;
+  errorMessage: any;
+  errorCode: any;
   detail?: any;
 }
 ```
@@ -231,9 +285,9 @@ const result: IResponseTypes = {
 next(result)
 ```
 
-
-
 # Utility Methods
+
+## src/utils/utilities.ts
 * #### camelCase
 ```typescript
 /**
@@ -371,6 +425,98 @@ export function mapToArray<K, V, R>(
 export const range = (start: number, end: number, step: number = 1): Array<number> => {return [...Array(Math.ceil(end / step)).keys()].map(i => {return i * step + start;});};
 ```
 
+* #### convertParamToObject
+```typescript
+/**
+ *
+ * This is function for convert query params from URL to Object Json
+ *
+ * @param str : string -> query params from URL
+ * @returns : object
+ */
+export const convertParamToObject = (str: string): Object => Object.fromEntries(new URLSearchParams(str))
+```
+
+* #### objectEntries
+```typescript
+export const objectEntries = (obj: Object): any => {
+  let index = 0;
+
+  // In ES6, you can use strings or symbols as property keys,
+  // Reflect.ownKeys() retrieves both
+  const propKeys = Reflect.ownKeys(obj);
+
+  return {
+    [Symbol.iterator]() {
+      return this;
+    },
+    next() {
+      if (index < propKeys.length) {
+        const key = propKeys[index];
+        index++;
+        return { value: [key, obj[key]]};
+      } else {
+        return { done: true };
+      }
+    }
+  };
+}
+```
+
+* #### generateCode
+```typescript
+/**
+ * This is function for generate unique code
+ *
+ * @param len number - params for generate total length string
+ * @returns  string - unique string
+ */
+export const generateCode = (len: number = 3): string => crypto.randomBytes(len).toString('hex').toUpperCase()
+```
+
+* #### getMethodName
+```typescript
+/**
+ * This is function for get method name using new Error
+ *
+ * @param len number - params new Error
+ * @returns  string - method name
+ */
+export const getMethodName = (error: Error): string => /at \w+\.(\w+)/.exec(error.stack)[0].replace(/at /, '')
+```
+
+* #### getSafe
+```typescript
+export function getSafe(fn: Function, defaultVal: any): void  {
+  try {
+    return fn();
+  } catch (e) {
+    return defaultVal;
+  }
+}
+```
+
+* #### stringToArray
+```typescript
+/**
+ * This is function for convert string of array to array
+ *
+ * @param n string - params string of array
+ * @returns array - array data from string with commas separated
+ */
+export const stringToArray = (n: string): any => n.replace(/\[|\]/g, '').split(',')
+```
+
+
+## src/utils/validate.util.ts
+
+| Name | Description |
+| --- | --- |
+| `isEmpty` | ` This is function for check params is empty or not ` |
+| `isValidDate` | ` This is function for check validate date ` |
+| `isNumber` | ` This is function for check validate numbe ` |
+| `isString` | ` This is function for check validate string ` |
+| `isObject` | ` This is function for check validate object ` |
 
 # Unit Test
 
@@ -395,18 +541,15 @@ describe('Unit Test Employee', (): void => {
 
 | Name | Function |
 | --- | --- |
-| `logger.silly ` | ``` logger.silly() ``` |
-| `logger.debug ` | ``` logger.debug() ``` |
-| `logger.trace ` | ``` logger.trace() ``` |
-| `logger.info ` | ``` logger.info() ``` |
-| `logger.warn ` | ``` logger.warn() ``` |
-| `logger.error ` | ``` logger.error() ``` |
-| `logger.fatal ` | ``` logger.fatal() ``` |
+| `logger.silly` | ``` logger.silly() ``` |
+| `logger.debug` | ``` logger.debug() ``` |
+| `logger.trace` | ``` logger.trace() ``` |
+| `logger.info` | ``` logger.info() ``` |
+| `logger.warn` | ``` logger.warn() ``` |
+| `logger.error` | ``` logger.error() ``` |
+| `logger.fatal` | ``` logger.fatal() ``` |
 
 
 # Next Features
-- #### Create Validate Decorator for Schema AJV
 - #### Add Documentation API with Open API 3.0
-- #### Create Class library third party for Connection Database (Mysql, Sql Server, PostgreSQL, MongoDB, etc)
-- #### Create Class library third party for Handling WebSocket (socket.io)
-- #### Create Class library third party for Message Broker (rabbitMQ)
+- #### Create Class library third party for Connection Database (Mysql, PostgreSQL, MongoDB, etc)
