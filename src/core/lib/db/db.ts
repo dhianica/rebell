@@ -91,19 +91,7 @@ export abstract class DBHelper {
     public querySelect<T>(options: IDBOptions): Promise<T> {
       return new Promise((resolve, reject) => {
         try {
-          resolve(this.query(false, options) as T)
-        } catch (error) {
-          reject({
-            errorCode: `${EErrorCode.DATABASE}-${this.DBPath}-${generateCode(4)}`,
-            message: error.message
-          })
-        }
-      })
-    }
-    public querySelectSingle<T>(options: IDBOptions): Promise<T> {
-      return new Promise((resolve, reject) => {
-        try {
-          resolve(this.query(true, options) as T)
+          resolve(this.query(options) as T)
         } catch (error) {
           reject({
             errorCode: `${EErrorCode.DATABASE}-${this.DBPath}-${generateCode(4)}`,
@@ -163,7 +151,7 @@ export abstract class DBHelper {
         }
       })
     }
-    public abstract query(isSingle: boolean, options: IDBOptions): string;
+    public abstract query(options: IDBOptions): string;
 }
 
 // export class MYSQLHelper extends DBHelper implements IDB, IDBHelper {

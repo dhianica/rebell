@@ -48,26 +48,31 @@ class Middleware {
       status: EStatus.SUCCESS,
       message: ESuccessMessage.FETCH
     }): any => {
-      data = {
-        statusCode: EHttpStatusCode.OK,
-        status: EStatus.SUCCESS,
-        message: ESuccessMessage.FETCH,
-        ...data
-      }
-      logger.info(`Response ${request.path}`, JSON.stringify(data))
-      if (data && data.status === EStatus.FAILED)
+      logger.info(`Response ${request.path}`, JSON.stringify({
+        statusCode: data.statusCode || EHttpStatusCode.OK,
+        status: data.status,
+        message: data.message
+      }))
+      if (data && data.status === EStatus.FAILED) {
         return oldJSON.call(response.status(data.statusCode), {
           status: data.status,
           message: data.message,
           errorCode: data.errorCode,
           detail: data.detail
         } as IResponseTypes)
-      else
+      } else {
+        data = {
+          statusCode: EHttpStatusCode.OK,
+          status: EStatus.SUCCESS,
+          message: ESuccessMessage.FETCH,
+          ...data
+        }
         return oldJSON.call(response.status(data.statusCode), {
           status: data.status,
           message: data.message,
           detail: data.detail
         } as IResponseTypes);
+      }
 
     }
     next()

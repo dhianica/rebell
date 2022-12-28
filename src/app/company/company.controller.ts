@@ -44,7 +44,8 @@ class CompanyController {
 
         const result = await CompanyService.getByID(request, parseInt(id, 10))
         response.json({
-          detail: result
+          message: result.message,
+          detail: result.data
         })
       } catch (error: any) {
         next(error)

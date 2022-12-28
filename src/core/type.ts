@@ -1,11 +1,10 @@
-
 import { AnySchemaObject } from 'ajv'
+import { type IResult } from 'mssql'
 import {
   ERoles,
   EPermissions,
   EHttpMethods,
   type EHttpStatusCode, type EStatus, type ESuccessMessage, type EErrorMessage } from './enum'
-
 export interface IConfiguration {
   name: string;
   value: string;
@@ -57,9 +56,10 @@ export interface ISocketClient {
 }
 
 export interface IDB {
+  prepareSelect<T>(connection: any, options: IDBOptions): Promise<IResult<any>>;
   select<T>(connection: any, options: IDBOptions): Promise<T[]>;
-  selectSingle<T>(connection: any, options: IDBOptions): Promise<T>;
-  selectSingleOrDefault<T>(connection: any, options: IDBOptions): Promise<T> | Promise<any>;
+  single<T>(connection: any, options: IDBOptions): Promise<T> | Promise<any>;
+  singleOrDefault<T>(connection: any, options: IDBOptions): Promise<T> | Promise<any>;
   insert<T>(connection: any, options: IDBOptions): Promise<boolean>;
   insertWithDefault<T>(connection: any, options: IDBOptions): Promise<T>;
   update<T>(connection: any, options: IDBOptions): Promise<T>;
@@ -72,6 +72,7 @@ export interface IDBOptions {
   columns?: any;
   where?: any;
   value?: any;
+  limit?: number;
   orderBy?: any;
   paginate?: {
     offset?: number;
@@ -82,7 +83,6 @@ export interface IDBOptions {
 
 export interface IDBHelper {
   querySelect<T>(options: IDBOptions, DBType: string): Promise<T[]>;
-  querySelectSingle<T>(options: IDBOptions, DBType: string): Promise<T>;
   queryInsert<T>(options: IDBOptions, DBType: string): Promise<T>;
   queryUpdate<T>(options: IDBOptions, DBType: string): Promise<T>;
   queryDelete<T>(options: IDBOptions, DBType: string): Promise<T>;

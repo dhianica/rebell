@@ -34,7 +34,7 @@ class CompanyServiceClass {
         where: { company_id: [id, '=']}
       } as IDBOptions
 
-      const result = await this.instance.selectSingle(connection, options)
+      const result = await this.instance.single(connection, options)
       resolve(result)
     } catch (error) {
       reject(error)

@@ -495,6 +495,10 @@ export enum EStatus {
    SUCCESS = 'Success',
    FAILED = 'Failed'
  }
+
+export enum EMessage {
+   NOT_FOUND = 'Data not found'
+ }
 /**
  * Is variable constant for message detail
  */
@@ -504,6 +508,7 @@ export enum ESuccessMessage {
    VALID = 'Valid',
    INSERTED = 'Inserted'
  }
+
 /**
  * Is variable constant for messaging an error
  */

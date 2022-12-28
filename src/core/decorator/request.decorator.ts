@@ -4,7 +4,7 @@ import 'reflect-metadata'
 import Logger from '../logs'
 import { EHttpStatusCode, EStatus, ESuccessMessage, EErrorMessage, EErrorCode, EDatabase, ECore  } from '../enum'
 import type { IResponseTypes } from '../type'
-import { generateCode } from '../../utils/index.util'
+import { generateCode, getMethodName } from '../../utils/index.util'
 const ajv = new Ajv({ allErrors: true })
 ajv.addKeyword('errorMessage')
 
@@ -34,14 +34,15 @@ const ValidateReq = (source: 'body' | 'query' | 'params') =>
           Logger.debug('With data', JSON.stringify(req[source]));
           const validate = await ajv.validate(schema, req[source]);
           if (!validate) {
+            const errorCode = `${EErrorCode.CORE}-${ECore.DECORATOR_REQUEST}-${generateCode(4)}`
             const errorMessages = ajv.errorsText()
-            Logger.error('Validation Request Failed', errorMessages);
+            Logger.error(`Error ${errorCode}`, `Validation Request Failed ${errorMessages}`);
             const result: IResponseTypes = {
               statusCode: EHttpStatusCode.BAD_REQUEST,
               status: EStatus.FAILED,
               message: EErrorMessage.INVALID_DATA,
               detail: errorMessages,
-              errorCode: `${EErrorCode.CORE}-${ECore.DECORATOR_REQUEST}-${generateCode(4)}`,
+              errorCode,
               errorMessage: errorMessages
             }
             next(result)
@@ -50,14 +51,18 @@ const ValidateReq = (source: 'body' | 'query' | 'params') =>
             method?.apply(this, arguments)
           }
         } catch (error) {
-          const errorMessages = `${EErrorMessage.NOT_HANDLED}!`
-          Logger.error('Validation Request Failed', errorMessages);
+          const errorCode = `${EErrorCode.CORE}-${ECore.DECORATOR_REQUEST}-${generateCode(4)}`
+          Logger.error(`Error ${errorCode}`, {
+            path:`${EErrorCode.CORE}-${ECore.DECORATOR_REQUEST}-${getMethodName(error)}`,
+            message: `Validation Request Failed ${error.message}`
+          });
+
           const result: IResponseTypes = {
             statusCode: EHttpStatusCode.INTERNAL_SERVER_ERROR,
             status: EStatus.FAILED,
             message: EErrorMessage.NOT_HANDLED,
             detail: error.message,
-            errorCode: `${EErrorCode.CORE}-${ECore.DECORATOR_REQUEST}-${generateCode(4)}`,
+            errorCode,
             errorMessage: error.message
           }
           next(result)
