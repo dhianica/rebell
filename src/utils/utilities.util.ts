@@ -80,6 +80,15 @@ export function mapToArray<K, V, R>(
 
 /**
  *
+ * This is function for convert array to be flatten
+ *
+ * @param arrs Array - data want to be convert to flatten
+ * @returns Array - array with format flatten
+ */
+export const flatten = <T>(arrs: Array<Array<T>>): Array<T> => ([] as Array<T>).concat(...arrs);
+
+/**
+ *
  * This is function for generate data number with range
  *
  * @param start number - params start number want to be generate

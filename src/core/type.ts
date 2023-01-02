@@ -56,10 +56,10 @@ export interface ISocketClient {
 }
 
 export interface IDB {
-  prepareSelect<T>(connection: any, options: IDBOptions): Promise<IResult<any>>;
+  prepareSelect<T>(connection: any, options: IDBOptions): Promise<IResult<T>>;
   select<T>(connection: any, options: IDBOptions): Promise<T[]>;
-  single<T>(connection: any, options: IDBOptions): Promise<T> | Promise<any>;
-  singleOrDefault<T>(connection: any, options: IDBOptions): Promise<T> | Promise<any>;
+  single<T>(connection: any, options: IDBOptions): Promise<T>;
+  singleOrDefault<T>(connection: any, options: IDBOptions): Promise<T>;
   insert<T>(connection: any, options: IDBOptions): Promise<boolean>;
   insertWithDefault<T>(connection: any, options: IDBOptions): Promise<T>;
   update<T>(connection: any, options: IDBOptions): Promise<T>;

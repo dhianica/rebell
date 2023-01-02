@@ -36,7 +36,7 @@ abstract class MSSQLHelper extends DBHelper implements IDBHelper {
 export default abstract class MSSQLDB extends MSSQLHelper implements IDB {
   private pools = new Map();
 
-  public prepareSelect<T>(connection: any, options: IDBOptions): Promise<IResult<any>> {
+  public prepareSelect<T>(connection: any, options: IDBOptions): Promise<IResult<T>> {
     return new Promise(async (resolve, reject) => {
       try {
         if (!options) throw new Error(EErrorMessage.NOT_DECLARED)
@@ -104,7 +104,7 @@ export default abstract class MSSQLDB extends MSSQLHelper implements IDB {
       }
     })
   }
-  public singleOrDefault<T>(connection: any, options: IDBOptions): Promise<any> | Promise<T> {
+  public singleOrDefault<T>(connection: any, options: IDBOptions): Promise<T> {
     return new Promise(async (resolve, reject) => {
       try {
         options.limit = 1
@@ -160,7 +160,6 @@ export default abstract class MSSQLDB extends MSSQLHelper implements IDB {
         connection = await this.request(connection.request(), options.columns)
 
         const data = await connection.query(query)
-        console.log(data)
         resolve(options.columns)
       } catch (error) {
         error.errorPath = `${EErrorCode.DATABASE}-${ECore.LIB_DB_MSSQL}-${getMethodName(error)}`
