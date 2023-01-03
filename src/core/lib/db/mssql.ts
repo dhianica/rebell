@@ -55,9 +55,9 @@ export default abstract class MSSQLDB extends MSSQLHelper implements IDB {
         const data = await connection.query(query)
         resolve(data)
       } catch (error) {
-        error.errorPath = `${EErrorCode.DATABASE}-${ECore.LIB_DB_MSSQL}-${getMethodName(error)}`
+        error.errorPath = `${EErrorCode.DATABASE}-${this.DBPath}-${getMethodName(error)}`
         if (error.code === ECode.EREQUEST) {
-          error.errorCode = `${EErrorCode.DATABASE}-${EDatabase.MSSQL}-${generateCode(4)}`
+          error.errorCode = `${EErrorCode.DATABASE}-${this.DBType}-${generateCode(4)}`
           setErrorDatabase(error)
         }
         reject(error)
@@ -72,9 +72,9 @@ export default abstract class MSSQLDB extends MSSQLHelper implements IDB {
         const result = wrappingDataMSSQL(select.recordset, attributes)
         resolve(result)
       } catch (error) {
-        error.errorPath = `${EErrorCode.DATABASE}-${ECore.LIB_DB_MSSQL}-${getMethodName(error)}`
+        error.errorPath = `${EErrorCode.DATABASE}-${this.DBPath}-${getMethodName(error)}`
         if (error.code === ECode.EREQUEST) {
-          error.errorCode = `${EErrorCode.DATABASE}-${EDatabase.MSSQL}-${generateCode(4)}`
+          error.errorCode = `${EErrorCode.DATABASE}-${this.DBType}-${generateCode(4)}`
           setErrorDatabase(error)
         }
         reject(error)
@@ -95,9 +95,9 @@ export default abstract class MSSQLDB extends MSSQLHelper implements IDB {
           data
         } as T)
       } catch (error) {
-        error.errorPath = `${EErrorCode.DATABASE}-${ECore.LIB_DB_MSSQL}-${getMethodName(error)}`
+        error.errorPath = `${EErrorCode.DATABASE}-${this.DBPath}-${getMethodName(error)}`
         if (error.code === ECode.EREQUEST) {
-          error.errorCode = `${EErrorCode.DATABASE}-${EDatabase.MSSQL}-${generateCode(4)}`
+          error.errorCode = `${EErrorCode.DATABASE}-${this.DBType}-${generateCode(4)}`
           setErrorDatabase(error)
         }
         reject(error)
@@ -118,9 +118,9 @@ export default abstract class MSSQLDB extends MSSQLHelper implements IDB {
           data: result[0]
         } as T)
       } catch (error) {
-        error.errorPath = `${EErrorCode.DATABASE}-${ECore.LIB_DB_MSSQL}-${getMethodName(error)}`
+        error.errorPath = `${EErrorCode.DATABASE}-${this.DBPath}-${getMethodName(error)}`
         if (error.code === ECode.EREQUEST) {
-          error.errorCode = `${EErrorCode.DATABASE}-${EDatabase.MSSQL}-${generateCode(4)}`
+          error.errorCode = `${EErrorCode.DATABASE}-${this.DBType}-${generateCode(4)}`
           setErrorDatabase(error)
         }
         reject(error)
@@ -140,9 +140,9 @@ export default abstract class MSSQLDB extends MSSQLHelper implements IDB {
         const result = await connection.query(query)
         resolve(result.rowsAffected[0] ? true: false)
       } catch (error) {
-        error.errorPath = `${EErrorCode.DATABASE}-${ECore.LIB_DB_MSSQL}-${getMethodName(error)}`
+        error.errorPath = `${EErrorCode.DATABASE}-${this.DBPath}-${getMethodName(error)}`
         if (error.code === ECode.EREQUEST) {
-          error.errorCode = `${EErrorCode.DATABASE}-${EDatabase.MSSQL}-${generateCode(4)}`
+          error.errorCode = `${EErrorCode.DATABASE}-${this.DBType}-${generateCode(4)}`
           setErrorDatabase(error)
         }
         reject(error)
@@ -162,9 +162,9 @@ export default abstract class MSSQLDB extends MSSQLHelper implements IDB {
         const data = await connection.query(query)
         resolve(options.columns)
       } catch (error) {
-        error.errorPath = `${EErrorCode.DATABASE}-${ECore.LIB_DB_MSSQL}-${getMethodName(error)}`
+        error.errorPath = `${EErrorCode.DATABASE}-${this.DBPath}-${getMethodName(error)}`
         if (error.code === ECode.EREQUEST) {
-          error.errorCode = `${EErrorCode.DATABASE}-${EDatabase.MSSQL}-${generateCode(4)}`
+          error.errorCode = `${EErrorCode.DATABASE}-${this.DBType}-${generateCode(4)}`
           setErrorDatabase(error)
         }
         reject(error)
@@ -187,9 +187,9 @@ export default abstract class MSSQLDB extends MSSQLHelper implements IDB {
         const result = wrappingDataMSSQL(data.recordset, columns)
         resolve(result)
       } catch (error) {
-        error.errorPath = `${EErrorCode.DATABASE}-${ECore.LIB_DB_MSSQL}-${getMethodName(new Error())}`
+        error.errorPath = `${EErrorCode.DATABASE}-${this.DBPath}-${getMethodName(new Error())}`
         if (error.code === ECode.EREQUEST) {
-          error.errorCode = `${EErrorCode.DATABASE}-${EDatabase.MSSQL}-${generateCode(4)}`
+          error.errorCode = `${EErrorCode.DATABASE}-${this.DBType}-${generateCode(4)}`
           setErrorDatabase(error)
         }
         reject(error)
@@ -228,9 +228,9 @@ export default abstract class MSSQLDB extends MSSQLHelper implements IDB {
           }
         resolve(req)
       } catch (error) {
-        error.errorPath = `${EErrorCode.DATABASE}-${ECore.LIB_DB_MSSQL}-${getMethodName(new Error())}`
+        error.errorPath = `${EErrorCode.DATABASE}-${this.DBPath}-${getMethodName(new Error())}`
         if (error.code === ECode.EREQUEST) {
-          error.errorCode = `${EErrorCode.DATABASE}-${EDatabase.MSSQL}-${generateCode(4)}`
+          error.errorCode = `${EErrorCode.DATABASE}-${this.DBType}-${generateCode(4)}`
           setErrorDatabase(error)
         }
         reject(error)

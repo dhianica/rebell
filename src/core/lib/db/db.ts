@@ -29,7 +29,7 @@ export abstract class DBHelper {
 
         return whereClauses.join(' AND ')
       } catch (error) {
-        error.errorCode= `${EErrorCode.DATABASE}-${this.DBPath}-${generateCode(4)}`
+        error.errorCode= `${EErrorCode.DATABASE}-${this.DBType}-${generateCode(4)}`
         error.errorMessage = error.message
         error.message= EErrorMessage.INVALID_SYNTAX
         setError(error)
@@ -44,7 +44,6 @@ export abstract class DBHelper {
         for (const column in options.where)
           if (Object.hasOwnProperty.call(options.where, column)) {
             let where = ''
-            const value = options.where[column][0];
             const condition = options.where[column][1];
             const bitwise = options.where[column][2] || 'AND';
             if (condition.toLowerCase() === 'like')
@@ -60,7 +59,7 @@ export abstract class DBHelper {
 
         return whereClauses.join(' ').replace(/AND $|OR $/, '')
       } catch (error) {
-        error.errorCode= `${EErrorCode.DATABASE}-${this.DBPath}-${generateCode(4)}`
+        error.errorCode= `${EErrorCode.DATABASE}-${this.DBType}-${generateCode(4)}`
         error.errorMessage = error.message
         error.message= EErrorMessage.INVALID_SYNTAX
         setError(error)
@@ -81,7 +80,7 @@ export abstract class DBHelper {
 
         return orderByClauses.join(', ')
       } catch (error) {
-        error.errorCode= `${EErrorCode.DATABASE}-${this.DBPath}-${generateCode(4)}`
+        error.errorCode= `${EErrorCode.DATABASE}-${this.DBType}-${generateCode(4)}`
         error.errorMessage = error.message
         error.message= EErrorMessage.INVALID_SYNTAX
         setError(error)
@@ -94,7 +93,7 @@ export abstract class DBHelper {
           resolve(this.query(options) as T)
         } catch (error) {
           reject({
-            errorCode: `${EErrorCode.DATABASE}-${this.DBPath}-${generateCode(4)}`,
+            errorCode: `${EErrorCode.DATABASE}-${this.DBType}-${generateCode(4)}`,
             message: error.message
           })
         }
@@ -115,7 +114,7 @@ export abstract class DBHelper {
           resolve(query as T)
         } catch (error) {
           reject({
-            errorCode: `${EErrorCode.DATABASE}-${this.DBPath}-${generateCode(4)}`,
+            errorCode: `${EErrorCode.DATABASE}-${this.DBType}-${generateCode(4)}`,
             message: error.message
           })
         }
@@ -131,7 +130,7 @@ export abstract class DBHelper {
           resolve(query as T)
         } catch (error) {
           reject({
-            errorCode: `${EErrorCode.DATABASE}-${this.DBPath}-${generateCode(4)}`,
+            errorCode: `${EErrorCode.DATABASE}-${this.DBType}-${generateCode(4)}`,
             message: error.message
           })
         }
@@ -145,7 +144,7 @@ export abstract class DBHelper {
           resolve(query as T)
         } catch (error) {
           reject({
-            errorCode: `${EErrorCode.DATABASE}-${this.DBPath}-${generateCode(4)}`,
+            errorCode: `${EErrorCode.DATABASE}-${this.DBType}-${generateCode(4)}`,
             message: error.message
           })
         }

@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "application for boilerplate typescript",
   "main": "./src/bin/www.ts",
+  "type": "module",
   "scripts": {
     "test": "cross-env TS_NODE_PROJECT=config/test/tsconfig.test.json mocha -r ts-node/register src/app/**/*.spec.ts",
     "clean": "rimraf -G ./build/* && rimraf -G ./logs/*",
