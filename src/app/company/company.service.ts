@@ -2,7 +2,7 @@ import type { Request } from 'express';
 import { IMSSQLInstance } from '../../core/lib/instance'
 import { ECore, EErrorMessage } from '../../core/enum';
 import { isEmpty, stringToArray } from '../../utils/index.util';
-import { IDBOptions } from '../../core/type';
+import { IDBOptions } from '../../core/interface';
 class CompanyServiceClass {
   private instance: IMSSQLInstance;
   public constructor() {

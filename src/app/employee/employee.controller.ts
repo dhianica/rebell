@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction }  from 'express';
 import { EHttpStatusCode, EStatus, EErrorMessage } from '../../core/enum'
 import { Get, Post, ValidateBody } from '../../core/decorator'
-import type { IResponseTypes } from '../../core/type'
+import type { IResponseTypes } from '../../core/interface'
 import { Employee } from './#schema/employee.schema'
 class EmployeeController {
   private posts: any[] = [

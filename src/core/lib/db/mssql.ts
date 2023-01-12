@@ -1,6 +1,6 @@
 import mssql, { type ConnectionPool, type IResult } from 'mssql'
 import { Configuration } from '../../configuration'
-import { IConfiguration, IDB, IDBHelper, IDBOptions } from '../../type';
+import { IConfiguration, IDB, IDBHelper, IDBOptions } from '../../interface';
 import { isEmpty, getColumnMSSQL, wrappingDataMSSQL, generateCode, getMethodName, isString, getSafe } from '../../../utils/index.util'
 import { EErrorCode, ECode, EDatabase, ECore, EErrorMessage, EMessage, ESuccessMessage } from '../../enum'
 import { setErrorDatabase } from '../../error'

@@ -1,7 +1,7 @@
 
 import { EErrorMessage, EErrorMessageMSSQL, EErrorMessageDescriptionMSSQL } from './enum'
 import logger from './logs';
-import { IError } from './type';
+import { IError } from './interface';
 
 export function setErrorDatabase(error: any): void {
   logger.error(`Error ${error.errorCode}`, JSON.stringify({ path: error.errorPath, message: error.message }))

@@ -1,7 +1,7 @@
 import { generateCode, isString, stringToArray } from '../../../utils/index.util'
 import { EErrorCode, EErrorMessage } from '../../enum';
 import { setError } from '../../error';
-import { IDBOptions } from '../../type'
+import { IDBOptions } from '../../interface'
 export abstract class DBHelper {
     public abstract DBType: string;
     public abstract DBPath: string;

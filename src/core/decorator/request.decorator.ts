@@ -3,7 +3,7 @@ import Ajv, { SchemaObject } from 'ajv'
 import 'reflect-metadata'
 import Logger from '../logs'
 import { EHttpStatusCode, EStatus, ESuccessMessage, EErrorMessage, EErrorCode, EDatabase, ECore  } from '../enum'
-import type { IResponseTypes } from '../type'
+import type { IResponseTypes } from '../interface'
 import { generateCode, getMethodName } from '../../utils/index.util'
 const ajv = new Ajv({ allErrors: true })
 ajv.addKeyword('errorMessage')

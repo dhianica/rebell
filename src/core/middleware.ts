@@ -1,7 +1,7 @@
 import { type Request, type Response, type NextFunction } from 'express';
 import logger from './logs';
 import { EHttpStatusCode, ESuccessMessage, EStatus } from './enum'
-import { IResponseTypes } from './type';
+import { IResponseTypes } from './interface';
 /**
  * This core/middelware.ts reference from Express Middleware for create response handler
  *

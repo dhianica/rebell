@@ -6,7 +6,7 @@ import dotenv from 'dotenv'
 import logger from '../core/logs';
 import App from '../index';
 import { ISocketInstance } from '../core/lib/instance'
-import type { IConfiguration, ISocketClient } from '../core/type';
+import type { IConfiguration, ISocketClient } from '../core/interface';
 import { EFormat, EDatabase } from '../core/enum';
 import { Configuration } from '../core/configuration';
 import { getEnumKeyByEnumValue } from '../utils/index.util'
