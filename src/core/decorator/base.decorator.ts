@@ -10,13 +10,13 @@ export const RouteDecoratorFactory = (method: EHttpMethods) =>
         Reflect.getMetadata(EMetadataKeys.ROUTERS, controllerClass) : [];
       routers.push({
         method,
-        path: !path ? propertyKey.toString() : path,
+        path: path === null || path === undefined ? propertyKey.toString() : path,
         handlerName: propertyKey
       });
       Reflect.defineMetadata(EMetadataKeys.ROUTERS, routers, controllerClass);
     }
 
-export function GetDecorator (metadataKey: EMetadataKeys, target: any): any {
+export function GetDecorator(metadataKey: EMetadataKeys, target: any): any {
   return Reflect.getMetadata(metadataKey, target.constructor) as Array<IRouterTypes>
 }
 

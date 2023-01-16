@@ -9,7 +9,7 @@ import { DBHelper } from './db';
 abstract class MSSQLHelper extends DBHelper implements IDBHelper {
   public DBType: string = EDatabase.MSSQL;
   public DBPath: string = ECore.LIB_DB_MSSQL;
-  public query (options: IDBOptions): string {
+  public query(options: IDBOptions): string {
 
     let query = `SELECT `
     if (options.limit) query += `TOP ${options.limit} `
@@ -36,9 +36,14 @@ abstract class MSSQLHelper extends DBHelper implements IDBHelper {
 export default abstract class MSSQLDB extends MSSQLHelper implements IDB {
   private pools = new Map();
 
-  public prepareSelect<T>(connection: any, options: IDBOptions): Promise<IResult<T>> {
+  public constructor(private name: string) {
+    super();
+  }
+
+  public prepareSelect<T>(options: IDBOptions): Promise<IResult<T>> {
     return new Promise(async (resolve, reject) => {
       try {
+        let connection: any = this.pools.get(this.name)
         if (!options) throw new Error(EErrorMessage.NOT_DECLARED)
         if (isEmpty(options.table)) throw new Error(`${EErrorMessage.NOT_DEFINED}`)
         options.columns = this.addAttributeClauses(options)
@@ -64,10 +69,10 @@ export default abstract class MSSQLDB extends MSSQLHelper implements IDB {
       }
     })
   }
-  public select<T>(connection: any, options: IDBOptions): Promise<T[]> {
+  public select<T>(options: IDBOptions): Promise<T[]> {
     return new Promise(async (resolve, reject) => {
       try {
-        const select = await this.prepareSelect(connection, options)
+        const select = await this.prepareSelect(options)
         const attributes = getColumnMSSQL(select.recordset.columns)
         const result = wrappingDataMSSQL(select.recordset, attributes)
         resolve(result)
@@ -81,11 +86,11 @@ export default abstract class MSSQLDB extends MSSQLHelper implements IDB {
       }
     })
   }
-  public single<T>(connection: any, options: IDBOptions): Promise<T> {
+  public single<T>(options: IDBOptions): Promise<T> {
     return new Promise(async (resolve, reject) => {
       try {
         options.limit = 1
-        const select = await this.prepareSelect(connection, options)
+        const select = await this.prepareSelect(options)
         const attributes = getColumnMSSQL(select.recordset.columns)
         const result = wrappingDataMSSQL(select.recordset, attributes)
         const message = result.length > 0 ? ESuccessMessage.FETCH : EMessage.NOT_FOUND
@@ -104,11 +109,11 @@ export default abstract class MSSQLDB extends MSSQLHelper implements IDB {
       }
     })
   }
-  public singleOrDefault<T>(connection: any, options: IDBOptions): Promise<T> {
+  public singleOrDefault<T>(options: IDBOptions): Promise<T> {
     return new Promise(async (resolve, reject) => {
       try {
         options.limit = 1
-        const select = await this.prepareSelect(connection, options)
+        const select = await this.prepareSelect( options)
         const attributes = getColumnMSSQL(select.recordset.columns)
         const result = wrappingDataMSSQL(select.recordset, attributes)
         if (result.length < 1) resolve({
@@ -127,7 +132,7 @@ export default abstract class MSSQLDB extends MSSQLHelper implements IDB {
       }
     })
   }
-  public insert<T>(connection: any, options: IDBOptions): Promise<boolean> {
+  public insert<T>(options: IDBOptions): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
         if (!options) throw new Error(EErrorMessage.NOT_DECLARED)
@@ -135,10 +140,10 @@ export default abstract class MSSQLDB extends MSSQLHelper implements IDB {
         if (isEmpty(options.columns)) throw new Error(`${EErrorMessage.NOT_DEFINED}`)
 
         const query = await this.queryInsert(options)
-        connection = await this.request(connection.request(), options.columns)
+        await this.request(this.pools.get(this.name).request(), options.columns)
 
-        const result = await connection.query(query)
-        resolve(result.rowsAffected[0] ? true: false)
+        const result = await this.pools.get(this.name).query(query)
+        resolve(result.rowsAffected[0] ? true : false)
       } catch (error) {
         error.errorPath = `${EErrorCode.DATABASE}-${this.DBPath}-${getMethodName(error)}`
         if (error.code === ECode.EREQUEST) {
@@ -149,7 +154,7 @@ export default abstract class MSSQLDB extends MSSQLHelper implements IDB {
       }
     })
   }
-  public insertWithDefault<T>(connection: any, options: IDBOptions): Promise<T> {
+  public insertWithDefault<T>(options: IDBOptions): Promise<T> {
     return new Promise(async (resolve, reject) => {
       try {
         if (!options) throw new Error(EErrorMessage.NOT_DECLARED)
@@ -157,9 +162,9 @@ export default abstract class MSSQLDB extends MSSQLHelper implements IDB {
         if (isEmpty(options.columns)) throw new Error(`${EErrorMessage.NOT_DEFINED}`)
 
         const query = await this.queryInsert(options)
-        connection = await this.request(connection.request(), options.columns)
+        await this.request(this.pools.get(this.name), options.columns)
 
-        const data = await connection.query(query)
+        const data = await this.pools.get(this.name).query(query)
         resolve(options.columns)
       } catch (error) {
         error.errorPath = `${EErrorCode.DATABASE}-${this.DBPath}-${getMethodName(error)}`
@@ -171,17 +176,18 @@ export default abstract class MSSQLDB extends MSSQLHelper implements IDB {
       }
     })
   }
-  public update<T>(connection: any, options: IDBOptions): Promise<T> {
+  public update<T>(options: IDBOptions): Promise<T> {
     throw new Error('Method not implemented.');
   }
-  public delete<T>(connection: any, options: IDBOptions): Promise<T> {
+  public delete<T>(options: IDBOptions): Promise<T> {
     throw new Error('Method not implemented.');
   }
-  public execute<T>(connection: any, sp: string, paramaters?: any): Promise<T> {
+  public execute<T>(sp: string, paramaters?: any): Promise<T> {
     return new Promise(async (resolve, reject) => {
       try {
+        let connection: any = this.pools.get(this.name)
         if (!isEmpty(paramaters))
-          await this.request(connection, paramaters)
+          connection = await this.request(connection, paramaters)
         const data = await connection.request().execute(sp)
         const columns: any = getColumnMSSQL(data.recordset.columns)
         const result = wrappingDataMSSQL(data.recordset, columns)
@@ -197,9 +203,9 @@ export default abstract class MSSQLDB extends MSSQLHelper implements IDB {
     })
 
   }
-  public async connect(name: string): Promise<ConnectionPool>{
+  public async connect(name?: string): Promise<ConnectionPool> {
     const configuration = Configuration.get('MSSQL') as IConfiguration
-    if (!this.pools.has(name)) {
+    if (!this.pools.has(name ?? this.name)) {
       if (!configuration?.value)
         throw new Error('Pool does not exist')
 
@@ -210,9 +216,9 @@ export default abstract class MSSQLDB extends MSSQLHelper implements IDB {
         this.pools.delete(name)
         return close(...args)
       }
-      this.pools.set(name, pool.connect())
+      this.pools.set(name ?? this.name, await pool.connect())
     }
-    return this.pools.get(name)
+    return this.pools.get(name ?? this.name)
   }
   public async request(req: any, parameter: any): Promise<ConnectionPool> {
     return new Promise((resolve, reject) => {

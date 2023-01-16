@@ -5,4 +5,8 @@ import MSSQL from './db/mssql'
 
 export class IAMQPInstance extends AMQPMessageBroker { }
 export class ISocketInstance extends Socket { }
-export class IMSSQLInstance extends MSSQL { }
+export class IMSSQLInstance extends MSSQL {
+  public constructor(name: string) {
+    super(name);
+  }
+}

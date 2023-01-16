@@ -1,16 +1,15 @@
 import type { Request } from 'express';
 import { IMSSQLInstance } from '../../core/lib/instance'
-import { ECore, EErrorMessage } from '../../core/enum';
 import { isEmpty, stringToArray } from '../../utils/index.util';
 import { IDBOptions } from '../../core/interface';
 class CompanyServiceClass {
   private instance: IMSSQLInstance;
-  public constructor() {
-    this.instance = new IMSSQLInstance();
+  public constructor(private name: string) {
+    this.instance = new IMSSQLInstance(this.name);
   }
-  public get = (request: Request): Promise<any> => new Promise<any>(async (resolve, reject) => {
+  public get = (request?: Request): Promise<any> => new Promise<any>(async (resolve, reject) => {
     try {
-      const connection = await this.instance.connect('company')
+      await this.instance.connect()
       const options = {
         table: 'company'
       } as IDBOptions
@@ -18,7 +17,7 @@ class CompanyServiceClass {
       if (!isEmpty(request.query))
         options.columns = stringToArray(request.query.columns.toString())
 
-      const result = await this.instance.select(connection, options)
+      const result = await this.instance.select(options)
       resolve(result)
     } catch (error) {
       reject(error)
@@ -27,14 +26,14 @@ class CompanyServiceClass {
 
   public getByID = async (request: Request, id: number): Promise<any> => new Promise<any>(async (resolve, reject) => {
     try {
-      const connection = await this.instance.connect('company')
+      await this.instance.connect()
       const options = {
         table: 'company',
         columns: request.query.columns,
         where: { company_id: [id, '=']}
       } as IDBOptions
 
-      const result = await this.instance.single(connection, options)
+      const result = await this.instance.single(options)
       resolve(result)
     } catch (error) {
       reject(error)
@@ -43,8 +42,8 @@ class CompanyServiceClass {
 
   public insert = async (data: any): Promise<any> => new Promise<any>(async (resolve, reject) => {
     try {
-      const connection = await this.instance.connect('company')
-      const result = await this.instance.insert(connection, {
+      await this.instance.connect()
+      const result = await this.instance.insert({
         table: 'company',
         columns: {
           company_name: data.company_name,
@@ -64,8 +63,8 @@ class CompanyServiceClass {
 
   public insertWithDefault = async (data: any): Promise<any> => new Promise<any>(async (resolve, reject) => {
     try {
-      const connection = await this.instance.connect('company')
-      const result = await this.instance.insertWithDefault(connection, {
+      await this.instance.connect()
+      const result = await this.instance.insertWithDefault({
         table: 'company',
         columns: {
           company_name: data.company_name,
@@ -84,4 +83,4 @@ class CompanyServiceClass {
   });
 }
 
-export const CompanyService = new CompanyServiceClass()
+export const CompanyService = new CompanyServiceClass('company')

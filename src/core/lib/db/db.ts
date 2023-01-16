@@ -87,10 +87,10 @@ export abstract class DBHelper {
         throw error
       }
     }
-    public querySelect<T>(options: IDBOptions): Promise<T> {
+    public querySelect(options: IDBOptions): Promise<string> {
       return new Promise((resolve, reject) => {
         try {
-          resolve(this.query(options) as T)
+          resolve(this.query(options))
         } catch (error) {
           reject({
             errorCode: `${EErrorCode.DATABASE}-${this.DBType}-${generateCode(4)}`,
@@ -99,7 +99,7 @@ export abstract class DBHelper {
         }
       })
     }
-    public queryInsert<T>(options: IDBOptions): Promise<T> {
+    public queryInsert(options: IDBOptions): Promise<string> {
       return new Promise((resolve, reject) => {
         try {
           let query = `INSERT INTO ${options.table} `
@@ -111,7 +111,7 @@ export abstract class DBHelper {
               setVarColumn.push(`@${column}`)
             }
           query += `(${setColumn.join(', ')}) VALUES (${setVarColumn.join(', ')})`
-          resolve(query as T)
+          resolve(query)
         } catch (error) {
           reject({
             errorCode: `${EErrorCode.DATABASE}-${this.DBType}-${generateCode(4)}`,
@@ -120,14 +120,14 @@ export abstract class DBHelper {
         }
       })
     }
-    public queryUpdate<T>(options: IDBOptions): Promise<T> {
+    public queryUpdate(options: IDBOptions): Promise<string> {
       return new Promise((resolve, reject) => {
         try {
           let query = `UPDATE ${options.table} \n`
           query += 'SET\n'
           query += options.columns.map((x) => `    ${x} = @${x}`).join(',\n')
           if (options.where) query += `\nWHERE ${options.where}`
-          resolve(query as T)
+          resolve(query)
         } catch (error) {
           reject({
             errorCode: `${EErrorCode.DATABASE}-${this.DBType}-${generateCode(4)}`,
@@ -136,12 +136,12 @@ export abstract class DBHelper {
         }
       })
     }
-    public queryDelete<T>(options: IDBOptions): Promise<T> {
+    public queryDelete(options: IDBOptions): Promise<string> {
       return new Promise((resolve, reject) => {
         try {
           let query = `DELETE FROM ${options.table}`
           if (options.where) query += ` WHERE ${options.where}`
-          resolve(query as T)
+          resolve(query)
         } catch (error) {
           reject({
             errorCode: `${EErrorCode.DATABASE}-${this.DBType}-${generateCode(4)}`,
@@ -152,28 +152,4 @@ export abstract class DBHelper {
     }
     public abstract query(options: IDBOptions): string;
 }
-
-// export class MYSQLHelper extends DBHelper implements IDB, IDBHelper {
-//   public DBType: string = EDatabase.MSSQL;
-//   public DBPath: string = ECore.LIB_DB_MSSQL;
-//   public query (isSingle: boolean = false, options: IDBOptions): string {
-
-//     let query = `SELECT ${options.columns}`
-//     query += `\nFROM ${options.table}`
-
-//     if (options.where) query += `\nWHERE ${options.where}`
-
-//     if (options.orderBy) query += `\nORDER BY ${options.orderBy}`
-
-//     if (options.paginate) {
-//       if (!options.paginate.offset) options.paginate.offset = 0
-//       query += `\nLIMIT ${options.paginate.offset}`
-
-//       if (!options.paginate.fetch) options.paginate.fetch = isSingle ? 1 : 10
-//       query += ` OFFSET ${options.paginate.fetch}`
-//     }
-
-//     return query
-//   }
-// }
 

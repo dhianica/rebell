@@ -3,13 +3,12 @@
   "version": "1.0.0",
   "description": "application for boilerplate typescript",
   "main": "./src/bin/www.ts",
-  "type": "module",
   "scripts": {
     "test": "cross-env TS_NODE_PROJECT=config/test/tsconfig.test.json mocha -r ts-node/register src/app/**/*.spec.ts",
     "clean": "rimraf -G ./build/* && rimraf -G ./logs/*",
     "remove:docker-image-dev": "docker image rm -f typescript-first-app-dev",
     "remove:docker-image-prod": "docker image rm -f typescript-first-app-prod",
-    "lint": "eslint -c .eslintrc.js --ext .ts src/**/*.ts",
+    "lint": "eslint -c .eslintrc.cjs --ext .ts src/**/*.ts",
     "build:pm2": "pm2 kill && yarn clean && yarn lint && yarn test && webpack",
     "start:pm2-dev": "NODE_ENV=development yarn build:pm2",
     "run:pm2-dev": "pm2 delete ./config/pm2/pm2-dev-process.config.js && pm2 start ./config/pm2/pm2-dev-process.config.js",
@@ -42,7 +41,7 @@
     "pm2",
     "webpack",
     "tslog",
-    "zod"
+    "ajv"
   ],
   "repository": {
     "type": "git",

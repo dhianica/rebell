@@ -57,14 +57,14 @@ export interface ISocketClient {
 
 export interface IDB {
   prepareSelect<T>(connection: any, options: IDBOptions): Promise<IResult<T>>;
-  select<T>(connection: any, options: IDBOptions): Promise<T[]>;
-  single<T>(connection: any, options: IDBOptions): Promise<T>;
-  singleOrDefault<T>(connection: any, options: IDBOptions): Promise<T>;
-  insert<T>(connection: any, options: IDBOptions): Promise<boolean>;
-  insertWithDefault<T>(connection: any, options: IDBOptions): Promise<T>;
-  update<T>(connection: any, options: IDBOptions): Promise<T>;
-  delete<T>(connection: any, options: IDBOptions): Promise<T>;
-  execute<T>(connection: any, sp: string, paramaters?: any): Promise<T>;
+  select<T>(options: IDBOptions): Promise<T[]>;
+  single<T>(options: IDBOptions): Promise<T>;
+  singleOrDefault<T>(options: IDBOptions): Promise<T>;
+  insert<T>(options: IDBOptions): Promise<boolean>;
+  insertWithDefault<T>(options: IDBOptions): Promise<T>;
+  update<T>(options: IDBOptions): Promise<T>;
+  delete<T>(options: IDBOptions): Promise<T>;
+  execute<T>(sp: string, paramaters?: any): Promise<T>;
 }
 
 export interface IDBOptions {
@@ -82,10 +82,10 @@ export interface IDBOptions {
 }
 
 export interface IDBHelper {
-  querySelect<T>(options: IDBOptions, DBType: string): Promise<T[]>;
-  queryInsert<T>(options: IDBOptions, DBType: string): Promise<T>;
-  queryUpdate<T>(options: IDBOptions, DBType: string): Promise<T>;
-  queryDelete<T>(options: IDBOptions, DBType: string): Promise<T>;
+  querySelect(options: IDBOptions, DBType: string): Promise<string>;
+  queryInsert(options: IDBOptions, DBType: string): Promise<string>;
+  queryUpdate(options: IDBOptions, DBType: string): Promise<string>;
+  queryDelete(options: IDBOptions, DBType: string): Promise<string>;
   addAttributeClauses(options: IDBOptions): string;
   addWhereClauses(options: IDBOptions): string;
   addWhereClausesAdvance(options: IDBOptions): string;

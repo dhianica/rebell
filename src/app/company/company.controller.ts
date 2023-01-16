@@ -9,7 +9,7 @@ import { Company as CompanySchema } from './#schema/company.schema'
 class CompanyController {
 
   @Get('/')
-  public async getAllCompanys(
+  public async getAllCompanies(
     request: Request,
     response: Response,
     next: NextFunction
@@ -26,7 +26,7 @@ class CompanyController {
     })
   }
 
-  @Get('id/:id')
+  @Get(':id')
   public async getCompanyByID(
     request: Request,
     response: Response,

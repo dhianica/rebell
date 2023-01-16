@@ -19,13 +19,15 @@ class Router {
       cwd: 'src/app'
     })
     files.forEach(async (x) => {
+      let fullpath = ''
       const names = /[^]*\//.exec(x)![0];
       const  { name, value }: IConfiguration = { name: names, value: `./${x}` }
       const basePath = `${this.path}/${name}`
       const controllerInstance = (await import(`${value}`)).default;
       const routers: IRouterTypes[] = GetDecorator(EMetadataKeys.ROUTERS, controllerInstance)
       routers.forEach(({ method, path, handlerName }) => {
-        this.router[method](`${basePath+path}`, controllerInstance[String(handlerName)].bind(controllerInstance))
+        fullpath = `${basePath+path}`.replace(/\/+/g, '/');
+        this.router[method](fullpath, controllerInstance[String(handlerName)].bind(controllerInstance))
       });
     })
   }
