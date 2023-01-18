@@ -132,18 +132,19 @@ export default abstract class MSSQLDB extends MSSQLHelper implements IDB {
       }
     })
   }
-  public insert<T>(options: IDBOptions): Promise<boolean> {
+  public insert<T>(options: IDBOptions): Promise<T> {
     return new Promise(async (resolve, reject) => {
       try {
+        let connection: any = this.pools.get(this.name)
         if (!options) throw new Error(EErrorMessage.NOT_DECLARED)
         if (isEmpty(options.table)) throw new Error(`${EErrorMessage.NOT_DEFINED}`)
         if (isEmpty(options.columns)) throw new Error(`${EErrorMessage.NOT_DEFINED}`)
 
         const query = await this.queryInsert(options)
-        await this.request(this.pools.get(this.name).request(), options.columns)
+        connection = await this.request(this.pools.get(this.name).request(), options.columns)
 
-        const result = await this.pools.get(this.name).query(query)
-        resolve(result.rowsAffected[0] ? true : false)
+        const result = await connection.query(query)
+        resolve((result.rowsAffected[0] ? true : false) as T)
       } catch (error) {
         error.errorPath = `${EErrorCode.DATABASE}-${this.DBPath}-${getMethodName(error)}`
         if (error.code === ECode.EREQUEST) {
@@ -157,14 +158,15 @@ export default abstract class MSSQLDB extends MSSQLHelper implements IDB {
   public insertWithDefault<T>(options: IDBOptions): Promise<T> {
     return new Promise(async (resolve, reject) => {
       try {
+        let connection: any = this.pools.get(this.name)
         if (!options) throw new Error(EErrorMessage.NOT_DECLARED)
         if (isEmpty(options.table)) throw new Error(`${EErrorMessage.NOT_DEFINED}`)
         if (isEmpty(options.columns)) throw new Error(`${EErrorMessage.NOT_DEFINED}`)
 
         const query = await this.queryInsert(options)
-        await this.request(this.pools.get(this.name), options.columns)
+        connection = await this.request(this.pools.get(this.name), options.columns)
 
-        const data = await this.pools.get(this.name).query(query)
+        const data = await connection.query(query)
         resolve(options.columns)
       } catch (error) {
         error.errorPath = `${EErrorCode.DATABASE}-${this.DBPath}-${getMethodName(error)}`
@@ -177,7 +179,26 @@ export default abstract class MSSQLDB extends MSSQLHelper implements IDB {
     })
   }
   public update<T>(options: IDBOptions): Promise<T> {
-    throw new Error('Method not implemented.');
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (!options) throw new Error(EErrorMessage.NOT_DECLARED)
+        if (isEmpty(options.table)) throw new Error(`${EErrorMessage.NOT_DEFINED}`)
+        if (isEmpty(options.columns)) throw new Error(`${EErrorMessage.NOT_DEFINED}`)
+
+        const query = await this.queryUpdate(options)
+        await this.request(this.pools.get(this.name).request(), options.columns)
+
+        const result = await this.pools.get(this.name).query(query)
+        resolve((result.rowsAffected[0] ? true : false) as T)
+      } catch (error) {
+        error.errorPath = `${EErrorCode.DATABASE}-${this.DBPath}-${getMethodName(error)}`
+        if (error.code === ECode.EREQUEST) {
+          error.errorCode = `${EErrorCode.DATABASE}-${this.DBType}-${generateCode(4)}`
+          setErrorDatabase(error)
+        }
+        reject(error)
+      }
+    })
   }
   public delete<T>(options: IDBOptions): Promise<T> {
     throw new Error('Method not implemented.');
