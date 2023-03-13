@@ -113,7 +113,7 @@
     "serve-favicon": "^2.5.0",
     "short-crypt": "^2.0.2",
     "socket.io": "^4.5.4",
-    "sqlite3": "^5.1.4",
+    "sqlite3": "^5.1.5",
     "tslog": "^3.3.4"
   }
 }
