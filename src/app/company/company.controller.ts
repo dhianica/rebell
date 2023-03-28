@@ -61,7 +61,7 @@ class CompanyController {
   ): Promise<void>  {
     return new Promise<void>(async () => {
       try {
-        const result = await CompanyService.insertWithDefault(request.body)
+        const result = await CompanyService.insert(request.body)
         response.json({ message: ESuccessMessage.INSERTED, detail: result })
       } catch (error: any) {
         next(error)
