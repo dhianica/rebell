@@ -113,7 +113,7 @@ endpoint will be generate using path folder name
     ```typescript
     class TestController {
     
-      @ValidateBody(Schema) //Default parameter when not declare create endpoint using method Name
+      @ValidateBody(Schema)
       public async postTest(req: Request, res: Response, next: NextFunction) {
         res.json({ message: 'OK'})
       }
@@ -124,7 +124,7 @@ endpoint will be generate using path folder name
     ```typescript
     class TestController {
     
-      @ValidateQuery(Schema) //Default parameter when not declare create endpoint using method Name
+      @ValidateQuery(Schema)
       public async postTest(req: Request, res: Response, next: NextFunction) {
         res.json({ message: 'OK'})
       }
