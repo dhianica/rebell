@@ -241,10 +241,10 @@ for using Worker Threads, can declare the worker function in folder **src/app/*/
   ```typescript
   import { workerData, parentPort } from 'node:worker_threads'
 
-  const getAllEmployees1 = (): any =>  {
+  const getAllTest = (): any =>  {
     return workerData.name;
   }
-  parentPort?.postMessage(getAllEmployees1());
+  parentPort?.postMessage(getAllTest());
   ```
 
 # Response
