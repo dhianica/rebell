@@ -113,7 +113,7 @@ endpoint will be generate using path folder name
     ```typescript
     class TestController {
     
-      @ValidateBody(Schema)
+      @ValidateBody(Schema) //Default parameter when not declare create endpoint using method Name
       public async postTest(req: Request, res: Response, next: NextFunction) {
         res.json({ message: 'OK'})
       }
@@ -124,7 +124,7 @@ endpoint will be generate using path folder name
     ```typescript
     class TestController {
     
-      @ValidateQuery(Schema)
+      @ValidateQuery(Schema) //Default parameter when not declare create endpoint using method Name
       public async postTest(req: Request, res: Response, next: NextFunction) {
         res.json({ message: 'OK'})
       }
@@ -241,10 +241,10 @@ for using Worker Threads, can declare the worker function in folder **src/app/*/
   ```typescript
   import { workerData, parentPort } from 'node:worker_threads'
 
-  const getAllTest = (): any =>  {
+  const getAllEmployees1 = (): any =>  {
     return workerData.name;
   }
-  parentPort?.postMessage(getAllTest());
+  parentPort?.postMessage(getAllEmployees1());
   ```
 
 # Response

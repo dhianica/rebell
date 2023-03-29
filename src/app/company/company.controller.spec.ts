@@ -4,11 +4,29 @@ import 'mocha';
 
 import App from '../../index';
 
-describe('Unit Test Employee', (): void => {
-  it('should GET', async (): Promise<void> => {
-    const res = await request(App).get('/api/employee/');
+const type = 'application/json'
+const baseUrl = '/api/company/'
+describe('Unit Test GET Company', (): void => {
+  it('should Get All Data', async (): Promise<void> => {
+    const res = await request(App).get(baseUrl);
     expect(res.status).to.equal(200);
-    expect(res.type).to.equal('application/json');
+    expect(res.type).to.equal(type);
     expect(res.body).to.be.an('array');
   });
+
+  it('should Get By ID ', async (): Promise<void> => {
+    const res = await request(App).get(`${baseUrl}1`);
+    expect(res.status).to.equal(200);
+    expect(res.type).to.equal(type);
+    expect(res.body).to.be.an('object');
+  });
 });
+
+describe('Unit Test POST Company', (): void => {
+  it('should Insert', async (): Promise<void> => {
+    const res = await request(App).post(baseUrl);
+    expect(res.status).to.equal(200);
+    expect(res.type).to.equal(type);
+    expect(res.body).to.be.an('object');
+  });
+})
