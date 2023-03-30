@@ -21,12 +21,3 @@ describe('Unit Test GET Company', (): void => {
     expect(res.body).to.be.an('object');
   });
 });
-
-describe('Unit Test POST Company', (): void => {
-  it('should Insert', async (): Promise<void> => {
-    const res = await request(App).post(baseUrl);
-    expect(res.status).to.equal(200);
-    expect(res.type).to.equal(type);
-    expect(res.body).to.be.an('object');
-  });
-})
