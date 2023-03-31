@@ -1,4 +1,4 @@
-# Typescript First App
+# Rebell
 this typescript for boilerplate for creating backend services
 this package using some function from another library
 #### This boilerplate was built using
