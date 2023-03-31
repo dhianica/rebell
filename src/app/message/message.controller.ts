@@ -1,7 +1,5 @@
 import type { Request, Response, NextFunction }  from 'express';
-import { IAMQPInstance } from '../../core/lib/instance'
-import { EHttpStatusCode, EStatus } from '../../core/enum'
-import { Get } from '../../core/decorator'
+import { EHttpStatusCode, EStatus, IAMQPInstance, Get } from 'rebell-core'
 
 class MessageController {
   @Get('')

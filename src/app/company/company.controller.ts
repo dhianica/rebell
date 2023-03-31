@@ -1,9 +1,7 @@
 import type { Request, Response, NextFunction }  from 'express';
-import { EErrorMessage, EErrorCode, EApp, ESuccessMessage } from '../../core/enum'
-import { Get, Post, ValidateBody } from '../../core/decorator'
+import { EErrorMessage, EErrorCode, EApp, ESuccessMessage, Get, Post, ValidateBody, customError } from 'rebell-core'
 import { CompanyService } from './company.service'
-import { generateCode, getMethodName, isNumber } from '../../utils/index.util'
-import { customError } from '../../core/error';
+import { generateCode, getMethodName, isNumber } from 'rebell-utils'
 import { Company as CompanySchema } from './#schema/company.schema'
 
 class CompanyController {

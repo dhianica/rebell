@@ -1,6 +1,6 @@
 {
   "name": "rebell",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "application for boilerplate typescript",
   "main": "./src/bin/www.ts",
   "scripts": {
@@ -47,7 +47,7 @@
     "type": "git",
     "url": "https://github.com/dhianica/rebell.git"
   },
-  "author": "Muchamamd Ilham",
+  "author": "Muchammad Ilham <muchammad.ilham@outlook.com>",
   "license": "MIT",
   "devDependencies": {
     "@swc/core": "^1.3.42",
@@ -102,6 +102,8 @@
     "mssql": "^9.1.1",
     "mysql2": "^3.2.0",
     "pg": "^8.10.0",
+    "rebell-core": "^1.0.0",
+    "rebell-utils": "^1.0.2",
     "reflect-metadata": "^0.1.13",
     "rotating-file-stream": "^3.1.0",
     "serve-favicon": "^2.5.0",

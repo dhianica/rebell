@@ -3,13 +3,11 @@ import * as http from 'http';
 import dayjs from 'dayjs';
 import dotenv from 'dotenv'
 
-import logger from '../core/logs';
 import App from '../index';
-import { ISocketInstance } from '../core/lib/instance'
-import type { IConfiguration, ISocketClient } from '../core/interface';
-import { EFormat, EDatabase } from '../core/enum';
-import { Configuration } from '../core/configuration';
-import { getEnumKeyByEnumValue } from '../utils/index.util'
+import type { IConfiguration, ISocketClient } from 'rebell-core';
+import { Configuration, EFormat, EDatabase, ISocketInstance } from 'rebell-core';
+import { getEnumKeyByEnumValue } from 'rebell-utils'
+import logger from 'rebell-core/dist/src/logs';
 
 dotenv.config();
 

@@ -1,10 +1,11 @@
 import * as bodyParser from 'body-parser';
 import express from 'express';
 import favicon from 'serve-favicon'
-import Middleware from './core/middleware'
 
 import router from './app/app.routing';
 import path from 'path';
+
+import Middleware from 'rebell-core/dist/src/middleware'
 
 // Creates and configures an ExpressJS web server.
 class App {

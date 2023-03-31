@@ -1,8 +1,7 @@
 import * as express from 'express';
 import glob from 'fast-glob';
-import { GetDecorator  } from '../core/decorator/base.decorator'
-import { EMetadataKeys } from '../core/enum'
-import type { IRouterTypes, IConfiguration } from '../core/interface'
+import { EMetadataKeys, GetDecorator  } from 'rebell-core'
+import type { IRouterTypes, IConfiguration } from 'rebell-core'
 class Router {
 
   public router: express.Router;
