@@ -7,7 +7,7 @@ import App from '../index';
 import type { IConfiguration, ISocketClient } from 'rebell-core';
 import { Configuration, EFormat, EDatabase, ISocketInstance } from 'rebell-core';
 import { getEnumKeyByEnumValue } from 'rebell-utils'
-import logger from 'rebell-core/dist/src/logs';
+import { Logger } from 'rebell-core';
 
 dotenv.config();
 
@@ -32,10 +32,10 @@ const onError = (error: NodeJS.ErrnoException): void => {
   const bind = (typeof port === 'string') ? 'Pipe ' + port : 'Port ' + port;
   switch (error.code) {
     case 'EACCES':
-      logger.error(`${bind} requires elevated privileges`);
+      Logger.error(`${bind} requires elevated privileges`);
       throw error;
     case 'EADDRINUSE':
-      logger.error(`${bind} is already in use`);
+      Logger.error(`${bind} is already in use`);
       throw error;
     default:
       throw error;
@@ -45,7 +45,7 @@ const onError = (error: NodeJS.ErrnoException): void => {
 const onListening = (): void => {
   const addr = server.address();
   const bind = (typeof addr === 'string') ? `pipe ${addr}` : `port ${addr?.port}`;
-  logger.info(`Listening on ${bind}`);
+  Logger.info(`Listening on ${bind}`);
 };
 
 server.listen(port);
@@ -80,17 +80,3 @@ io.sockets.on('connection', (socket) => {
 io.sockets.on('error', () => {
   console.log(dayjs().format(EFormat.DateString), `--> Error Socket Server`)
 });
-
-const connection = process.env.CONNECTION.split(',')
-for (const iterator of connection)
-  if (iterator === getEnumKeyByEnumValue(EDatabase, '00')) {
-    let connectionString = ''
-    if (process.env.MSSQL_PORT === undefined || process.env.MSSQL_PORT === '')
-      connectionString = `Server=${process.env.MSSQL_HOST};Database=${process.env.MSSQL_DB};User Id=${process.env.MSSQL_USER};Password=${process.env.MSSQL_PASS};Encrypt=false;`
-    else
-      connectionString = `Server=${process.env.MSSQL_HOST},${process.env.MSSQL_PORT};Database=${process.env.MSSQL_DB};User Id=${process.env.MSSQL_USER};Password=${process.env.MSSQL_PASS};Encrypt=false;`
-    Configuration.add({
-      name: 'MSSQL',
-      value: connectionString
-    } as IConfiguration)
-  }

@@ -5,7 +5,7 @@ import favicon from 'serve-favicon'
 import router from './app/app.routing';
 import path from 'path';
 
-import Middleware from 'rebell-core/dist/src/middleware'
+import { Middleware } from 'rebell-core'
 
 // Creates and configures an ExpressJS web server.
 class App {

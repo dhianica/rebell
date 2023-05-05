@@ -2,6 +2,7 @@ import * as express from 'express';
 import glob from 'fast-glob';
 import { EMetadataKeys, GetDecorator  } from 'rebell-core'
 import type { IRouterTypes, IConfiguration } from 'rebell-core'
+
 class Router {
 
   public router: express.Router;

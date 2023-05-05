@@ -42,7 +42,7 @@ npm start
 ```
 
 # Route
-**core/decorator/route.decorator.ts** is decorator for set route handler express
+**rebell-core** is decorator for set route handler express
 if route decorator is empty the route will be using function name 
 endpoint will be generate using path folder name
 
@@ -132,7 +132,7 @@ endpoint will be generate using path folder name
     ```
 
 # Middleware
- **core/middleware.ts** reference from Express Middleware for create response handler
+ **rebell-core** reference from Express Middleware for create response handler
  * loggerMiddleware
  ```typescript
   /**
@@ -231,6 +231,7 @@ this schema will be set in function ajv.addMetaSchema(schema, schemaName), schem
         - test.schema.ts
 
   schemaName will be Generate with name **TestSchema**
+
 # Worker Threads
 for using Worker Threads, can declare the worker function in folder **src/app/*/#worker** with file name ***.[functionName].worker.ts**
 #### example:
@@ -249,7 +250,7 @@ for using Worker Threads, can declare the worker function in folder **src/app/*/
 
 # Response
 
-**core/type.ts** is interface for declare all type used in this app
+**rebell-core** is interface for declare all type used in this app
 
 ```typescript
 export interface IResponseTypes {
@@ -285,239 +286,6 @@ const result: IResponseTypes = {
 next(result)
 ```
 
-# Utility Methods
-
-## src/utils/utilities.ts
-* #### camelCase
-```typescript
-/**
- * 
- * This is function for convert a string to style CamelCase
- * 
- * @param str string - params want to be convert
- * @returns string - string with camelCase
- */
-export const camelCase = (str: string): string => {return str.toLowerCase().replace(/[^a-zA-Z0-9]+(.)/g, (m, chr) => {return chr.toUpperCase();});};
-```
-
-* #### getLastDirectory
-```typescript
-/**
- * 
- * This is function for get last directory from path
- * 
- * @param currentDirectory string - params want to be get a last directory from path
- * @returns string - string name last directory 
- */
-export const getLastDirectory = (currentDirectory: string): string => {return path.basename(path.resolve(currentDirectory));};
-```
-
-* #### isEmpty
-```typescript
-/**
- * 
- * This is function for check params is empty or not
- * 
- * @param param any - params want to be check
- * @returns boolean - true if param dont have value, default false
- */
-export function isEmpty(param: any): boolean {
-  if (typeof param === 'object') {return Object.keys(param).length < 1;} else if (Array.isArray(param)) {return param.length < 1;}
-  return false;
-}
-```
-
-* #### getEnumKeyByEnumValue
-```typescript
-/**
- * 
- * This is function for get the key from value enum
- * 
- * @param myEnum any - data enum want to be check
- * @param enumValue number | string - value want to be your get the key 
- * @returns string - key from value you check
- */
-export function getEnumKeyByEnumValue(myEnum: any, enumValue: number | string): string {
-  const keys = Object.keys(myEnum).filter((x) => {return myEnum[x] === enumValue;});
-  return keys.length > 0 ? keys[0] : '';
-}
-```
-
-* #### flatten
-```typescript
-/**
- * 
- * This is function for convert array to be flatten
- * 
- * @param arrs Array - data want to be convert to flatten
- * @returns Array - array with format flatten
- */
-export const flatten = <T>(arrs: Array<Array<T>>): Array<T> => {return ([] as Array<T>).concat(...arrs);};
-```
-
-* #### groupBy
-```typescript
-/**
- *
- * This is function for grouping array with specifiec key
- *  
- * @param arr Array - data want to be grouping
- * @param key any - key want to be gropuing example: x => x.name
- * @returns Array -> array with new format grouping
- */
-export function groupBy<K, V>(array: V[], grouper: (item: V) => K): Map<K, V[]> {
-  return array.reduce((store, item) => {
-    const key = grouper(item);
-    if (!store.has(key)) {
-      store.set(key, [item]);
-    } else {
-      store.get(key)?.push(item);
-    }
-    return store;
-  }, new Map<K, V[]>());
-}
-```
-
-* #### transformMap
-```typescript
-export function transformMap<K, V, R>(
-  source: Map<K, V>,
-  transformer: (value: V, key: K) => R
-): Map<K,R>{
-  return new Map(
-    Array.from(source, v => {return [v[0], transformer(v[1], v[0])];})
-  );
-}
-```
-
-* #### mapToObj
-```typescript
-export function mapToObj<T>(m: Map<string, T>): { [key: string]: T } {
-  return Array.from(m).reduce((obj: { [key: string]: T }, [key, value]) => {
-    obj[key] = value;
-    return obj;
-  }, {});
-}
-```
-
-* #### mapToArray
-```typescript
-export function mapToArray<K, V, R>(
-  m: Map<K, V>,
-  transformer: (key: K, item: V) => R
-): Array<R> {
-  return Array.from(m.entries()).map(x => {return transformer(x[0], x[1]);}
-  );
-}
-```
-
-* #### range
-```typescript
-/**
- * 
- * This is function for generate data number with range
- * 
- * @param start number - params start number want to be generate
- * @param end number - params end number want to be generate
- * @param step number - params step number row arithmatic want to be 
- * @returns number - array with range
- */
-export const range = (start: number, end: number, step: number = 1): Array<number> => {return [...Array(Math.ceil(end / step)).keys()].map(i => {return i * step + start;});};
-```
-
-* #### convertParamToObject
-```typescript
-/**
- *
- * This is function for convert query params from URL to Object Json
- *
- * @param str : string -> query params from URL
- * @returns : object
- */
-export const convertParamToObject = (str: string): Object => Object.fromEntries(new URLSearchParams(str))
-```
-
-* #### objectEntries
-```typescript
-export const objectEntries = (obj: Object): any => {
-  let index = 0;
-
-  // In ES6, you can use strings or symbols as property keys,
-  // Reflect.ownKeys() retrieves both
-  const propKeys = Reflect.ownKeys(obj);
-
-  return {
-    [Symbol.iterator]() {
-      return this;
-    },
-    next() {
-      if (index < propKeys.length) {
-        const key = propKeys[index];
-        index++;
-        return { value: [key, obj[key]]};
-      } else {
-        return { done: true };
-      }
-    }
-  };
-}
-```
-
-* #### generateCode
-```typescript
-/**
- * This is function for generate unique code
- *
- * @param len number - params for generate total length string
- * @returns  string - unique string
- */
-export const generateCode = (len: number = 3): string => crypto.randomBytes(len).toString('hex').toUpperCase()
-```
-
-* #### getMethodName
-```typescript
-/**
- * This is function for get method name using new Error
- *
- * @param len number - params new Error
- * @returns  string - method name
- */
-export const getMethodName = (error: Error): string => /at \w+\.(\w+)/.exec(error.stack)[0].replace(/at /, '')
-```
-
-* #### getSafe
-```typescript
-export function getSafe(fn: Function, defaultVal: any): void  {
-  try {
-    return fn();
-  } catch (e) {
-    return defaultVal;
-  }
-}
-```
-
-* #### stringToArray
-```typescript
-/**
- * This is function for convert string of array to array
- *
- * @param n string - params string of array
- * @returns array - array data from string with commas separated
- */
-export const stringToArray = (n: string): any => n.replace(/\[|\]/g, '').split(',')
-```
-
-
-## src/utils/validate.util.ts
-
-| Name | Description |
-| --- | --- |
-| `isEmpty` | ` This is function for check params is empty or not ` |
-| `isValidDate` | ` This is function for check validate date ` |
-| `isNumber` | ` This is function for check validate numbe ` |
-| `isString` | ` This is function for check validate string ` |
-| `isObject` | ` This is function for check validate object ` |
-
 # Unit Test
 
 this testing using mocha and supertest, this file test must be declared in same path with file ***.controller.ts**
@@ -534,21 +302,6 @@ describe('Unit Test Employee', (): void => {
   });
 });
 ```
-
-
-# Logs
-**core/logs.ts** function for create logging
-
-| Name | Function |
-| --- | --- |
-| `logger.silly` | ``` logger.silly() ``` |
-| `logger.debug` | ``` logger.debug() ``` |
-| `logger.trace` | ``` logger.trace() ``` |
-| `logger.info` | ``` logger.info() ``` |
-| `logger.warn` | ``` logger.warn() ``` |
-| `logger.error` | ``` logger.error() ``` |
-| `logger.fatal` | ``` logger.fatal() ``` |
-
 
 # Next Features
 - #### Add Documentation API with Open API 3.0

@@ -6,6 +6,9 @@
         "allowSyntheticDefaultImports": true,
         "experimentalDecorators": true,
         "strictNullChecks": false,
-        "types": ["@types/node"]
+        "skipLibCheck": true,
+        "types": [
+            "@types/node"
+        ]
     },
 }

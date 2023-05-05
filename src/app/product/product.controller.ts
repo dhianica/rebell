@@ -3,7 +3,7 @@ import { customError, EErrorMessage, EErrorCode, EApp, ESuccessMessage, Get, Pos
 import { generateCode, getMethodName, isNumber } from 'rebell-utils'
 
 class ProductController {
-  
+
   private Product = [{
     ProductID: 1,
     Product_Name: 'Product 1'
@@ -56,5 +56,5 @@ class ProductController {
     })
   }
 }
-  
+
 export default new ProductController();
